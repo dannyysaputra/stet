@@ -66,9 +66,14 @@ async function runCheck(checkKey, mode) {
   const t0 = performance.now();
   let lastStart = 0;
   let retries = 0;
-  for (const [i, item] of items.entries()) {
+  // Items go to the model one at a time, or in groups for checks with a batchSize.
+  const size = check.batchSize ?? 1;
+  const units = [];
+  for (let i = 0; i < items.length; i += size) units.push(items.slice(i, i + size));
+  let done = 0;
+  for (const unit of units) {
     if (stopRequested) break;
-    $("progress").textContent = `${label}: ${i + 1} of ${items.length}`;
+    $("progress").textContent = `${label}: ${done + 1}${unit.length > 1 ? `-${done + unit.length}` : ""} of ${items.length}`;
     // The free Gemini tier allows only a few cloud requests a minute, so cloud
     // runs are spaced out, and a quota error (429) waits and tries again.
     let attempt = 0;
@@ -79,21 +84,36 @@ async function runCheck(checkKey, mode) {
       }
       lastStart = performance.now();
       try {
-        const r = await check.run(item, mode);
-        results.push({ item: strip(item), where: r.where, ms: r.ms, attempts: attempt + 1, score: check.score(item, r.data) });
+        if (check.runBatch) {
+          const r = await check.runBatch(unit, mode);
+          unit.forEach((item, k) => {
+            const d = r.perItem[k];
+            const base = { item: strip(item), where: r.where, ms: Math.round(r.ms / unit.length), attempts: attempt + 1, batch: unit.length };
+            results.push(d ? { ...base, score: check.score(item, d) } : { ...base, error: "Missing: the reply had no result for this item." });
+          });
+        } else {
+          const r = await check.run(unit[0], mode);
+          results.push({ item: strip(unit[0]), where: r.where, ms: r.ms, attempts: attempt + 1, score: check.score(unit[0], r.data) });
+        }
         break;
       } catch (err) {
-        if (/\b429\b/.test(err.message) && attempt < 3 && !stopRequested) {
+        // 429 = quota; 500/503 = the cloud model is briefly overloaded. Both are retried.
+        const busy = err.message.match(/\[(429|500|503)\b/);
+        if (busy && attempt < 3 && !stopRequested) {
           attempt++;
           retries++;
-          $("progress").textContent = `${label}: ${i + 1} of ${items.length} (quota limit, waiting ${QUOTA_WAIT_MS / 1000} s)`;
-          await sleep(QUOTA_WAIT_MS);
+          const waitMs = busy[1] === "429" ? QUOTA_WAIT_MS : 10000;
+          $("progress").textContent = `${label}: ${done + 1} of ${items.length} (cloud busy (${busy[1]}), waiting ${waitMs / 1000} s)`;
+          await sleep(waitMs);
           continue;
         }
-        results.push({ item: strip(item), where: err.where ?? null, ms: err.ms ?? null, attempts: attempt + 1, error: `${err.name}: ${err.message}`.slice(0, 300) });
+        for (const item of unit) {
+          results.push({ item: strip(item), where: err.where ?? null, ms: err.ms ?? null, attempts: attempt + 1, error: `${err.name}: ${err.message}`.slice(0, 300) });
+        }
         break;
       }
     }
+    done += unit.length;
   }
   const wallMs = Math.round(performance.now() - t0);
   const summary = summarize(checkKey, results, wallMs);

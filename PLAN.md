@@ -90,6 +90,17 @@ Today decides whether Stet goes ahead and where the Indonesian check runs. The d
     | Laptop speed | 20 strings a minute | not comparable (spaced for quota) | at least 60 |
     | Screen text read from a screenshot | 98.5% | 98.5% | none |
 
+  - Repeat run (laptop, one string per call): 80.0% caught, 0% false alarms, 95% filler, 19.7 strings a minute. Only 4 of 150 verdicts changed between the two runs, so the numbers are stable.
+  - Batching test (5 strings per call):
+
+    | English, 5 per call | Laptop | Cloud |
+    | --- | --- | --- |
+    | Problems caught | 70% | 93.3% |
+    | False alarms | 10% | 0% |
+    | Speed | 14.9 strings a minute | 61.3 strings a minute (with quota spacing) |
+    | Failed or truncated replies | 5 of 150 | 5 of 150 (one 500 "high demand" batch) |
+
+    With an array schema the laptop model dropped later items (73 of 150 missing); with one required key per item it answered all but became slower and less accurate than one string per call. Batching helps the cloud (5 times fewer requests) and does not help the laptop.
   - Method notes: the "placeholder" problem kind was renamed "leftover_text" after the first run, because it collided with the "placeholder" element kind and caused 5 of 8 false alarms. That fix was made after seeing results on this same data, so the numbers are slightly optimistic. Cloud runs are spaced 4.5 s apart because the free Gemini tier returned 429 quota errors at 77 requests a minute.
 
 - [ ] **0.5 Go or no-go (you and Claude)**

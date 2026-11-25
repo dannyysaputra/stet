@@ -62,7 +62,39 @@ Indonesian: "${r.id_text}"
 
 Reply with JSON only. If the Indonesian is fine, use verdict "ok", problem "none", better "" and note_en "". Otherwise give the single best-matching problem kind, a better Indonesian version, and one short sentence in plain English on what the bad version says or does wrong.`;
 
-const READ_PROMPT = `This is a screenshot of an app screen. List every piece of interface text you can see, exactly as written, one item per label, button, heading, message or placeholder. Do not add text that is not visible. Reply with JSON only.`;
+// Several strings in one call: the guide is sent once per batch instead of once per string.
+// One required key per item (item1, item2, ...) rather than an array: with an array
+// the laptop model stopped early and dropped the later items (first batch run, 73 of 150 missing).
+const enBatchSchema = (count) => {
+  const keys = Array.from({ length: count }, (_, i) => `item${i + 1}`);
+  return { type: "object", properties: Object.fromEntries(keys.map((k) => [k, EN_SCHEMA])), required: keys };
+};
+
+const enBatchPrompt = (rows) => `You review the interface text of an app against this wording guide.
+
+${wordingGuide}
+
+Judge each numbered piece of text on its own.
+
+${rows
+  .map((r, i) => `item${i + 1}. App: ${r.app} | Screen: ${r.screen} | Element: ${r.kind}${r.context ? ` | Context: ${r.context}` : ""}\n   Text: "${r.text}"`)
+  .join("\n")}
+
+Reply with JSON only, with one key per item (${rows.map((_, i) => `item${i + 1}`).join(", ")}). If a text is fine, use verdict "ok", problem "none", severity "none" and rewrite "". Otherwise give the single best-matching problem kind, its seriousness, and a rewrite that follows the guide.`;
+
+// A fixed shuffle, so each batch mixes kinds the way a real screen does and runs repeat exactly.
+function seededShuffle(rows, seed = 20261125) {
+  const out = [...rows];
+  let s = seed;
+  const rand = () => ((s = (s * 1664525 + 1013904223) >>> 0) / 2 ** 32);
+  for (let i = out.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    [out[i], out[j]] = [out[j], out[i]];
+  }
+  return out;
+}
+
+const READ_PROMPT =`This is a screenshot of an app screen. List every piece of interface text you can see, exactly as written, one item per label, button, heading, message or placeholder. Do not add text that is not visible. Reply with JSON only.`;
 
 // ---------- screen reading: synthetic screenshots drawn from the English strings ----------
 
@@ -134,6 +166,20 @@ export const CHECKS = {
       return { expect: r.expect, type: r.type, flagged, typeMatch: flagged && d.problem === r.type, got: d };
     },
   },
+  englishbatch: {
+    label: "English check, 5 per call",
+    metricsAs: "english",
+    batchSize: 5,
+    items: () => seededShuffle(enStrings),
+    async runBatch(rows, mode) {
+      const r = await askJson(enBatchPrompt(rows), enBatchSchema(rows.length), { mode });
+      return { ...r, perItem: rows.map((_, i) => r.data[`item${i + 1}`] ?? null) };
+    },
+    score(r, d) {
+      const flagged = d.verdict === "problem";
+      return { expect: r.expect, type: r.type, flagged, typeMatch: flagged && d.problem === r.type, got: d };
+    },
+  },
   translation: {
     label: "Translation check",
     items: () => idPairs,
@@ -161,6 +207,7 @@ const pct = (a, b) => (b ? Math.round((a / b) * 1000) / 10 : null);
 
 /** Summary metrics for one finished run. Definitions are written into the result. */
 export function summarize(checkKey, results, wallMs) {
+  const metricsKey = CHECKS[checkKey]?.metricsAs ?? checkKey;
   const ok = results.filter((x) => !x.error);
   const errors = results.length - ok.length;
   const where = {};
@@ -200,12 +247,12 @@ export function summarize(checkKey, results, wallMs) {
       problemsCaughtPct: "problem items the model flagged as a problem / all problem items (errors count as missed)",
       problemKindRightPct: "problem items flagged with the right problem kind / all problem items",
       falseAlarmPct: "good items the model flagged as a problem / all good items (errors not counted as alarms)",
-      ...(checkKey === "english" ? { fillerCaughtPct: "generated-filler items flagged as a problem / all generated-filler items" } : {}),
+      ...(metricsKey === "english" ? { fillerCaughtPct: "generated-filler items flagged as a problem / all generated-filler items" } : {}),
     },
     problemsCaughtPct: pct(flagged(problems), problems.length),
     problemKindRightPct: pct(typeOk(problems), problems.length),
     falseAlarmPct: pct(flagged(goods), goods.length),
-    ...(checkKey === "english" ? { fillerCaughtPct: pct(flagged(filler), filler.length) } : {}),
+    ...(metricsKey === "english" ? { fillerCaughtPct: pct(flagged(filler), filler.length) } : {}),
     byType,
     items: results.length,
     errors,
