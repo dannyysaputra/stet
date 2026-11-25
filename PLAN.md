@@ -217,11 +217,16 @@ By tonight Stet reviews the text of your own bilingual prototype, and not only t
   - Build: each Indonesian string is compared with its English original and its kind of element. The check returns a verdict (wrong sense, word for word, wrong verb form, or mixed formal and informal address), a better translation, and a plain English note on what the bad one says. It runs where Phase 0 decided.
   - Done when: the planted mistakes in the sample, such as "Rumah" and "Dekat", are caught and explained.
 
-- [ ] **3.3 Bring your own text**
+- [ ] **3.3 Bring your own text** (built; waiting for the language files of one of your own prototypes)
+  - Result (2026-11-25): /files/ takes an English and an optional Indonesian language file (JSON, flat or nested) or a pasted list. src/files/parse.js flattens keys ("checkout.card.label"), pairs the two files by key, reports keys missing on either side, and guesses the element kind from the key's words. The same checks run (English check and plain rules; the translation check where decision 2 says), with tick boxes and a fix prompt in which every line names its own file and key.
+  - Checked in Chrome with two small made-up files (6 keys, 11 checks, Sealed): 9 findings in 55 s, counter 0, and a fix prompt with lines such as `en.json, key "checkout.pay_button" (button): "Submit" -> "Pay now"` and `id.json, key "nav.home" (nav): "Rumah" -> "Beranda"`. The laptop flagged three fine Indonesian strings ("Pembayaran", "Bayar", "Nomor kartu"), in line with its measured false alarms.
+  - Gate: scripts/check-files.mjs (flattening, pairing, missing keys, 11 kind guesses, pasted lists). Mutation-proved: an unanchored nav pattern made "report.table" a nav item (red); restored, green. A first control ("contact") could never fail and was replaced.
   - Build: drop in two language files (English and Indonesian, JSON) or paste a list of strings. The same review and fix prompt run on them, and the fix prompt names each file key.
   - Done when: the language files from one of your own prototypes produce findings and a fix prompt you would send.
 
-- [ ] **3.4 Sealed and Open projects**
+- [x] **3.4 Sealed and Open projects**
+  - Result (2026-11-25): a Sealed/Open setting on /review/ and /files/ (src/project.js, kept in the browser, Sealed by default). Sealed: checks of the app's text use Laptop only, and without the laptop model Stet explains why it cannot run. Open: Laptop first, so the cloud is used when the laptop model is missing; before any app text goes to the cloud, the exact list is shown and must be approved.
+  - Checked in Chrome on /files/ with the browser's laptop model made to report "unavailable" and a pasted list of 3 strings: Sealed refused with the explanation and sent nothing; Open showed the 3 strings for approval with nothing sent, then checked all 3 in the cloud (each reported in_cloud) and the counter read 3.
   - Build: one project setting. In a Sealed project the text is only ever read by the laptop model. In an Open project the laptop model is tried first and the cloud is used when it is missing.
   - Done when: in a browser without the laptop model, an Open project works through the cloud and a Sealed project explains why it cannot run.
 

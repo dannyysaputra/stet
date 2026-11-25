@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stet: your files</title>
+<link rel="stylesheet" href="/src/base.css">
+<link rel="stylesheet" href="/src/review/review.css">
+<link rel="stylesheet" href="/src/files/files.css">
+</head>
+<body>
+<header class="seam-bar">
+  <a class="brand" href="/">Stet</a>
+  <span class="bar-right">
+    <span id="net-state" class="net-state" data-online="true">Online</span>
+    <span id="left-count" class="left-count" data-zero="true" aria-live="polite">Left this laptop: 0</span>
+  </span>
+</header>
+<main class="files">
+  <h1>Review your own text</h1>
+  <p class="dim">Drop in your app's language files, or paste a list of strings. The same review and fix prompt run on them, and the fix prompt names each file and key.</p>
+
+  <section class="box">
+    <h2>1. Your text</h2>
+    <div class="grid2">
+      <label class="drop">English file (JSON)
+        <input id="file-en" type="file" accept=".json,application/json">
+        <span id="file-en-name" class="dim">None chosen</span>
+      </label>
+      <label class="drop">Indonesian file (JSON, optional)
+        <input id="file-id" type="file" accept=".json,application/json">
+        <span id="file-id-name" class="dim">None chosen</span>
+      </label>
+    </div>
+    <details>
+      <summary>Or paste a list of English strings, one per line</summary>
+      <textarea id="pasted" rows="6" placeholder="Unlock seamless invoicing&#10;Submit&#10;Click here"></textarea>
+      <div class="row"><button id="use-pasted" type="button" class="quiet">Use this list</button></div>
+    </details>
+    <div class="grid2">
+      <label>App name and what it does
+        <input id="app-name" type="text" value="My app" maxlength="120">
+      </label>
+      <label>The app speaks to its users as
+        <select id="register"><option value="Anda">Anda (formal)</option><option value="kamu">kamu (informal)</option></select>
+      </label>
+    </div>
+    <p id="loaded" class="dim" aria-live="polite">No text loaded yet.</p>
+  </section>
+
+  <section class="box">
+    <h2>2. Project</h2>
+    <fieldset class="project">
+      <legend class="dim">Where may this project's text be read?</legend>
+      <label><input type="radio" name="project" value="sealed" checked> Sealed: only by the laptop model, never sent to the cloud</label>
+      <label><input type="radio" name="project" value="open"> Open: the laptop model first, the cloud when it is missing</label>
+    </fieldset>
+    <p id="laptop-state" class="dim"></p>
+  </section>
+
+  <section class="box">
+    <h2>3. Review</h2>
+    <div class="row">
+      <button id="run" type="button" disabled>Review all text</button>
+      <button id="stop" type="button" class="quiet" hidden>Stop</button>
+    </div>
+    <p id="progress" class="dim" aria-live="polite"></p>
+    <div id="approve" class="approve" hidden></div>
+    <h3>Findings <span id="findings-count" class="dim"></span></h3>
+    <ol id="findings"></ol>
+    <div class="row"><button id="make-fix" type="button" disabled>Make fix prompt</button></div>
+    <p id="fix-status" class="dim" aria-live="polite"></p>
+    <textarea id="fix-prompt" rows="12" spellcheck="false" hidden></textarea>
+    <div class="row" id="fix-actions" hidden><button id="copy-fix" type="button" class="quiet">Copy</button><span id="copy-status" class="dim" aria-live="polite"></span></div>
+  </section>
+
+  <section class="box area cloud">
+    <p class="area-title">Sent to the cloud</p>
+    <ol id="sent"></ol>
+    <p id="sent-none" class="dim">Nothing from this page has been sent to a cloud model.</p>
+    <p id="net" class="dim"></p>
+  </section>
+</main>
+<script type="module" src="/src/files/files.js"></script>
+</body>
+</html>

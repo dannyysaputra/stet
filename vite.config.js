@@ -48,6 +48,7 @@ export default defineConfig({
         eval: resolve(import.meta.dirname, "eval/index.html"),
         sample: resolve(import.meta.dirname, "sample/index.html"),
         review: resolve(import.meta.dirname, "review/index.html"),
+        files: resolve(import.meta.dirname, "files/index.html"),
       },
     },
   },

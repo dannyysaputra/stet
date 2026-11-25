@@ -1,0 +1,13 @@
+/* The "your files" page: one column of steps under the same top bar as the review. */
+.files { max-width: 900px; }
+.files h3 { margin: 18px 0 6px; font-size: 1rem; }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
+.grid2 label, .drop { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 0.92rem; }
+.drop { padding: 12px; border: 1.5px dashed var(--line); border-radius: 10px; }
+.files input[type="text"], .files select, .files textarea { font: inherit; padding: 8px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); width: 100%; }
+.files textarea { font: 0.85rem/1.45 ui-monospace, Consolas, monospace; }
+.files details { margin-top: 12px; }
+.project { border: 0; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
+.project label { font-weight: 400; }
+#findings .lang { font-size: 0.72rem; font-weight: 700; margin-right: 6px; color: var(--dim); }
+@media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
