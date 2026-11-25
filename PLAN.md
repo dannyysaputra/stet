@@ -116,7 +116,7 @@ Today decides whether Stet goes ahead and where the Indonesian check runs. The d
 | Generated filler caught | At least 70% |
 | Indonesian translations judged correctly | At least 75% |
 | False alarms on good translations | At most 15% |
-| Speed on the laptop | At least 60 strings a minute |
+| Speed on the laptop | ~~At least 60 strings a minute~~ Changed 2026-11-25: one screen of about 15 strings checked in under 60 seconds, with pins appearing as each string is checked |
 These bars are my judgment of what makes the product feel trustworthy. They are not a hackathon requirement.
 
 ## Phase 1: Core review loop (Wed Nov 25)
@@ -133,6 +133,7 @@ By tonight, pressing Review on the built-in sample app pins real findings from t
 
 - [ ] **1.3 Check on the laptop**
   - Build: each string is checked against a fixed starter guide by the laptop model only. It returns a verdict, how serious it is, and a suggested rewrite. Strings are checked one at a time, with progress shown.
+  - From the 0.5 decision: before the model, plain rules catch the obvious cases (leftover text such as "Lorem ipsum" or "TODO", and a fixed list of vague button labels) without a model call, and a string already checked on another screen reuses its verdict. Pins appear as each string is checked. Target: one screen of about 15 strings in under 60 seconds.
   - Done when: with Wi-Fi off, Review finishes on a sample screen and returns findings.
   - OPEN from 0.1: the Wi-Fi-off test was not run yet. The docs do not say whether on-device calls through the SDK need the network (for example for the App Check token). Run it before building 1.3 on top of it. Remember: the tab must already be open, because there is no offline cache yet (planned for 2.5).
 
@@ -317,7 +318,7 @@ The two biggest unknowns are settled tonight, in Phase 0.
 
 | Decision | Made on | Answer |
 | --- | --- | --- |
-| Go ahead with Stet as planned, or simplify | Tue Nov 24 | Open |
+| Go ahead with Stet as planned, or simplify | Wed Nov 25 | Go. The laptop model passes the English accuracy bars one string per call (80 to 81% caught, 0 to 1.7% false alarms, 95% filler) but reaches only about 20 strings a minute, and batching made it worse. So: keep the laptop check one string per call, replace the speed bar with "one screen of about 15 strings in under 60 seconds", add plain rules and a cache in 1.3, and use 5-per-call cloud batches only for Open projects or as a fallback. |
 | Indonesian check runs on the laptop or in the cloud | Tue Nov 24 | Open |
 | Final name, after checking nobody else uses it | Sat Nov 28 | Open |
 
