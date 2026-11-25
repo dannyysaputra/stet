@@ -4,6 +4,7 @@
 // panel are both drawn from the same groups, so they always match.
 import { KIND_NAMES, collectStrings, groupByKey } from "./collect.js";
 import { PROBLEM_NAMES, laptopModelStatus, modelCheck, quickCheck, warmUp } from "./check.js";
+import { onSeamChange } from "../seam.js";
 
 const frame = document.getElementById("app");
 const pinLayer = document.getElementById("pins");
@@ -281,6 +282,26 @@ frame.addEventListener("load", attach);
 // The frame may have finished loading before this module ran.
 if (frame.contentDocument?.getElementById("screen")?.dataset.screen) attach();
 addEventListener("resize", placeSoon);
+
+// ---------- the seam: what has left this laptop ----------
+// The count is the larger of what src/ai.js recorded and the model API requests
+// the browser itself saw, so a call the ledger missed still counts.
+onSeamChange(({ sent, modelApiRequests, otherRequests }) => {
+  const left = Math.max(sent.length, modelApiRequests);
+  const counter = document.getElementById("left-count");
+  counter.textContent = `Left this laptop: ${left}`;
+  counter.dataset.zero = String(left === 0);
+  document.getElementById("sent-none").hidden = sent.length > 0;
+  document.getElementById("sent").innerHTML = sent
+    .map((s) => `<li>${esc(new Date(s.at).toLocaleTimeString("en-GB"))}:${esc(s.purpose)}, ${s.chars.toLocaleString("en")} characters${s.image ? " and an image" : ""}. Ran: ${esc(s.where)}.</li>`)
+    .join("");
+  const hosts = Object.entries(otherRequests).map(([h, n]) => `${h} x${n}`);
+  document.getElementById("net").innerHTML =
+    `Requests the browser saw from this page: ${modelApiRequests} to a cloud model API.` +
+    (hosts.length ? ` Other outside hosts: ${esc(hosts.join(", "))}.` : " No other outside hosts.") +
+    (modelApiRequests > sent.length ? ` <strong class="err">The browser saw more model API requests than were recorded.</strong>` : "");
+  window.__seam = { left, sent: sent.length, modelApiRequests, otherRequests };
+});
 
 // Load the laptop model while the user looks at the screen. Never downloads it:
 // only runs when Chrome already reports the model as available.

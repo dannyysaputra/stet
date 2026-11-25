@@ -1,5 +1,14 @@
 /* Review page: the app on the left, the panel on the right. Stacks on narrow screens. */
-.review { display: grid; grid-template-columns: minmax(0, 1fr) 380px; height: 100vh; }
+.seam-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; height: 48px; padding: 0 16px; border-bottom: 1.5px solid var(--line); background: var(--card); }
+.seam-bar .brand { font: 600 1.3rem Georgia, serif; color: var(--ink); text-decoration: none; }
+.left-count { font-weight: 700; padding: 4px 12px; border-radius: 999px; background: var(--hi); color: var(--hi-ink); }
+.left-count[data-zero="true"] { background: var(--wash); color: var(--ink); }
+.review { display: grid; grid-template-columns: minmax(0, 1fr) 380px; height: calc(100vh - 48px); }
+.area-title { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--dim); margin: 0 0 6px; }
+.area.cloud { margin-top: 28px; padding-top: 16px; border-top: 3px double var(--line); }
+#sent { margin: 0 0 8px; padding-left: 20px; font-size: 0.9rem; }
+#net { font-size: 0.8rem; overflow-wrap: anywhere; }
+.err { color: var(--red); }
 .stage { padding: 16px; min-width: 0; position: relative; }
 .pins { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .pin { position: absolute; pointer-events: auto; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; font-size: 0.75rem; line-height: 22px; text-align: center;

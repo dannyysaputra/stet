@@ -42,7 +42,7 @@ export function quickCheck(g) {
  * moves that wait to before the user presses Review. Returns { where, ms }.
  */
 export async function warmUp() {
-  const r = await askJson(enPrompt({ app: APP, screen: "start", kind: "button", text: "Save" }), EN_SCHEMA, { mode: "ONLY_ON_DEVICE" });
+  const r = await askJson(enPrompt({ app: APP, screen: "start", kind: "button", text: "Save" }), EN_SCHEMA, { mode: "ONLY_ON_DEVICE", purpose: "a warm-up check" });
   return { where: r.where, ms: r.ms };
 }
 
@@ -51,7 +51,7 @@ export async function modelCheck(g, screen) {
   const r = await askJson(
     enPrompt({ app: APP, screen, kind: g.kind, context: g.context, text: g.text }),
     EN_SCHEMA,
-    { mode: "ONLY_ON_DEVICE" },
+    { mode: "ONLY_ON_DEVICE", purpose: "one piece of the app's text" },
   );
   const d = r.data ?? {};
   const finding = {

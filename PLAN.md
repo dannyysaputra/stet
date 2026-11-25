@@ -151,7 +151,10 @@ By tonight, pressing Review on the built-in sample app pins real findings from t
   - Build: findings pinned on the screen where they appear, a panel listing them with tick boxes, and a label showing each one ran on the laptop.
   - Done when: ticking and unticking works, and the pins match the list.
 
-- [ ] **1.5 The seam (parallel)**
+- [x] **1.5 The seam (parallel)**
+  - Result (2026-11-25): /review/ has a top bar with "Left this laptop: N" and a panel split into "On this laptop" (the review) and "Sent to the cloud" (each prompt that left, with time, purpose and size). src/seam.js counts two ways: src/ai.js records every call the SDK did not report as on-device (and every failed call in a mode that could reach the cloud), and a PerformanceObserver records every request the page made to another host, independently of src/ai.js. N is the larger of the recorded calls and the model API requests the browser saw; if the browser saw more, a warning shows.
+  - Checked in Chrome: after warm-up and a full review of the settings screen (49 s, 15 laptop calls), the counter read 0, with 0 recorded and 0 model API requests seen. Positive control: one Cloud only call through src/ai.js made it 1 (1 recorded, 1 seen, listed in "Sent to the cloud"). Independence check: one empty request to the model API host that bypassed src/ai.js made it 2 and showed the warning.
+  - Seen on the way, for the offline question: during the laptop review the page made no App Check token request. The only outside requests were www.google.com x2 and www.gstatic.com x1 at page load, most likely the reCAPTCHA script App Check loads, which an offline cold start would lack (2.5).
   - Build: the page frame with an "On this laptop" area, a "Sent to the cloud" area, and a counter of what has left the laptop.
   - Done when: the counter is visible and reads zero after a review.
 

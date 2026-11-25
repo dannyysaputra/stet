@@ -3,6 +3,7 @@
 // import "firebase/ai" or call the browser's LanguageModel to generate text.
 import { getAI, getGenerativeModel, GoogleAIBackend, InferenceMode } from "firebase/ai";
 import { firebaseApp, missingConfig } from "./firebase.js";
+import { recordSent } from "./seam.js";
 
 export const MODES = {
   ONLY_ON_DEVICE: { mode: InferenceMode.ONLY_ON_DEVICE, label: "Laptop only", note: "Runs on the laptop model, or fails." },
@@ -65,15 +66,27 @@ function whereItRan(response) {
  * Send one prompt. Returns { text, where: "laptop" | "cloud" | "unknown", ms, mode }.
  * options.schema: a JSON schema; the reply is then constrained to it on both sides.
  * options.image: { mimeType: "image/png" | "image/jpeg", data: base64 } sent with the prompt.
+ * options.purpose: a short plain name for what the prompt carries, shown in the seam.
+ * Every call that did not run on the laptop is recorded in src/seam.js, and so is
+ * every failed call in a mode that could have reached the cloud.
  */
-export async function ask(prompt, { mode = "PREFER_ON_DEVICE", schema, image } = {}) {
+export async function ask(prompt, { mode = "PREFER_ON_DEVICE", schema, image, purpose = "a prompt" } = {}) {
   const { key, model } = modelFor(mode, { schema, image });
   const request = image ? [prompt, { inlineData: { mimeType: image.mimeType, data: image.data } }] : prompt;
+  const sent = (where) => recordSent({ purpose, chars: prompt.length, image: Boolean(image), where, mode });
   return enqueue(key, async () => {
     const started = performance.now();
-    const result = await model.generateContent(request);
+    let result;
+    try {
+      result = await model.generateContent(request);
+    } catch (e) {
+      if (mode !== "ONLY_ON_DEVICE") sent("failed, may have reached the cloud");
+      throw e;
+    }
     const ms = Math.round(performance.now() - started);
-    return { text: result.response.text(), where: whereItRan(result.response), ms, mode };
+    const where = whereItRan(result.response);
+    if (where !== "laptop") sent(where);
+    return { text: result.response.text(), where, ms, mode };
   });
 }
 
