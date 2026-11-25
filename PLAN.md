@@ -195,7 +195,9 @@ By tonight the whole English loop runs: brief, guide, review, fix prompt, re-che
   - Build: the count of each problem kind goes to the cloud model, which returns a short cause note and one rule for the agent's instruction file. Stet shows exactly what will be sent before sending it.
   - Done when: the counter shows that only counts left the laptop, and the rule appears with a copy button.
 
-- [ ] **2.5 Offline behaviour (parallel)**
+- [ ] **2.5 Offline behaviour (parallel)** (built; the Wi-Fi-off "done when" runs with the 1.3 test)
+  - Result (2026-11-25): the top bar shows "Online" or "Offline: laptop steps still work". A cloud step pressed with no connection (write the guide, send the counts) says it will be sent when the connection is back, disables its button so it queues once, and goes out on the browser's "online" event. Cloud errors from a lost connection read "the cloud could not be reached". The saved guide is read from the browser, so it is reused offline. The hosted build registers public/sw.js (not in development): same-origin GET requests go to the network first and fall back to the kept copy; requests to Google are never cached.
+  - Checked: in the owner's Chrome, with the browser's online state set to offline, pressing "Write the guide" sent nothing (ledger 0) and showed the waiting message; on "online" it sent the brief by itself (ledger 1, guide written in 3.5 s). A first attempt failed because the waiting step used the click event's target, which is gone by then; fixed. Service worker, in a separate isolated Chrome on the production build (vite preview): after one online visit, with the preview server stopped and the network emulated offline, /review/ reloaded with the sample and its 20 strings, while an uncached address failed. A first offline check was not valid (network emulation does not cover the service worker, which still reached the server) and was redone with the server stopped.
   - Build: with no connection, the cloud steps wait with a clear message, the laptop steps keep working, and a saved guide is reused.
   - Done when: a full review and fix prompt work with Wi-Fi off, using a saved guide.
 

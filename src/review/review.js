@@ -473,8 +473,11 @@ function showPattern() {
   document.getElementById("send-pattern").disabled = Object.keys(pattern.payload).length === 0;
 }
 
-document.getElementById("send-pattern").addEventListener("click", async (e) => {
+document.getElementById("send-pattern").addEventListener("click", (e) => {
   const btn = e.currentTarget;
+  whenOnline(btn, document.getElementById("pattern-status"), "The counts", () => sendPattern(btn));
+});
+async function sendPattern(btn) {
   const status = document.getElementById("pattern-status");
   const sent = pattern;
   btn.disabled = true;
@@ -487,11 +490,53 @@ document.getElementById("send-pattern").addEventListener("click", async (e) => {
     status.textContent = `Answered in ${secs(r.ms)} (ran: ${r.where}). Sent: ${sent.prompt.length.toLocaleString("en")} characters, the text shown above.`;
     window.__pattern = { sentChars: sent.prompt.length, sentPrompt: sent.prompt, payload: sent.payload, where: r.where, data: r.data };
   } catch (err) {
-    status.textContent = `Not sent or no answer: ${err.message ?? err}`;
+    status.textContent = `Not sent or no answer: ${cloudError(err)}`;
   } finally {
     btn.disabled = false;
   }
-});
+}
+
+// ---------- offline (slice 2.5) ----------
+// Laptop steps (review, fix prompt, apply, re-check) need no connection. A cloud
+// step pressed without one waits, says so, and goes out when the connection is back.
+
+const netState = document.getElementById("net-state");
+function showNet() {
+  netState.textContent = navigator.onLine ? "Online" : "Offline: laptop steps still work";
+  netState.dataset.online = String(navigator.onLine);
+}
+addEventListener("online", showNet);
+addEventListener("offline", showNet);
+showNet();
+
+function whenOnline(btn, statusEl, what, run) {
+  if (navigator.onLine) return run();
+  if (btn.dataset.waiting === "true") return;
+  btn.dataset.waiting = "true";
+  btn.disabled = true;
+  statusEl.textContent = `No connection. ${what} will be sent when the connection is back. Laptop steps keep working meanwhile.`;
+  addEventListener(
+    "online",
+    () => {
+      btn.dataset.waiting = "false";
+      btn.disabled = false;
+      run();
+    },
+    { once: true },
+  );
+}
+
+function cloudError(err) {
+  const msg = err?.message ?? String(err);
+  if (!navigator.onLine || /fetch|network|Failed to fetch/i.test(msg)) return "the cloud could not be reached. Try again when the connection is back.";
+  return msg;
+}
+
+// The hosted build keeps its pages for offline use. Not in development, where it
+// would fight the dev server's reloads.
+if (import.meta.env.PROD && "serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js").catch((e) => console.warn("Stet: offline copy not set up:", e.message));
+}
 
 document.getElementById("copy-rule").addEventListener("click", async () => {
   const box = document.getElementById("pattern-rule");
@@ -583,8 +628,12 @@ function guideChanged({ stored }, note) {
 }
 
 guideText.addEventListener("input", sizeNote);
-document.getElementById("write-guide").addEventListener("click", async (e) => {
+// The button is taken here: e.currentTarget is null by the time a waiting step runs.
+document.getElementById("write-guide").addEventListener("click", (e) => {
   const btn = e.currentTarget;
+  whenOnline(btn, briefStatus, "The brief", () => writeGuide(btn));
+});
+async function writeGuide(btn) {
   btn.disabled = true;
   briefStatus.textContent = "Sending the brief to the cloud model...";
   try {
@@ -592,11 +641,11 @@ document.getElementById("write-guide").addEventListener("click", async (e) => {
     briefStatus.textContent = `Guide written in ${secs(r.ms)} (ran: ${r.where}).`;
     guideChanged(r, "New guide in use. Review again to check against it.");
   } catch (err) {
-    briefStatus.textContent = `Not written: ${err.message ?? err}`;
+    briefStatus.textContent = `Not written: ${cloudError(err)}`;
   } finally {
     btn.disabled = false;
   }
-});
+}
 document.getElementById("save-guide").addEventListener("click", () => {
   try {
     guideChanged(saveEditedGuide(guideText.value), "Edits saved and in use.");
