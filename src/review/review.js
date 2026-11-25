@@ -5,6 +5,8 @@
 import { KIND_NAMES, collectStrings, groupByKey } from "./collect.js";
 import { PROBLEM_NAMES, laptopModelStatus, modelCheck, newTextFor, quickCheck, warmUp } from "./check.js";
 import { buildFixPrompt, parseFixPrompt } from "./fix-prompt.js";
+import { PATTERN_SCHEMA, patternPrompt } from "./pattern.js";
+import { askJson } from "../ai.js";
 import { onSeamChange } from "../seam.js";
 import { MAX_GUIDE_CHARS, currentGuide, resetGuide, saveEditedGuide, writeGuideFromBrief } from "../guide.js";
 
@@ -278,6 +280,7 @@ async function review() {
   renderFindings();
   window.__lastReview = { screen, guideId: guide.id, ms: Math.round(performance.now() - started), counts, groups: groups.map(({ els, ...g }) => g) };
   if (recheck?.screen === screen && recheck.waiting) finishRecheck();
+  else recordCounts(); // a re-check counts what is left after fixes, not what the agent wrote
 }
 
 reviewBtn.addEventListener("click", review);
@@ -438,6 +441,69 @@ function renderRecheck(summaryText) {
   const skipped = (recheck?.skipped ?? []).map((s) => `<li data-status="skipped">Not applied: ${esc(s.line)} <span class="dim">(${esc(s.reason)})</span></li>`).join("");
   recheckBox.innerHTML = `<p>${esc(summaryText)}</p>${rows || skipped ? `<ul>${rows}${skipped}</ul>` : ""}`;
 }
+
+// ---------- pattern and standing rule (slice 2.4) ----------
+// Counts per problem kind from the latest first review of each screen. Only these
+// numbers, inside a fixed template, go to the cloud; the text shown in
+// #pattern-prompt is the exact prompt sent.
+
+const screenCounts = new Map();
+let pattern = null;
+
+function recordCounts() {
+  const c = {};
+  for (const i of findingIndexes()) {
+    const k = groups[i].result.finding.problem;
+    c[k] = (c[k] ?? 0) + 1;
+  }
+  screenCounts.set(screen, c);
+  showPattern();
+}
+
+function showPattern() {
+  const total = {};
+  for (const c of screenCounts.values()) for (const [k, n] of Object.entries(c)) total[k] = (total[k] ?? 0) + n;
+  pattern = patternPrompt(total);
+  const screens = [...screenCounts.keys()];
+  document.getElementById("pattern-payload").textContent = screens.length
+    ? `From ${screens.length} screen${screens.length === 1 ? "" : "s"} (${screens.join(", ")}):\n${JSON.stringify(pattern.payload, null, 2)}`
+    : "Review a screen first.";
+  document.getElementById("pattern-prompt").textContent = pattern.prompt;
+  document.getElementById("pattern-chars").textContent = pattern.prompt.length.toLocaleString("en");
+  document.getElementById("send-pattern").disabled = Object.keys(pattern.payload).length === 0;
+}
+
+document.getElementById("send-pattern").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  const status = document.getElementById("pattern-status");
+  const sent = pattern;
+  btn.disabled = true;
+  status.textContent = "Sending the counts to the cloud model...";
+  try {
+    const r = await askJson(sent.prompt, PATTERN_SCHEMA, { mode: "ONLY_IN_CLOUD", purpose: "problem counts only" });
+    document.getElementById("pattern-cause").textContent = r.data.cause ?? "";
+    document.getElementById("pattern-rule").value = r.data.rule ?? "";
+    document.getElementById("pattern-result").hidden = false;
+    status.textContent = `Answered in ${secs(r.ms)} (ran: ${r.where}). Sent: ${sent.prompt.length.toLocaleString("en")} characters, the text shown above.`;
+    window.__pattern = { sentChars: sent.prompt.length, sentPrompt: sent.prompt, payload: sent.payload, where: r.where, data: r.data };
+  } catch (err) {
+    status.textContent = `Not sent or no answer: ${err.message ?? err}`;
+  } finally {
+    btn.disabled = false;
+  }
+});
+
+document.getElementById("copy-rule").addEventListener("click", async () => {
+  const box = document.getElementById("pattern-rule");
+  const out = document.getElementById("rule-copy-status");
+  try {
+    await navigator.clipboard.writeText(box.value);
+    out.textContent = "Copied.";
+  } catch {
+    box.select();
+    out.textContent = document.execCommand("copy") ? "Copied." : "Select the text and copy it by hand.";
+  }
+});
 
 document.getElementById("copy-fix").addEventListener("click", async () => {
   try {

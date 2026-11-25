@@ -188,7 +188,10 @@ By tonight the whole English loop runs: brief, guide, review, fix prompt, re-che
   - Build: an "Apply to sample" button changes the sample app's text the way the agent would. Stet then reviews again and marks each finding resolved or still open.
   - Done when: the resolved count is right after you apply only some of the fixes.
 
-- [ ] **2.4 Pattern and standing rule**
+- [x] **2.4 Pattern and standing rule**
+  - Result (2026-11-25): a "Pattern and standing rule" part in the "Sent to the cloud" area. It shows the counts per problem kind from the latest first review of each screen (re-checks are not counted) and, folded, the exact prompt to be sent: a fixed template plus those counts (src/review/pattern.js, which keeps only known kinds with whole positive counts). "Send these counts to the cloud" (Cloud only) returns a two-sentence cause and one rule for AGENTS.md or CLAUDE.md, shown in an editable box with a Copy button.
+  - Checked in Chrome after a review of the list screen (58 s): the prompt shown equals the prompt sent; the ledger lists "problem counts only, 1,030 characters", the prompt's length; the counter reads 1 with 1 model API request seen. A scan of the sent prompt for every sample string matched only "Failed", which is the template's own phrase "what failed", not app text. Cloud reply in 11.4 s; rule: "Write specific, action-oriented interface text that clearly states what a button does, where a link goes, or what a message means, avoiding all marketing filler or placeholders. Example: Use 'Save Profile' instead of 'Click Here'."
+  - Gate: scripts/check-pattern.mjs (dirty counts with text, strings, fractions, negatives and made-up kinds keep only the 2 clean entries; the prompt is exactly template plus payload; none of the sample's 35 strings of 8 or more characters appears; the leak scan catches a planted string). Mutation-proved: letting any value through turned it red; restored, green.
   - Build: the count of each problem kind goes to the cloud model, which returns a short cause note and one rule for the agent's instruction file. Stet shows exactly what will be sent before sending it.
   - Done when: the counter shows that only counts left the laptop, and the rule appears with a copy button.
 

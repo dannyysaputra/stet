@@ -69,6 +69,22 @@
 
     <section class="area cloud" aria-labelledby="cloud-title">
       <p id="cloud-title" class="area-title">Sent to the cloud</p>
+      <h2>Pattern and standing rule</h2>
+      <p class="dim">Only the number of each kind of problem goes to the cloud model. It returns the likely cause and one rule for your agent's instruction file.</p>
+      <pre id="pattern-payload" class="payload">Review a screen first.</pre>
+      <details id="pattern-exact">
+        <summary>Exactly what will be sent (<span id="pattern-chars">0</span> characters)</summary>
+        <pre id="pattern-prompt" class="payload"></pre>
+      </details>
+      <div class="row"><button id="send-pattern" type="button" disabled>Send these counts to the cloud</button></div>
+      <p id="pattern-status" class="dim" aria-live="polite"></p>
+      <div id="pattern-result" hidden>
+        <p id="pattern-cause"></p>
+        <label for="pattern-rule" class="fix-label">Standing rule for your agent's instruction file</label>
+        <textarea id="pattern-rule" rows="4" spellcheck="false"></textarea>
+        <div class="row"><button id="copy-rule" type="button" class="quiet">Copy rule</button><span id="rule-copy-status" class="dim" aria-live="polite"></span></div>
+      </div>
+      <h2>Ledger</h2>
       <ol id="sent"></ol>
       <p id="sent-none" class="dim">Nothing from this page has been sent to a cloud model.</p>
       <p id="net" class="dim"></p>
