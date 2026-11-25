@@ -29,6 +29,22 @@
       <p id="progress" class="dim" aria-live="polite"></p>
       <p id="warm" class="dim"></p>
 
+      <details id="guide-box" class="guide-box">
+        <summary>Wording guide: <span id="guide-name">starter guide</span></summary>
+        <label for="brief">Voice brief, two lines. Only these two lines are sent to the cloud.</label>
+        <textarea id="brief" rows="3" maxlength="300" placeholder="Invoicing for small shops; owners bill customers between other jobs. We call them clients.&#10;Calm, plain and a little warm. Never salesy."></textarea>
+        <div class="row"><button id="write-guide" type="button">Write the guide in the cloud</button></div>
+        <p id="brief-status" class="dim" aria-live="polite"></p>
+        <label for="guide-text">The guide the laptop model checks against</label>
+        <textarea id="guide-text" rows="14" spellcheck="false"></textarea>
+        <p id="guide-size" class="dim"></p>
+        <div class="row">
+          <button id="save-guide" type="button" class="quiet">Save edits</button>
+          <button id="reset-guide" type="button" class="quiet">Back to the starter guide</button>
+        </div>
+        <p id="guide-status" class="dim" aria-live="polite"></p>
+      </details>
+
       <h2>Findings <span id="findings-count" class="dim"></span></h2>
       <p class="dim">Ticked findings go into the fix prompt.</p>
       <ol id="findings"></ol>

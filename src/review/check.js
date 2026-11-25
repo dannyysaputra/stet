@@ -2,7 +2,8 @@
 // reached for the same text, then the laptop model (Laptop only, never the cloud).
 import { askJson, laptopModelStatus } from "../ai.js";
 import { EN_SCHEMA, enPrompt } from "../english-check.js";
-import { ruleCheck } from "./rules.js";
+import { parseTerms, ruleCheck } from "./rules.js";
+import { currentGuide } from "../guide.js";
 
 export const APP = "Lumbung, an invoicing app for small businesses";
 
@@ -17,10 +18,11 @@ export const PROBLEM_NAMES = {
   inconsistent_term: "Inconsistent term",
 };
 
-// Verdicts from the laptop model, by element kind and text, for this page session.
-// The same text on another screen reuses the verdict instead of a second call.
+// Verdicts from the laptop model, by guide, element kind and text, for this page
+// session. The same text on another screen reuses the verdict instead of a second
+// call; a different guide never reuses a verdict reached under the old one.
 const cache = new Map();
-const cacheKey = (g) => `${g.kind}\n${g.text}`;
+const cacheKey = (g) => `${currentGuide().id}\n${g.kind}\n${g.text}`;
 
 export { laptopModelStatus };
 
@@ -28,8 +30,15 @@ export { laptopModelStatus };
  * The verdict for one group from collect.js, without calling the model.
  * Returns { finding, source: "rule" | "reused" } or null if the model has to judge it.
  */
+let termsFor = { id: null, terms: [] };
+const guideTerms = () => {
+  const guide = currentGuide();
+  if (termsFor.id !== guide.id) termsFor = { id: guide.id, terms: parseTerms(guide.markdown) };
+  return termsFor.terms;
+};
+
 export function quickCheck(g) {
-  const rule = ruleCheck(g.text, g.kind);
+  const rule = ruleCheck(g.text, g.kind, guideTerms());
   if (rule) return { finding: rule, source: "rule" };
   const hit = cache.get(cacheKey(g));
   if (hit) return { ...hit, source: "reused" };
@@ -48,8 +57,9 @@ export async function warmUp() {
 
 /** Asks the laptop model. Returns { finding, source: "laptop", where, ms }. Throws on failure. */
 export async function modelCheck(g, screen) {
+  const guide = currentGuide();
   const r = await askJson(
-    enPrompt({ app: APP, screen, kind: g.kind, context: g.context, text: g.text }),
+    enPrompt({ app: APP, screen, kind: g.kind, context: g.context, text: g.text }, guide.markdown),
     EN_SCHEMA,
     { mode: "ONLY_ON_DEVICE", purpose: "one piece of the app's text" },
   );
@@ -60,7 +70,7 @@ export async function modelCheck(g, screen) {
     severity: d.severity ?? "none",
     rewrite: d.rewrite ?? "",
   };
-  const result = { finding, where: r.where, ms: r.ms };
+  const result = { finding, where: r.where, ms: r.ms, guideId: guide.id };
   // Only a reply the SDK says ran on the laptop is reused.
   if (r.where === "laptop") cache.set(cacheKey(g), result);
   return { ...result, source: "laptop" };

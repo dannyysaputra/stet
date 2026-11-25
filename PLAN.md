@@ -162,7 +162,12 @@ By tonight, pressing Review on the built-in sample app pins real findings from t
 
 By tonight the whole English loop runs: brief, guide, review, fix prompt, re-check and standing rule.
 
-- [ ] **2.1 Wording guide from a brief**
+- [x] **2.1 Wording guide from a brief**
+  - Result (2026-11-25): a "Wording guide" box on /review/. The two-line brief goes to the cloud (Cloud only) and nothing else does; the seam lists it as "the voice brief". The cloud model returns only the parts that depend on the app (3 to 5 voice rules, up to 8 preferred terms, up to 12 filler phrases, as JSON); src/guide.js puts them in front of the starter guide's fixed sections (problem kinds, seriousness, not a problem), so problem names still match the review schema. The guide is saved in the browser, shown in an editable box with a size limit of 6,000 characters (it is sent with every laptop check), and can go back to the starter guide. Laptop verdicts are cached per guide, and changing the guide clears the findings on screen.
+  - Preferred terms are a plain rule, read from the guide's "| Use | Not |" table, because the laptop model ignored them: under a guide saying client, never customer, "Customer email" still passed. As a rule it is caught with the rewrite "Client email".
+  - The cloud model listed the owner's own word as one to avoid ("bill, not invoice" for an invoicing brief), which flagged "Invoices". Words the brief uses (and their forms, "invoice" for "Invoicing") are now dropped from the "not" lists, except words the brief rules out ("never customer"). A first prompt fix ("never list the brief's words") made the cloud drop "customer" too; it was replaced.
+  - Checked in Chrome, new screen: under the brief guide, "Customer email" caught by rule (44.7 s for 20 strings, every result carrying the new guide's id, which differs from the starter's); after deleting the "bill" row by hand, "Invoices" no longer flagged and the guide id changed (56.7 s). After the two fixes, the same brief gave "client: customer, consumer, buyer" and "bill: charge" (one cloud run, 2.1 s). The guide survives a reload; "Back to the starter guide" clears it.
+  - Gate: check-rules now also checks the term table reader, 6 term cases and 6 brief cases. Mutation-proved twice: without word boundaries "Catalog index" became "Catasign index" (red); without the "never X" exception "customer" counted as the owner's word (red); restored, green.
   - Build: a two-line voice brief goes to the cloud model, which writes the guide: tone rules, preferred terms, and the signs of generated filler. The guide is saved, shown and editable.
   - Done when: a new brief produces a guide, and the next review uses it.
 

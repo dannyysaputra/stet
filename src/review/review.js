@@ -5,6 +5,7 @@
 import { KIND_NAMES, collectStrings, groupByKey } from "./collect.js";
 import { PROBLEM_NAMES, laptopModelStatus, modelCheck, quickCheck, warmUp } from "./check.js";
 import { onSeamChange } from "../seam.js";
+import { MAX_GUIDE_CHARS, currentGuide, resetGuide, saveEditedGuide, writeGuideFromBrief } from "../guide.js";
 
 const frame = document.getElementById("app");
 const pinLayer = document.getElementById("pins");
@@ -208,8 +209,10 @@ async function review() {
     progress.textContent =
       `${done ? "Done" : "Checking"}: ${checked} of ${groups.length} in ${secs(performance.now() - started)}. ` +
       `${counts.problems} findings. ${counts.rule} by plain rule, ${counts.reused} reused, ${counts.laptop} on the laptop model` +
-      (counts.errors ? `, ${counts.errors} not checked.` : ".");
+      (counts.errors ? `, ${counts.errors} not checked.` : ".") +
+      ` Guide: ${guideName(guide)}.`;
   };
+  const guide = currentGuide();
 
   // Rules and reused verdicts first: they cost nothing and show at once.
   const forModel = [];
@@ -247,7 +250,7 @@ async function review() {
   report(true);
   stopBtn.hidden = true;
   reviewBtn.disabled = false;
-  window.__lastReview = { screen, ms: Math.round(performance.now() - started), counts, groups: groups.map(({ els, ...g }) => g) };
+  window.__lastReview = { screen, guideId: guide.id, ms: Math.round(performance.now() - started), counts, groups: groups.map(({ els, ...g }) => g) };
 }
 
 reviewBtn.addEventListener("click", review);
@@ -282,6 +285,65 @@ frame.addEventListener("load", attach);
 // The frame may have finished loading before this module ran.
 if (frame.contentDocument?.getElementById("screen")?.dataset.screen) attach();
 addEventListener("resize", placeSoon);
+
+// ---------- the wording guide ----------
+
+function guideName(g) {
+  const time = g.at ? new Date(g.at).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" }) : "";
+  if (g.source === "brief") return `written from your brief at ${time}`;
+  if (g.source === "edited") return `edited at ${time}`;
+  return "starter guide";
+}
+
+const briefBox = document.getElementById("brief");
+const guideText = document.getElementById("guide-text");
+const guideStatus = document.getElementById("guide-status");
+const briefStatus = document.getElementById("brief-status");
+
+function showGuide() {
+  const g = currentGuide();
+  document.getElementById("guide-name").textContent = guideName(g);
+  guideText.value = g.markdown;
+  if (g.brief) briefBox.value = g.brief;
+  sizeNote();
+}
+function sizeNote() {
+  const n = guideText.value.length;
+  const size = document.getElementById("guide-size");
+  size.textContent = `${n.toLocaleString("en")} of ${MAX_GUIDE_CHARS.toLocaleString("en")} characters. The whole guide is sent with every laptop check, so a longer guide is slower.`;
+  size.classList.toggle("err", n > MAX_GUIDE_CHARS);
+}
+// A new guide makes the findings on screen out of date: clear them.
+function guideChanged({ stored }, note) {
+  showGuide();
+  show();
+  guideStatus.textContent = note + (stored ? "" : " It could not be saved in this browser, so it lasts until the page is closed.");
+}
+
+guideText.addEventListener("input", sizeNote);
+document.getElementById("write-guide").addEventListener("click", async (e) => {
+  const btn = e.currentTarget;
+  btn.disabled = true;
+  briefStatus.textContent = "Sending the brief to the cloud model...";
+  try {
+    const r = await writeGuideFromBrief(briefBox.value);
+    briefStatus.textContent = `Guide written in ${secs(r.ms)} (ran: ${r.where}).`;
+    guideChanged(r, "New guide in use. Review again to check against it.");
+  } catch (err) {
+    briefStatus.textContent = `Not written: ${err.message ?? err}`;
+  } finally {
+    btn.disabled = false;
+  }
+});
+document.getElementById("save-guide").addEventListener("click", () => {
+  try {
+    guideChanged(saveEditedGuide(guideText.value), "Edits saved and in use.");
+  } catch (err) {
+    guideStatus.textContent = `Not saved: ${err.message ?? err}`;
+  }
+});
+document.getElementById("reset-guide").addEventListener("click", () => guideChanged(resetGuide(), "Back to the starter guide."));
+showGuide();
 
 // ---------- the seam: what has left this laptop ----------
 // The count is the larger of what src/ai.js recorded and the model API requests

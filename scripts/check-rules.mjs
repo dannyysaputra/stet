@@ -6,7 +6,7 @@
 // Note: the rules were written with this data in view, so its hit rate is optimistic.
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { ruleCheck } from "../src/review/rules.js";
+import { parseTerms, ruleCheck, usedInBrief } from "../src/review/rules.js";
 
 const rows = JSON.parse(readFileSync(resolve(import.meta.dirname, "../data/eval/en-strings.json"), "utf8"));
 
@@ -35,6 +35,41 @@ for (const [text, kind, want] of CONTROL) {
   if (got !== want) fail(`control "${text}" (${kind}): expected ${want}, got ${got}`);
 }
 
+// Preferred terms, in the table format src/guide.js writes.
+const TABLE = "## Preferred terms\n\n| Use | Not |\n| --- | --- |\n| client | customer, buyer |\n| sign in | log in |\n\nAfter the table.";
+const terms = parseTerms(TABLE);
+if (JSON.stringify(terms) !== JSON.stringify([{ use: "client", not: ["customer", "buyer"] }, { use: "sign in", not: ["log in"] }])) fail(`parseTerms read ${JSON.stringify(terms)}`);
+const starterGuide = readFileSync(resolve(import.meta.dirname, "../data/eval/wording-guide.md"), "utf8");
+if (parseTerms(starterGuide).length) fail("parseTerms found terms in the starter guide, which has none");
+const TERM_CONTROL = [
+  ["Customer email", "label", "Client email"],
+  ["Email all customers", "button", "Email all clients"],
+  ["Log in to pay", "button", "Sign in to pay"],
+  ["Client", "label", null],
+  // Contains "log in" across a word ("catalo-g in-dex"): only word boundaries keep it clean.
+  ["Catalog index", "helper", null],
+  ["Abuyers club", "label", null],
+];
+for (const [text, kind, want] of TERM_CONTROL) {
+  const f = ruleCheck(text, kind, terms);
+  const got = f ? (f.problem === "inconsistent_term" ? f.rewrite : `${f.problem}`) : null;
+  if (got !== want) fail(`term control "${text}": expected ${want}, got ${got}`);
+}
+
+// The owner's own words never become "not" words (src/guide.js drops them).
+const BRIEF = "Invoicing for small shops; owners bill their clients between other jobs. We always say client, never customer.\nCalm, plain and a little warm. Never salesy.";
+const BRIEF_CONTROL = [
+  ["invoice", true], // "Invoicing"
+  ["bill", true],
+  ["shops", true],
+  ["customer", false], // ruled out by "never customer"
+  ["buyer", false],
+  ["charge", false],
+];
+for (const [word, want] of BRIEF_CONTROL) {
+  if (usedInBrief(word, BRIEF) !== want) fail(`usedInBrief("${word}") should be ${want}`);
+}
+
 let hits = 0;
 let rightKind = 0;
 const byType = {};
@@ -56,4 +91,4 @@ if (failed) {
   console.log(`FAIL check-rules: ${failed} failure(s).`);
   process.exit(1);
 }
-console.log(`OK check-rules: ${CONTROL.length} controls pass, 0 false alarms, 0 wrong kinds.`);
+console.log(`OK check-rules: ${CONTROL.length} controls, ${TERM_CONTROL.length} term controls and ${BRIEF_CONTROL.length} brief controls pass, 0 false alarms, 0 wrong kinds.`);

@@ -18,10 +18,10 @@ export const EN_SCHEMA = {
 
 export { wordingGuide };
 
-/** r: { app, screen, kind, context?, text } */
-export const enPrompt = (r) => `You review the interface text of an app, one piece at a time, against this wording guide.
+/** r: { app, screen, kind, context?, text }. guide: the wording guide in use (the starter guide by default). */
+export const enPrompt = (r, guide = wordingGuide) => `You review the interface text of an app, one piece at a time, against this wording guide.
 
-${wordingGuide}
+${guide}
 
 Judge this one piece of text.
 App: ${r.app}
