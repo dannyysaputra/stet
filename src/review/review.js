@@ -1,10 +1,17 @@
-// The review page: the app under review on the left, its text on the right.
+// The review page: the app under review on the left, findings on the right.
 // Review checks every piece of text on the current screen, on the laptop only.
+// Findings are numbered in screen order; the pins on the app and the list in the
+// panel are both drawn from the same groups, so they always match.
 import { KIND_NAMES, collectStrings, groupByKey } from "./collect.js";
 import { PROBLEM_NAMES, laptopModelStatus, modelCheck, quickCheck, warmUp } from "./check.js";
 
 const frame = document.getElementById("app");
+const pinLayer = document.getElementById("pins");
+const panel = document.querySelector(".panel");
 const list = document.getElementById("strings");
+const findingsList = document.getElementById("findings");
+const findingsCount = document.getElementById("findings-count");
+const textCount = document.getElementById("text-count");
 const summary = document.getElementById("summary");
 const reviewBtn = document.getElementById("review");
 const stopBtn = document.getElementById("stop");
@@ -21,18 +28,28 @@ function screenName(doc) {
   return doc.getElementById("screen")?.dataset.screen || doc.location.hash.replace(/^#\//, "");
 }
 
+const isFinding = (g) => g.result?.finding.verdict === "problem";
+
+// Group indexes with a finding, in screen order. Finding number = position + 1.
+const findingIndexes = () => groups.flatMap((g, i) => (isFinding(g) ? [i] : []));
+
+// Where a verdict came from. Rules and reused verdicts never leave the laptop.
+function ranLabel(r) {
+  if (r.source === "rule") return { where: "laptop", text: "On this laptop: plain rule" };
+  if (r.source === "reused") return { where: "laptop", text: "On this laptop: same text checked earlier" };
+  if (r.where === "laptop") return { where: "laptop", text: `On this laptop: ${secs(r.ms)}` };
+  return { where: r.where, text: `Ran: ${r.where}` };
+}
+
+// ---------- all text (slice 1.2), with each verdict ----------
+
 function verdictHtml(g) {
   if (g.pending) return `<span class="verdict dim">Checking...</span>`;
   if (g.error) return `<span class="verdict err">Not checked: ${esc(g.error)}</span>`;
   if (!g.result) return "";
-  const { finding: f, source, where, ms } = g.result;
-  const how =
-    source === "rule" ? "plain rule, no model" : source === "reused" ? "same text checked earlier" : `${where === "laptop" ? "laptop" : `ran: ${where}`}, ${secs(ms)}`;
-  if (f.verdict !== "problem") return `<span class="verdict ok">OK <small>${esc(how)}</small></span>`;
-  return `<span class="verdict problem" data-severity="${esc(f.severity)}">
-      <b>${esc(PROBLEM_NAMES[f.problem] ?? "Problem")}</b>, ${esc(f.severity)}
-      ${f.rewrite ? `<span class="rewrite">Try: "${esc(f.rewrite)}"</span>` : f.note ? `<span class="rewrite">${esc(f.note)}</span>` : ""}
-      <small>${esc(how)}</small></span>`;
+  if (!isFinding(g)) return `<span class="verdict ok">OK <small>${esc(ranLabel(g.result).text)}</small></span>`;
+  const f = g.result.finding;
+  return `<span class="verdict problem" data-severity="${esc(f.severity)}"><b>${esc(PROBLEM_NAMES[f.problem] ?? "Problem")}</b>, ${esc(f.severity)}</span>`;
 }
 
 function rowHtml(g, i) {
@@ -50,6 +67,93 @@ function renderRow(i) {
   if (li) li.outerHTML = rowHtml(groups[i], i);
 }
 
+// ---------- findings and pins ----------
+
+function findingHtml(i, n) {
+  const g = groups[i];
+  const f = g.result.finding;
+  const ran = ranLabel(g.result);
+  const fix = f.rewrite ? `Try: "${esc(f.rewrite)}"` : f.note ? esc(f.note) : "";
+  return `<li data-i="${i}" data-severity="${esc(f.severity)}">
+    <input type="checkbox" id="f-${i}" ${g.ticked ? "checked" : ""}>
+    <label for="f-${i}">
+      <span class="num">${n}</span>
+      <b>${esc(PROBLEM_NAMES[f.problem] ?? "Problem")}</b>, ${esc(f.severity)}
+      <span class="quote">"${esc(g.text)}" <span class="dim">(${esc(KIND_NAMES[g.kind] ?? g.kind)}${g.els.length > 1 ? `, x${g.els.length}` : ""})</span></span>
+      ${fix ? `<span class="fix">${fix}</span>` : ""}
+      <span class="ran" data-where="${esc(ran.where)}">${esc(ran.text)}</span>
+    </label>
+  </li>`;
+}
+
+function renderFindings() {
+  const idx = findingIndexes();
+  const ticked = idx.filter((i) => groups[i].ticked).length;
+  findingsCount.textContent = idx.length ? `${idx.length}, ${ticked} ticked` : "";
+  findingsList.innerHTML = idx.length
+    ? idx.map((i, k) => findingHtml(i, k + 1)).join("")
+    : `<li class="none dim">${groups.some((g) => g.result) ? "No findings on this screen." : "Press Review to check this screen."}</li>`;
+  renderPins();
+}
+
+function renderPins() {
+  pinLayer.innerHTML = findingIndexes()
+    .map((i, k) =>
+      groups[i].els
+        .map(
+          (_, e) =>
+            `<button type="button" class="pin" data-i="${i}" data-e="${e}" data-ticked="${groups[i].ticked}" data-severity="${esc(groups[i].result.finding.severity)}"
+              aria-label="Finding ${k + 1}: ${esc(PROBLEM_NAMES[groups[i].result.finding.problem] ?? "Problem")}">${k + 1}</button>`,
+        )
+        .join(""),
+    )
+    .join("");
+  placePins();
+}
+
+// Pins sit at the top-left corner of their element, in the layer over the frame.
+// A pin whose element is scrolled out of the frame, or not rendered, is hidden.
+function placePins() {
+  const layer = pinLayer.getBoundingClientRect();
+  const box = frame.getBoundingClientRect();
+  const ox = box.left - layer.left + frame.clientLeft;
+  const oy = box.top - layer.top + frame.clientTop;
+  for (const pin of pinLayer.children) {
+    const el = groups[pin.dataset.i]?.els[pin.dataset.e];
+    const r = el?.isConnected ? el.getBoundingClientRect() : null;
+    const visible = r && r.width + r.height > 0 && r.bottom > 0 && r.top < frame.clientHeight && r.right > 0 && r.left < frame.clientWidth;
+    pin.hidden = !visible;
+    if (visible) {
+      pin.style.left = `${ox + Math.max(r.left, 0) - 10}px`;
+      pin.style.top = `${oy + Math.max(r.top, 0) - 10}px`;
+    }
+  }
+}
+
+let placing = 0;
+const placeSoon = () => {
+  cancelAnimationFrame(placing);
+  placing = requestAnimationFrame(placePins);
+};
+
+findingsList.addEventListener("change", (e) => {
+  const li = e.target.closest("li[data-i]");
+  if (!li || e.target.type !== "checkbox") return;
+  groups[li.dataset.i].ticked = e.target.checked;
+  renderFindings();
+  document.getElementById(`f-${li.dataset.i}`)?.focus();
+});
+
+pinLayer.addEventListener("click", (e) => {
+  const pin = e.target.closest(".pin");
+  if (!pin) return;
+  const box = document.getElementById(`f-${pin.dataset.i}`);
+  box?.closest("li").scrollIntoView({ block: "nearest" });
+  box?.focus();
+});
+
+// ---------- loading a screen ----------
+
 function show() {
   const doc = frame.contentDocument;
   if (!doc) return;
@@ -57,9 +161,11 @@ function show() {
   const items = collectStrings(doc);
   groups = groupByKey(items);
   screen = screenName(doc);
-  summary.textContent = `${items.length} pieces of text on the "${screen}" screen, ${groups.length} different.`;
+  summary.textContent = `The "${screen}" screen: ${items.length} pieces of text, ${groups.length} different.`;
+  textCount.textContent = groups.length;
   progress.textContent = "";
   list.innerHTML = groups.map(rowHtml).join("");
+  renderFindings();
   reviewBtn.disabled = !groups.length;
 }
 
@@ -69,6 +175,8 @@ function stop() {
   reviewBtn.disabled = false;
   for (const [i, g] of groups.entries()) if (g.pending) (g.pending = false), renderRow(i);
 }
+
+// ---------- the review ----------
 
 async function review() {
   const status = await laptopModelStatus();
@@ -81,18 +189,24 @@ async function review() {
   reviewBtn.disabled = true;
   stopBtn.hidden = false;
   const counts = { rule: 0, reused: 0, laptop: 0, problems: 0, errors: 0 };
-  const tally = (g) => {
+  const settle = (i) => {
+    const g = groups[i];
+    g.pending = false;
     if (g.error) counts.errors++;
     else {
       counts[g.result.source]++;
-      if (g.result.finding.verdict === "problem") counts.problems++;
+      if (isFinding(g)) {
+        counts.problems++;
+        g.ticked = true; // every new finding starts ticked
+      }
     }
+    renderRow(i);
   };
   const report = (done) => {
     const checked = counts.rule + counts.reused + counts.laptop + counts.errors;
     progress.textContent =
       `${done ? "Done" : "Checking"}: ${checked} of ${groups.length} in ${secs(performance.now() - started)}. ` +
-      `${counts.problems} problems. ${counts.rule} by plain rule, ${counts.reused} reused, ${counts.laptop} on the laptop` +
+      `${counts.problems} findings. ${counts.rule} by plain rule, ${counts.reused} reused, ${counts.laptop} on the laptop model` +
       (counts.errors ? `, ${counts.errors} not checked.` : ".");
   };
 
@@ -100,16 +214,18 @@ async function review() {
   const forModel = [];
   for (const [i, g] of groups.entries()) {
     g.result = g.error = null;
+    g.ticked = false;
     const quick = quickCheck(g);
     if (quick) {
       g.result = quick;
-      tally(g);
+      settle(i);
     } else {
       g.pending = true;
       forModel.push(i);
+      renderRow(i);
     }
-    renderRow(i);
   }
+  renderFindings();
   report(false);
 
   // Then the laptop model, one string at a time, in screen order.
@@ -123,9 +239,8 @@ async function review() {
       g.error = e.message ?? String(e);
     }
     if (me !== run) return;
-    g.pending = false;
-    tally(g);
-    renderRow(i);
+    settle(i);
+    renderFindings();
     report(false);
   }
   report(true);
@@ -151,16 +266,21 @@ function mark(row, on) {
   if (on) g.els[0].scrollIntoView({ block: "nearest" });
 }
 for (const [type, on] of [["mouseover", true], ["mouseout", false], ["focusin", true], ["focusout", false]]) {
-  list.addEventListener(type, (e) => mark(e.target.closest("li"), on));
+  panel.addEventListener(type, (e) => mark(e.target.closest("li[data-i]"), on));
 }
 
 // The app re-renders on every hash change. Its own listener was added first, so
 // by the time this one runs the new screen is already in place.
 function attach() {
   frame.contentWindow.addEventListener("hashchange", show);
+  frame.contentWindow.addEventListener("scroll", placeSoon);
+  frame.contentWindow.addEventListener("resize", placeSoon);
   show();
 }
 frame.addEventListener("load", attach);
+// The frame may have finished loading before this module ran.
+if (frame.contentDocument?.getElementById("screen")?.dataset.screen) attach();
+addEventListener("resize", placeSoon);
 
 // Load the laptop model while the user looks at the screen. Never downloads it:
 // only runs when Chrome already reports the model as available.
@@ -179,5 +299,3 @@ laptopModelStatus().then(async (status) => {
     warm.textContent = `Laptop model: failed to load (${e.message ?? e}).`;
   }
 });
-// The frame may have finished loading before this module ran.
-if (frame.contentDocument?.getElementById("screen")?.dataset.screen) attach();

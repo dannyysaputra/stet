@@ -11,9 +11,10 @@
 <div class="review">
   <section class="stage" aria-label="App under review">
     <iframe id="app" src="/sample/" title="Sample app under review"></iframe>
+    <div id="pins" class="pins"></div>
   </section>
   <aside class="panel" aria-labelledby="panel-title">
-    <h1 id="panel-title">Text on this screen</h1>
+    <h1 id="panel-title">Review</h1>
     <p id="summary" class="dim">Loading the app...</p>
     <div class="row">
       <button id="review" type="button" disabled>Review this screen</button>
@@ -21,7 +22,15 @@
     </div>
     <p id="progress" class="dim" aria-live="polite"></p>
     <p id="warm" class="dim"></p>
-    <ol id="strings"></ol>
+
+    <h2>Findings <span id="findings-count" class="dim"></span></h2>
+    <p class="dim">Ticked findings go into the fix prompt.</p>
+    <ol id="findings"></ol>
+
+    <details class="all-text">
+      <summary>All text on this screen (<span id="text-count">0</span>)</summary>
+      <ol id="strings"></ol>
+    </details>
   </aside>
 </div>
 <script type="module" src="/src/review/review.js"></script>

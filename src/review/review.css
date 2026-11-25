@@ -1,6 +1,29 @@
 /* Review page: the app on the left, the panel on the right. Stacks on narrow screens. */
 .review { display: grid; grid-template-columns: minmax(0, 1fr) 380px; height: 100vh; }
-.stage { padding: 16px; min-width: 0; }
+.stage { padding: 16px; min-width: 0; position: relative; }
+.pins { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.pin { position: absolute; pointer-events: auto; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px; font-size: 0.75rem; line-height: 22px; text-align: center;
+  background: var(--hi); color: var(--hi-ink); border: 2px solid var(--hi-ink); box-shadow: 0 1px 3px rgb(0 0 0 / 0.35); }
+.pin[data-severity="high"] { background: #d9363e; color: #fff; border-color: #fff; }
+.pin[data-ticked="false"] { background: #fff; color: #55607a; border: 2px dashed #55607a; box-shadow: none; }
+.pin:focus-visible { outline: 3px solid var(--pencil); outline-offset: 2px; }
+.panel h2 { margin-top: 22px; }
+
+#findings { list-style: none; margin: 8px 0 0; padding: 0; }
+#findings li { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; padding: 10px 6px; border-bottom: 1px solid var(--line); border-left: 3px solid var(--hi); border-radius: 6px; }
+#findings li[data-severity="high"] { border-left-color: var(--red); }
+#findings li.none { display: block; border-left: 0; }
+#findings li:hover, #findings li:focus-within { background: var(--wash); }
+#findings input { width: 18px; height: 18px; margin-top: 3px; }
+#findings label { display: block; cursor: pointer; }
+#findings .num { display: inline-block; min-width: 22px; padding: 0 6px; margin-right: 4px; border-radius: 999px; text-align: center; font-size: 0.75rem; font-weight: 700; background: var(--hi); color: var(--hi-ink); }
+#findings li[data-severity="high"] .num { background: var(--red); color: var(--card); }
+#findings .quote, #findings .fix, #findings .ran { display: block; overflow-wrap: anywhere; }
+#findings .fix { font-size: 0.9rem; }
+#findings .ran { font-size: 0.78rem; color: var(--dim); margin-top: 2px; }
+#findings .ran[data-where="cloud"], #findings .ran[data-where="unknown"] { color: var(--red); font-weight: 600; }
+.all-text { margin-top: 20px; }
+.all-text summary { cursor: pointer; font-weight: 600; }
 .stage iframe { width: 100%; height: 100%; border: 1.5px solid var(--line); border-radius: 14px; background: #fff; }
 .panel { border-left: 1.5px solid var(--line); background: var(--card); padding: 20px 16px; overflow-y: auto; }
 .panel h1 { font-size: 1.4rem; }
