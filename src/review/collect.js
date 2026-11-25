@@ -52,8 +52,16 @@ function contextFor(doc, el) {
   return "";
 }
 
-// Returns one entry per element, in screen order: { key, kind, text, context, el }.
+/** The language of the text on the screen: "id" for Indonesian, otherwise "en". */
+export function screenLang(doc) {
+  const lang = (doc.getElementById("screen")?.lang || doc.documentElement.lang || "en").toLowerCase();
+  return lang.startsWith("id") ? "id" : "en";
+}
+
+// Returns one entry per element, in screen order: { key, kind, text, context, lang, original, el }.
+// original: the English text an Indonesian string translates (data-en), or "".
 export function collectStrings(doc) {
+  const lang = screenLang(doc);
   return [...doc.querySelectorAll("[data-s]")].map((el) => {
     const attr = el.dataset.attr;
     return {
@@ -61,6 +69,8 @@ export function collectStrings(doc) {
       kind: el.dataset.kind || "unknown",
       text: clean(attr ? el.getAttribute(attr) : el.textContent),
       context: contextFor(doc, el),
+      lang,
+      original: lang === "id" ? clean(el.dataset.en) : "",
       el,
     };
   });
@@ -73,7 +83,7 @@ export function groupByKey(items) {
   for (const item of items) {
     const group = groups.get(item.key);
     if (group) group.els.push(item.el);
-    else groups.set(item.key, { key: item.key, kind: item.kind, text: item.text, context: item.context, els: [item.el] });
+    else groups.set(item.key, { key: item.key, kind: item.kind, text: item.text, context: item.context, lang: item.lang, original: item.original, els: [item.el] });
   }
   return [...groups.values()];
 }

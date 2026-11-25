@@ -3,7 +3,8 @@
 // Findings are numbered in screen order; the pins on the app and the list in the
 // panel are both drawn from the same groups, so they always match.
 import { KIND_NAMES, collectStrings, groupByKey } from "./collect.js";
-import { PROBLEM_NAMES, laptopModelStatus, modelCheck, newTextFor, quickCheck, warmUp } from "./check.js";
+import { ID_ACCURACY, PROBLEM_NAMES, laptopModelStatus, modelCheck, newTextFor, quickCheck, translationCheck, warmUp } from "./check.js";
+import { OPEN, canCheckText, projectMode, setProjectMode } from "../project.js";
 import { buildFixPrompt, parseFixPrompt } from "./fix-prompt.js";
 import { PATTERN_SCHEMA, patternPrompt } from "./pattern.js";
 import { askJson } from "../ai.js";
@@ -203,19 +204,46 @@ function stop() {
 
 // ---------- the review ----------
 
-async function review() {
+// The Indonesian check runs where Phase 0 decided (decision 2): in the cloud for
+// an Open project, on text the user approves first; on the laptop for a Sealed one.
+const approveBox = document.getElementById("approve-id");
+function askApproval() {
+  const pairs = groups.filter((g) => g.lang === "id" && !quickCheck(g));
+  approveBox.hidden = false;
+  approveBox.innerHTML = `<p><b>The Indonesian check runs in the cloud for this Open project.</b> These ${pairs.length} Indonesian strings and their English originals will be sent, one pair per call. Nothing else on the screen is sent.</p>
+    <ul class="payload">${pairs.map((g) => `<li>"${esc(g.text)}" <span class="dim">for "${esc(g.original)}"</span></li>`).join("")}</ul>
+    <div class="row"><button id="approve-send" type="button">Send these ${pairs.length} pairs</button><button id="approve-cancel" type="button" class="quiet">Cancel</button></div>`;
+  document.getElementById("approve-send").onclick = () => {
+    approveBox.hidden = true;
+    review({ approved: true });
+  };
+  document.getElementById("approve-cancel").onclick = () => {
+    approveBox.hidden = true;
+    progress.textContent = "Not sent. Switch the project to Sealed to check Indonesian on the laptop instead.";
+  };
+}
+
+async function review({ approved = false } = {}) {
   const status = await laptopModelStatus();
-  if (status !== "available") {
-    progress.textContent = `The laptop model is not ready (status: ${status}). Prepare it on the Hybrid check page first.`;
+  const can = canCheckText(status);
+  if (!can.ok) {
+    progress.textContent = can.why;
     return;
   }
+  const lang = groups[0]?.lang ?? "en";
+  const idWhere = projectMode() === OPEN ? "cloud" : "laptop";
+  if (lang === "id" && idWhere === "cloud" && !approved && groups.some((g) => !quickCheck(g))) {
+    askApproval();
+    return;
+  }
+  approveBox.hidden = true;
   const me = ++run;
   reviewing = true;
   hideFix();
   const started = performance.now();
   reviewBtn.disabled = true;
   stopBtn.hidden = false;
-  const counts = { rule: 0, reused: 0, laptop: 0, problems: 0, errors: 0 };
+  const counts = { rule: 0, reused: 0, laptop: 0, cloud: 0, problems: 0, errors: 0 };
   const settle = (i) => {
     const g = groups[i];
     g.pending = false;
@@ -230,12 +258,13 @@ async function review() {
     renderRow(i);
   };
   const report = (done) => {
-    const checked = counts.rule + counts.reused + counts.laptop + counts.errors;
+    const checked = counts.rule + counts.reused + counts.laptop + counts.cloud + counts.errors;
     progress.textContent =
       `${done ? "Done" : "Checking"}: ${checked} of ${groups.length} in ${secs(performance.now() - started)}. ` +
       `${counts.problems} findings. ${counts.rule} by plain rule, ${counts.reused} reused, ${counts.laptop} on the laptop model` +
+      (counts.cloud ? `, ${counts.cloud} in the cloud` : "") +
       (counts.errors ? `, ${counts.errors} not checked.` : ".") +
-      ` Guide: ${guideName(guide)}.`;
+      (lang === "id" ? (idWhere === "laptop" ? ` Indonesian checked on the laptop: ${ID_ACCURACY}` : " Indonesian checked in the cloud, as approved.") : ` Guide: ${guideName(guide)}.`);
   };
   const guide = currentGuide();
 
@@ -264,7 +293,7 @@ async function review() {
     const g = groups[i];
     const again = quickCheck(g); // the same text may have appeared earlier on this screen
     try {
-      g.result = again ?? (await modelCheck(g, screen));
+      g.result = again ?? (g.lang === "id" ? await translationCheck(g, screen, { where: idWhere }) : await modelCheck(g, screen));
     } catch (e) {
       g.error = e.message ?? String(e);
     }
@@ -304,7 +333,7 @@ function refreshFixPrompt() {
       const g = groups[i];
       return { key: g.key, kind: g.kind, screen, count: g.els.length, old: g.text, next: g.next ?? "", problem: PROBLEM_NAMES[g.result.finding.problem] ?? "Problem" };
     });
-  const { text, missing } = buildFixPrompt({ app: "Lumbung", file: SOURCE_FILE, items });
+  const { text, missing } = buildFixPrompt({ app: "Lumbung", file: SOURCE_FILE, items, lang: groups[0]?.lang ?? "en" });
   fixBox.value = text;
   fixBox.rows = Math.min(18, items.length + 6);
   window.__fixPrompt = { text, lines: items.length, missing };
@@ -321,6 +350,12 @@ makeFixBtn.addEventListener("click", async () => {
   for (const [n, i] of ticked.entries()) {
     const g = groups[i];
     fixStatus.textContent = `New text ${n + 1} of ${ticked.length}...`;
+    if (g.lang === "id") {
+      // The translation check already gave a better translation.
+      g.next = g.result.finding.rewrite ?? "";
+      g.nextProblem = g.next ? undefined : "the check gave no better translation";
+      continue;
+    }
     try {
       const r = await newTextFor(g, screen, others);
       if (me !== run) return; // the screen changed
@@ -351,13 +386,14 @@ makeFixBtn.addEventListener("click", async () => {
 // edited src/sample/strings.js. Then Stet reviews the screen again and marks each
 // earlier finding resolved or still open.
 
-const SAMPLE_TEXT_KEY = "lumbung.text"; // the key src/sample/app.js reads
+// The keys src/sample/app.js reads, one per language.
+const sampleTextKey = () => ((groups[0]?.lang ?? "en") === "id" ? "lumbung.text.id" : "lumbung.text");
 const recheckBox = document.getElementById("recheck");
 let recheck = null; // { screen, before: [{ key, text, problem }], applied: Set, skipped, waiting }
 
 function sampleText() {
   try {
-    return JSON.parse(localStorage.getItem(SAMPLE_TEXT_KEY) ?? "{}") ?? {};
+    return JSON.parse(localStorage.getItem(sampleTextKey()) ?? "{}") ?? {};
   } catch {
     return {};
   }
@@ -376,7 +412,7 @@ document.getElementById("apply-fix").addEventListener("click", () => {
   const text = sampleText();
   for (const c of apply) text[c.key] = c.next;
   try {
-    localStorage.setItem(SAMPLE_TEXT_KEY, JSON.stringify(text));
+    localStorage.setItem(sampleTextKey(), JSON.stringify(text));
   } catch {
     fixStatus.textContent = "Could not change the sample: this browser blocks storage for the page.";
     return;
@@ -394,7 +430,9 @@ document.getElementById("apply-fix").addEventListener("click", () => {
 
 document.getElementById("reset-sample").addEventListener("click", () => {
   try {
-    localStorage.removeItem(SAMPLE_TEXT_KEY);
+    // Both languages go back to src/sample/strings.js.
+    localStorage.removeItem("lumbung.text");
+    localStorage.removeItem("lumbung.text.id");
   } catch {
     // nothing stored
   }
@@ -582,6 +620,7 @@ for (const [type, on] of [["mouseover", true], ["mouseout", false], ["focusin", 
 // by the time this one runs the new screen is already in place.
 function attach() {
   frame.contentWindow.addEventListener("hashchange", show);
+  frame.contentWindow.addEventListener("lumbung:lang", show); // the sample switched language
   frame.contentWindow.addEventListener("scroll", placeSoon);
   frame.contentWindow.addEventListener("resize", placeSoon);
   show();
@@ -592,6 +631,19 @@ frame.addEventListener("load", attach);
 // The frame may have finished loading before this module ran.
 if (frame.contentDocument?.getElementById("screen")?.dataset.screen) attach();
 addEventListener("resize", placeSoon);
+
+// ---------- the project setting (slice 3.4) ----------
+for (const r of document.querySelectorAll('input[name="project"]')) {
+  r.checked = r.value === projectMode();
+  r.addEventListener("change", () => {
+    setProjectMode(r.value);
+    approveBox.hidden = true;
+    progress.textContent =
+      r.value === OPEN
+        ? "Open: the laptop model first, the cloud when it is missing; Indonesian is checked in the cloud after you approve the strings."
+        : "Sealed: this project's text is only ever read by the laptop model.";
+  });
+}
 
 // ---------- the wording guide ----------
 

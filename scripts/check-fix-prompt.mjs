@@ -11,6 +11,7 @@ const items = [
   { key: "new.email.label", kind: "label", screen: "new", count: 1, old: 'Say "hi"', next: "  ", problem: "Inconsistent term" },
 ];
 
+const same2 = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 let failed = 0;
 const fail = (msg) => {
   failed++;
@@ -42,6 +43,22 @@ const wantChanges = withQuotes.filter((it) => it.next.trim()).map((it) => ({ fil
 if (JSON.stringify(parsed.changes) !== JSON.stringify(wantChanges)) fail(`round trip changes: ${JSON.stringify(parsed.changes)}`);
 const reasons = parsed.skipped.map((s) => s.reason).sort();
 if (JSON.stringify(reasons) !== JSON.stringify(["no new text", "not a change line"])) fail(`round trip skipped: ${JSON.stringify(parsed.skipped)}`);
+
+// Language files: each line names its own file, and there may be no screen.
+const multi = buildFixPrompt({
+  app: "My app",
+  items: [
+    { file: "en.json", lang: "en", key: "checkout.pay_button", kind: "button", count: 1, old: "Submit", next: "Pay 120.00", problem: "Vague button" },
+    { file: "id.json", lang: "id", key: "nav.home", kind: "nav", count: 1, old: "Rumah", next: "Beranda", problem: "Wrong sense" },
+  ],
+});
+const back = parseFixPrompt(multi.text).changes;
+if (!same2(back, [
+  { file: "en.json", key: "checkout.pay_button", old: "Submit", next: "Pay 120.00" },
+  { file: "id.json", key: "nav.home", old: "Rumah", next: "Beranda" },
+])) fail(`two files: ${JSON.stringify(back)}`);
+if (!multi.text.includes("Each line names the file and the key")) fail("a prompt over two files does not say each line names its file");
+if (/screen ""/.test(multi.text)) fail("a line without a screen still prints an empty screen");
 
 if (failed) {
   console.log(text);

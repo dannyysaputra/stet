@@ -1,0 +1,2538 @@
+{
+  "run": {
+    "check": "translation",
+    "mode": "ONLY_IN_CLOUD",
+    "startedAt": "2026-11-25T11:20:20.595Z",
+    "wallMs": 434316,
+    "complete": true,
+    "stopped": false,
+    "quotaRetries": 0,
+    "cloudGapMs": 4500,
+    "note": "Cloud speed includes the deliberate gap between requests; use speed.medianMs for model latency.",
+    "appCheck": "debug (new token, see console)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  },
+  "summary": {
+    "definitions": {
+      "problemsCaughtPct": "problem items the model flagged as a problem / all problem items (errors count as missed)",
+      "problemKindRightPct": "problem items flagged with the right problem kind / all problem items",
+      "falseAlarmPct": "good items the model flagged as a problem / all good items (errors not counted as alarms)"
+    },
+    "problemsCaughtPct": 100,
+    "problemKindRightPct": 97.5,
+    "falseAlarmPct": 0,
+    "byType": {
+      "wrong_sense": {
+        "n": 10,
+        "flagged": 10,
+        "typeMatch": 10
+      },
+      "word_for_word": {
+        "n": 12,
+        "flagged": 12,
+        "typeMatch": 11
+      },
+      "wrong_verb_form": {
+        "n": 10,
+        "flagged": 10,
+        "typeMatch": 10
+      },
+      "mixed_register": {
+        "n": 8,
+        "flagged": 8,
+        "typeMatch": 8
+      }
+    },
+    "items": 80,
+    "errors": 0,
+    "where": {
+      "cloud": 80
+    },
+    "speed": {
+      "itemsPerMinute": 11.1,
+      "medianMs": 3097
+    }
+  },
+  "results": [
+    {
+      "item": {
+        "id": "id001",
+        "app": "invoices",
+        "screen": "Top menu",
+        "kind": "nav",
+        "en": "Home",
+        "id_text": "Rumah",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Beranda",
+        "note_en": "\"Rumah\" means a house. The English means the start page."
+      },
+      "where": "cloud",
+      "ms": 2140,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Beranda",
+          "note_en": "Rumah means a physical house, whereas the standard term for Home in apps is Beranda."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id002",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Close",
+        "id_text": "Dekat",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Tutup",
+        "note_en": "\"Dekat\" means nearby. The English means close this screen."
+      },
+      "where": "cloud",
+      "ms": 1825,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Tutup",
+          "note_en": "Dekat means nearby, but for closing a screen or dialog, the correct term is Tutup."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id003",
+        "app": "clinic",
+        "screen": "Doctor profile",
+        "kind": "button",
+        "en": "Book",
+        "id_text": "Buku",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Pesan",
+        "note_en": "\"Buku\" is a book you read. The English is the verb, to reserve a time."
+      },
+      "where": "cloud",
+      "ms": 2515,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Buat janji temu",
+          "note_en": "Buku means book (noun) instead of book an appointment."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id004",
+        "app": "invoices",
+        "screen": "Payment",
+        "kind": "button",
+        "en": "Charge card",
+        "id_text": "Isi daya kartu",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Tagih ke kartu",
+        "note_en": "Reads as \"charge the card's battery\"."
+      },
+      "where": "cloud",
+      "ms": 1650,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Tagih kartu",
+          "note_en": "Isi daya kartu means to charge a battery, not to charge a credit card for payment."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id005",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "button",
+        "en": "Clear",
+        "id_text": "Jelas",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "medium",
+        "better": "Hapus filter",
+        "note_en": "\"Jelas\" means obvious or clear to understand. The English means remove the filters."
+      },
+      "where": "cloud",
+      "ms": 8069,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Hapus",
+          "note_en": "Jelas means clear as in transparent, whereas the action to clear a task or filter is translated as Hapus."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id006",
+        "app": "courses",
+        "screen": "Lesson",
+        "kind": "button",
+        "en": "Back",
+        "id_text": "Punggung",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Kembali",
+        "note_en": "\"Punggung\" is the back of the body. The English means go to the previous screen."
+      },
+      "where": "cloud",
+      "ms": 1805,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Kembali",
+          "note_en": "Punggung refers to the body part, while Back for navigation should be Kembali."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id007",
+        "app": "tasks",
+        "screen": "Settings",
+        "kind": "label",
+        "en": "Light",
+        "id_text": "Ringan",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "medium",
+        "better": "Terang",
+        "note_en": "\"Ringan\" means light in weight. The English is the light colour theme."
+      },
+      "where": "cloud",
+      "ms": 1604,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Terang",
+          "note_en": "\"Ringan\" means physical weight, whereas the theme setting \"Light\" means bright."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id008",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "button",
+        "en": "Leave",
+        "id_text": "Daun",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Keluar dari tim",
+        "note_en": "\"Daun\" means a leaf. The English means to leave the team."
+      },
+      "where": "cloud",
+      "ms": 6403,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Keluar",
+          "note_en": "The translation 'Daun' is a literal translation of the plant leaf, whereas the button action 'Leave' means to exit or depart."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id009",
+        "app": "courses",
+        "screen": "Attendance",
+        "kind": "label",
+        "en": "Present",
+        "id_text": "Hadiah",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Hadir",
+        "note_en": "\"Hadiah\" means a gift. The English means the student attended."
+      },
+      "where": "cloud",
+      "ms": 1594,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Hadir",
+          "note_en": "Hadiah means gift, whereas attendance status present should be translated as Hadir."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id010",
+        "app": "courses",
+        "screen": "Results",
+        "kind": "label",
+        "en": "Mean score",
+        "id_text": "Skor kejam",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "medium",
+        "better": "Skor rata-rata",
+        "note_en": "\"Kejam\" means cruel. The English means the average score."
+      },
+      "where": "cloud",
+      "ms": 6420,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Skor rata-rata",
+          "note_en": "Skor kejam means cruel score, which is a mistranslation of mean score."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id011",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "subtitle",
+        "en": "Unlock seamless invoicing and elevate your workflow!",
+        "id_text": "Buka kunci faktur mulus dan tingkatkan alur kerja Anda!",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Buat dan kirim faktur dengan cepat.",
+        "note_en": "Reads as \"Open the lock of smooth invoices and raise your work flow!\""
+      },
+      "where": "cloud",
+      "ms": 1331,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Nikmati pembuatan faktur yang praktis dan tingkatkan alur kerja Anda!",
+          "note_en": "Marketing filler like unlock seamless was translated literally as Buka kunci faktur mulus, which sounds unnatural in Indonesian."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id012",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Line items",
+        "id_text": "Item baris",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Rincian",
+        "note_en": "Reads as \"row items\". The English means the things being billed."
+      },
+      "where": "cloud",
+      "ms": 1435,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Rincian",
+          "note_en": "Line items should be translated as \"Rincian\" instead of a literal word-for-word translation."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id013",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Submit",
+        "id_text": "Menyerahkan",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Kirim",
+        "note_en": "Means \"to hand over\", as in handing in a document in person."
+      },
+      "where": "cloud",
+      "ms": 6494,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Kirim",
+          "note_en": "Buttons use the base verb or command form, so Submit should be Kirim."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id014",
+        "app": "courses",
+        "screen": "Landing",
+        "kind": "button",
+        "en": "Sign up",
+        "id_text": "Tanda tangan ke atas",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "high",
+        "better": "Daftar",
+        "note_en": "Reads as \"signature upward\"."
+      },
+      "where": "cloud",
+      "ms": 4457,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Daftar",
+          "note_en": "Sign up was translated word-for-word as Tanda tangan ke atas; it should be Daftar."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id015",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "helper",
+        "en": "Drop files here",
+        "id_text": "Jatuhkan file di sini",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "low",
+        "better": "Tarik file ke sini",
+        "note_en": "Reads as \"let the files fall here\"."
+      },
+      "where": "cloud",
+      "ms": 1605,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Seret dan letakkan file di sini",
+          "note_en": "Drop files here translates idiomatically to dragging and dropping in file upload interfaces."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id016",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Due date",
+        "id_text": "Tanggal jatuh",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Jatuh tempo",
+        "note_en": "Reads as \"falling date\". The set term for a payment deadline is \"jatuh tempo\"."
+      },
+      "where": "cloud",
+      "ms": 1673,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Jatuh tempo",
+          "note_en": "The standard Indonesian term for due date is 'Jatuh tempo'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id017",
+        "app": "courses",
+        "screen": "Cart",
+        "kind": "button",
+        "en": "Check out",
+        "id_text": "Periksa keluar",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "high",
+        "better": "Bayar",
+        "note_en": "Reads as \"inspect outside\"."
+      },
+      "where": "cloud",
+      "ms": 7142,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Bayar",
+          "note_en": "\"Periksa keluar\" is a literal word-for-word translation of \"Check out\"; standard checkout buttons in Indonesian apps use \"Bayar\"."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id018",
+        "app": "tasks",
+        "screen": "First run",
+        "kind": "button",
+        "en": "Get started",
+        "id_text": "Dapatkan dimulai",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Mulai",
+        "note_en": "Reads as \"obtain being started\"."
+      },
+      "where": "cloud",
+      "ms": 1407,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Mulai",
+          "note_en": "Get started reads oddly when translated word for word as Dapatkan dimulai, and buttons should use the base verb."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id019",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "helper",
+        "en": "Make sure the amount is correct.",
+        "id_text": "Buat yakin jumlahnya benar.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Pastikan jumlahnya benar.",
+        "note_en": "Reads as \"create sure the amount is correct\"."
+      },
+      "where": "cloud",
+      "ms": 9401,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Pastikan jumlahnya benar.",
+          "note_en": "Buat yakin is a word-for-word translation that sounds unnatural; Pastikan should be used for Make sure."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id020",
+        "app": "courses",
+        "screen": "Lesson",
+        "kind": "helper",
+        "en": "Take a break before the next lesson.",
+        "id_text": "Ambil istirahat sebelum pelajaran berikutnya.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "low",
+        "better": "Istirahatlah sejenak sebelum pelajaran berikutnya.",
+        "note_en": "Reads as \"pick up a rest\"."
+      },
+      "where": "cloud",
+      "ms": 1607,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Beristirahatlah sebelum pelajaran berikutnya.",
+          "note_en": "Ambil istirahat is a literal translation; Beristirahatlah is the natural Indonesian expression for taking a break."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id021",
+        "app": "clinic",
+        "screen": "Help",
+        "kind": "link",
+        "en": "Reach out to support",
+        "id_text": "Jangkau dukungan",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Hubungi tim bantuan",
+        "note_en": "Reads as \"stretch your arm toward support\"."
+      },
+      "where": "cloud",
+      "ms": 6684,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Hubungi dukungan",
+          "note_en": "\"Jangkau dukungan\" is a literal word-for-word translation that sounds unnatural in Indonesian; \"Hubungi dukungan\" should be used instead."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id022",
+        "app": "tasks",
+        "screen": "Sign in",
+        "kind": "label",
+        "en": "Keep me signed in",
+        "id_text": "Jaga saya masuk",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Tetap masuk",
+        "note_en": "Reads as \"guard me entering\"."
+      },
+      "where": "cloud",
+      "ms": 6433,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Tetap masuk",
+          "note_en": "Keep me signed in translated word-for-word sounds unnatural in Indonesian; Tetap masuk is the standard UI phrasing."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id023",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Save draft",
+        "id_text": "Menyimpan draf",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Simpan draf",
+        "note_en": "Reads as \"saving a draft\". Buttons use the base verb."
+      },
+      "where": "cloud",
+      "ms": 1817,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Simpan draf",
+          "note_en": "Buttons should use the command form 'Simpan' rather than the continuous form 'Menyimpan'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id024",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Send invoice",
+        "id_text": "Mengirim faktur",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Kirim faktur",
+        "note_en": "Reads as \"sending an invoice\". Buttons use the base verb."
+      },
+      "where": "cloud",
+      "ms": 6185,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Kirim faktur",
+          "note_en": "Buttons use the base verb or command form, so 'Kirim' is correct instead of the 'me-' form."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id025",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "button",
+        "en": "Delete",
+        "id_text": "Menghapus",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Hapus",
+        "note_en": "Reads as \"deleting\". Buttons use the base verb."
+      },
+      "where": "cloud",
+      "ms": 2137,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Hapus",
+          "note_en": "Buttons use the base verb form, so 'Menghapus' should be 'Hapus'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id026",
+        "app": "expenses",
+        "screen": "Expenses",
+        "kind": "button",
+        "en": "Add expense",
+        "id_text": "Menambahkan pengeluaran",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Tambah pengeluaran",
+        "note_en": "Reads as \"adding an expense\". Buttons use the base verb."
+      },
+      "where": "cloud",
+      "ms": 6770,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Tambah pengeluaran",
+          "note_en": "Buttons should use the base verb form rather than the me- verb form."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id027",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "button",
+        "en": "Upload receipt",
+        "id_text": "Mengunggah struk",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Unggah struk",
+        "note_en": "Reads as \"uploading a receipt\". Buttons use the base verb."
+      },
+      "where": "cloud",
+      "ms": 6366,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Unggah struk",
+          "note_en": "Buttons should use the command form 'Unggah' rather than the progress form 'Mengunggah'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id028",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "button",
+        "en": "Search",
+        "id_text": "Mencari",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "low",
+        "better": "Cari",
+        "note_en": "Reads as \"searching\". Buttons use the base verb."
+      },
+      "where": "cloud",
+      "ms": 6494,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Cari",
+          "note_en": "Buttons use the base verb form, so 'Mencari' should be 'Cari'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id029",
+        "app": "clinic",
+        "screen": "Appointment detail",
+        "kind": "button",
+        "en": "Cancel appointment",
+        "id_text": "Membatalkan janji temu",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Batalkan janji temu",
+        "note_en": "Reads as \"cancelling an appointment\". Buttons use the command form."
+      },
+      "where": "cloud",
+      "ms": 2121,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Batalkan janji temu",
+          "note_en": "Buttons use the command form rather than the me- verb form."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id030",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "button",
+        "en": "Download",
+        "id_text": "Mengunduh",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "low",
+        "better": "Unduh",
+        "note_en": "Reads as \"downloading\". Buttons use the base verb."
+      },
+      "where": "cloud",
+      "ms": 5907,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Unduh",
+          "note_en": "Buttons use the base verb or command form, so 'Mengunduh' should be 'Unduh'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id031",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "button",
+        "en": "Invite members",
+        "id_text": "Mengundang anggota",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Undang anggota",
+        "note_en": "Reads as \"inviting members\". Buttons use the base verb."
+      },
+      "where": "cloud",
+      "ms": 5935,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Undang anggota",
+          "note_en": "Buttons should use the command form or base verb instead of the me- form."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id032",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "status",
+        "en": "Saving...",
+        "id_text": "Simpan...",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Menyimpan...",
+        "note_en": "Reads as the command \"Save...\". A progress status uses the me- form."
+      },
+      "where": "cloud",
+      "ms": 1786,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Menyimpan...",
+          "note_en": "Status text should use the me- form like 'Menyimpan...' instead of the command form."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id033",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "heading",
+        "en": "Your courses",
+        "id_text": "Kursus kamu",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "medium",
+        "better": "Kursus Anda",
+        "note_en": "Uses informal \"kamu\" in an app that addresses users as \"Anda\"."
+      },
+      "where": "cloud",
+      "ms": 6092,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Kursus Anda",
+          "note_en": "Since the app uses the formal address 'Anda', the possessive pronoun should be 'Anda' instead of '-mu'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id034",
+        "app": "tasks",
+        "screen": "Delete dialog",
+        "kind": "heading",
+        "en": "Are you sure you want to delete this?",
+        "id_text": "Yakin mau hapus ini?",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "medium",
+        "better": "Apakah Anda yakin ingin menghapus ini?",
+        "note_en": "Casual chat phrasing in an app that uses formal \"Anda\"."
+      },
+      "where": "cloud",
+      "ms": 4887,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Apakah Anda yakin ingin menghapus ini?",
+          "note_en": "The app uses formal address (Anda), so the informal phrase \"mau hapus\" should be replaced with formal terms."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id035",
+        "app": "clinic",
+        "screen": "Home",
+        "kind": "empty",
+        "en": "You have no appointments.",
+        "id_text": "Kamu belum punya janji temu.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "medium",
+        "better": "Anda belum memiliki janji temu.",
+        "note_en": "Uses informal \"kamu\" in an app that addresses users as \"Anda\"."
+      },
+      "where": "cloud",
+      "ms": 6572,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Anda belum memiliki janji temu.",
+          "note_en": "The app uses the formal address 'Anda', but the Indonesian text uses the informal 'kamu' and 'punya'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id036",
+        "app": "clinic",
+        "screen": "Profile",
+        "kind": "helper",
+        "en": "You can change your profile at any time.",
+        "id_text": "Anda bisa ubah profilmu kapan saja.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "medium",
+        "better": "Anda dapat mengubah profil Anda kapan saja.",
+        "note_en": "Mixes formal \"Anda\" and informal \"-mu\" in one sentence."
+      },
+      "where": "cloud",
+      "ms": 3214,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Anda dapat mengubah profil Anda kapan saja.",
+          "note_en": "The text mixes the formal 'Anda' with the informal possessive suffix '-mu'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id037",
+        "app": "courses",
+        "screen": "Sign up",
+        "kind": "helper",
+        "en": "Check your email.",
+        "id_text": "Cek email lo.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "high",
+        "better": "Periksa email Anda.",
+        "note_en": "\"Lo\" is Jakarta slang. Too casual for an app that uses \"Anda\"."
+      },
+      "where": "cloud",
+      "ms": 1514,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Periksa email Anda.",
+          "note_en": "The translation uses slang (\"lo\") instead of the formal address (\"Anda\") used by the app."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id038",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "empty",
+        "en": "You haven't enrolled in a course yet.",
+        "id_text": "Anda belum mendaftar kursus.",
+        "register": "kamu",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "low",
+        "better": "Kamu belum mendaftar kursus.",
+        "note_en": "Uses formal \"Anda\" in an app that addresses users as \"kamu\"."
+      },
+      "where": "cloud",
+      "ms": 3106,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Kamu belum mendaftar kursus.",
+          "note_en": "The app uses informal address (kamu), but the translation uses 'Anda'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id039",
+        "app": "tasks",
+        "screen": "Sign up",
+        "kind": "helper",
+        "en": "Your password must have at least 8 characters.",
+        "id_text": "Kata sandimu minimal 8 karakter.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "low",
+        "better": "Kata sandi Anda minimal 8 karakter.",
+        "note_en": "Uses informal \"-mu\" in an app that addresses users as \"Anda\"."
+      },
+      "where": "cloud",
+      "ms": 1618,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Kata sandi Anda minimal 8 karakter.",
+          "note_en": "The app uses formal address 'Anda', so '-mu' should be 'Anda'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id040",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "toast",
+        "en": "Thanks! We received your claim.",
+        "id_text": "Terima kasih! Klaim Anda sudah kami terima.",
+        "register": "kamu",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "low",
+        "better": "Terima kasih! Klaim kamu sudah kami terima.",
+        "note_en": "Uses formal \"Anda\" in an app that addresses users as \"kamu\"."
+      },
+      "where": "cloud",
+      "ms": 1730,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Terima kasih! Klaim kamu sudah kami terima.",
+          "note_en": "The app uses informal address (kamu), so using Anda is a mixed register."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id041",
+        "app": "invoices",
+        "screen": "Top menu",
+        "kind": "nav",
+        "en": "Home",
+        "id_text": "Beranda",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 6163,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id042",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Close",
+        "id_text": "Tutup",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1715,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id043",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Save draft",
+        "id_text": "Simpan draf",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 2515,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id044",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Send invoice",
+        "id_text": "Kirim faktur",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1657,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id045",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "button",
+        "en": "Delete",
+        "id_text": "Hapus",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 2440,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id046",
+        "app": "tasks",
+        "screen": "Delete dialog",
+        "kind": "button",
+        "en": "Cancel",
+        "id_text": "Batal",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 3992,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id047",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "button",
+        "en": "Search",
+        "id_text": "Cari",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 3097,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id048",
+        "app": "invoices",
+        "screen": "Top menu",
+        "kind": "nav",
+        "en": "Settings",
+        "id_text": "Pengaturan",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1613,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id049",
+        "app": "courses",
+        "screen": "Sign in",
+        "kind": "button",
+        "en": "Sign in",
+        "id_text": "Masuk",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1576,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id050",
+        "app": "courses",
+        "screen": "Account menu",
+        "kind": "button",
+        "en": "Sign out",
+        "id_text": "Keluar",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1574,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id051",
+        "app": "tasks",
+        "screen": "Sign up",
+        "kind": "button",
+        "en": "Create account",
+        "id_text": "Buat akun",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 3622,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id052",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Due date",
+        "id_text": "Jatuh tempo",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 3308,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id053",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Amount",
+        "id_text": "Jumlah",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 6164,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id054",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Client",
+        "id_text": "Klien",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 8325,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id055",
+        "app": "invoices",
+        "screen": "Top menu",
+        "kind": "nav",
+        "en": "Invoices",
+        "id_text": "Faktur",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 2957,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id056",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Line items",
+        "id_text": "Rincian",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1339,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id057",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "empty",
+        "en": "No line items yet. Add the first one.",
+        "id_text": "Belum ada rincian. Tambahkan yang pertama.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1551,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id058",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "button",
+        "en": "Book appointment",
+        "id_text": "Buat janji temu",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 6308,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id059",
+        "app": "clinic",
+        "screen": "Appointment detail",
+        "kind": "button",
+        "en": "Reschedule",
+        "id_text": "Ubah jadwal",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 6433,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id060",
+        "app": "clinic",
+        "screen": "Home",
+        "kind": "heading",
+        "en": "Upcoming appointments",
+        "id_text": "Janji temu mendatang",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 7208,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id061",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "label",
+        "en": "Reason for visit (optional)",
+        "id_text": "Alasan kunjungan (opsional)",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 6227,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id062",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "heading",
+        "en": "Your courses",
+        "id_text": "Kursus Anda",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 5960,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id063",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "button",
+        "en": "Enroll",
+        "id_text": "Daftar",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1593,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id064",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "button",
+        "en": "Start lesson",
+        "id_text": "Mulai pelajaran",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 5795,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id065",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "label",
+        "en": "Progress",
+        "id_text": "Kemajuan",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1683,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id066",
+        "app": "expenses",
+        "screen": "Expenses",
+        "kind": "button",
+        "en": "Add expense",
+        "id_text": "Tambah pengeluaran",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1663,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id067",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "button",
+        "en": "Upload receipt",
+        "id_text": "Unggah struk",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 10920,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id068",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "button",
+        "en": "Submit claim",
+        "id_text": "Kirim klaim",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1707,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id069",
+        "app": "expenses",
+        "screen": "Claims",
+        "kind": "status",
+        "en": "Pending approval",
+        "id_text": "Menunggu persetujuan",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1542,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id070",
+        "app": "expenses",
+        "screen": "Claims",
+        "kind": "status",
+        "en": "Approved",
+        "id_text": "Disetujui",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1757,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id071",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "button",
+        "en": "Invite members",
+        "id_text": "Undang anggota",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 6061,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id072",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "label",
+        "en": "Assignee",
+        "id_text": "Penanggung jawab",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 6315,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id073",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "button",
+        "en": "Mark as done",
+        "id_text": "Tandai selesai",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1740,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id074",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "toast",
+        "en": "Changes saved.",
+        "id_text": "Perubahan disimpan.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1572,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id075",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "status",
+        "en": "Saving...",
+        "id_text": "Menyimpan...",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1567,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id076",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "error",
+        "en": "Enter an amount above 0.",
+        "id_text": "Masukkan jumlah lebih dari 0.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 11890,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id077",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "error",
+        "en": "This file is over 10 MB. Choose a smaller file.",
+        "id_text": "File ini lebih dari 10 MB. Pilih file yang lebih kecil.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 6957,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id078",
+        "app": "tasks",
+        "screen": "Delete dialog",
+        "kind": "heading",
+        "en": "Delete this task? This can't be undone.",
+        "id_text": "Hapus tugas ini? Tindakan ini tidak dapat dibatalkan.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 5456,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id079",
+        "app": "courses",
+        "screen": "Sign in",
+        "kind": "link",
+        "en": "Forgot password?",
+        "id_text": "Lupa kata sandi?",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 5792,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id080",
+        "app": "tasks",
+        "screen": "Sign in",
+        "kind": "label",
+        "en": "Keep me signed in",
+        "id_text": "Tetap masuk",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "cloud",
+      "ms": 1429,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    }
+  ]
+}

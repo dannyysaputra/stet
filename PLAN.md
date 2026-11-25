@@ -205,11 +205,15 @@ By tonight the whole English loop runs: brief, guide, review, fix prompt, re-che
 
 By tonight Stet reviews the text of your own bilingual prototype, and not only the sample.
 
-- [ ] **3.1 Indonesian sample**
+- [x] **3.1 Indonesian sample**
+  - Result (2026-11-25): src/sample/strings.js has an Indonesian version of all 56 keys, in the "Anda" register, with 13 planted mistakes listed in ID_PLANTED (5 wrong sense, such as "Rumah" and "Dekat"; 4 word for word; 2 wrong verb form; 2 mixed address). The sample has a language switch (kept across reloads); each element carries its English original in data-en. Changed text is kept per language. Checked in Chrome: on all three screens, in both languages, every one of the 60 elements shows its strings.js text, every data-en matches, and the review panel follows the switch.
   - Build: the sample app gets a language switch and a word-for-word Indonesian version.
   - Done when: switching the language changes every string on all three screens.
 
-- [ ] **3.2 Translation check**
+- [x] **3.2 Translation check**
+  - Result (2026-11-25): on an Indonesian screen, Review runs the Phase 0 translation prompt (moved to src/translation-check.js, checked identical) on each string with its English original. Where it runs follows decision 2: Sealed project on the laptop, with the measured caveat in the progress line; Open project in the cloud, after a list of every Indonesian string and its English original is shown and approved. Findings show the better translation and the plain-English note; the better translation goes into the fix prompt, which then names the Indonesian value.
+  - Checked in Chrome on the Indonesian new screen (7 planted mistakes): Sealed, laptop: 5 of 7 caught (4 with the right kind), "Rumah" -> "Beranda" and "Dekat" -> "Tutup" with notes ("Rumah means house..."), 3 false alarms, 124 s, counter 0. Open, cloud: the approval list showed 20 pairs and nothing had left before approval; then 7 of 7 caught with the right kind, 1 false alarm ("Klik di sini"), 1 call failed and was reported as not checked, 90 s, counter 20 (the 20 approved pairs).
+  - A first Open run would have reused the laptop's verdicts from the cache; Indonesian verdicts are now cached by where they ran.
   - Build: each Indonesian string is compared with its English original and its kind of element. The check returns a verdict (wrong sense, word for word, wrong verb form, or mixed formal and informal address), a better translation, and a plain English note on what the bad one says. It runs where Phase 0 decided.
   - Done when: the planted mistakes in the sample, such as "Rumah" and "Dekat", are caught and explained.
 
@@ -351,7 +355,7 @@ The two biggest unknowns are settled tonight, in Phase 0.
 | Decision | Made on | Answer |
 | --- | --- | --- |
 | Go ahead with Stet as planned, or simplify | Wed Nov 25 | Go. The laptop model passes the English accuracy bars one string per call (80 to 81% caught, 0 to 1.7% false alarms, 95% filler) but reaches only about 20 strings a minute, and batching made it worse. So: keep the laptop check one string per call, replace the speed bar with "one screen of about 15 strings in under 60 seconds", add plain rules and a cache in 1.3, and use 5-per-call cloud batches only for Open projects or as a fallback. |
-| Indonesian check runs on the laptop or in the cloud | Tue Nov 24 | Open |
+| Indonesian check runs on the laptop or in the cloud | Wed Nov 25 (provisional: the owner's review of the pairs, 0.3, is still to come) | Cloud for Open projects, on strings the user approves; laptop for Sealed projects, with a caveat. Translation test on the 80 unreviewed pairs: laptop 65% caught, 45% right kind, 22.5% false alarms, 5.5 s median (it caught all 10 wrong-sense cases but 1 of 10 wrong verb forms); cloud 100% caught, 97.5% right kind, 0% false alarms, 3.1 s. Results in data/eval/results/translation-*-2026-11-25*. |
 | Final name, after checking nobody else uses it | Sat Nov 28 | Open |
 
 ## Submission checklist

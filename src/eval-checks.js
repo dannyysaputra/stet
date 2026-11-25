@@ -4,20 +4,7 @@ import { askJson } from "./ai.js";
 import { EN_SCHEMA, enPrompt, wordingGuide } from "./english-check.js";
 import enStrings from "../data/eval/en-strings.json";
 import idPairs from "../data/eval/id-pairs.json";
-import idRules from "../data/eval/id-rules.md?raw";
-
-const ID_TYPES = ["wrong_sense", "word_for_word", "wrong_verb_form", "mixed_register"];
-
-const ID_SCHEMA = {
-  type: "object",
-  properties: {
-    verdict: { type: "string", enum: ["ok", "problem"] },
-    problem: { type: "string", enum: [...ID_TYPES, "none"] },
-    better: { type: "string" },
-    note_en: { type: "string" },
-  },
-  required: ["verdict", "problem", "better", "note_en"],
-};
+import { ID_SCHEMA, idPrompt } from "./translation-check.js";
 
 const READ_SCHEMA = {
   type: "object",
@@ -25,18 +12,6 @@ const READ_SCHEMA = {
   required: ["texts"],
 };
 
-const idPrompt = (r) => `You review Indonesian interface text against its English original, using these rules.
-
-${idRules}
-
-App address: the app speaks to the user as "${r.register}".
-App: ${r.app}
-Screen: ${r.screen}
-Element: ${r.kind}
-English: "${r.en}"
-Indonesian: "${r.id_text}"
-
-Reply with JSON only. If the Indonesian is fine, use verdict "ok", problem "none", better "" and note_en "". Otherwise give the single best-matching problem kind, a better Indonesian version, and one short sentence in plain English on what the bad version says or does wrong.`;
 
 // Several strings in one call: the guide is sent once per batch instead of once per string.
 // One required key per item (item1, item2, ...) rather than an array: with an array

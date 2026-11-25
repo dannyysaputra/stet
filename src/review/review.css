@@ -22,6 +22,10 @@
 #findings .fix.new { font-weight: 600; }
 .payload { margin: 6px 0; padding: 8px; border-radius: 8px; background: var(--paper); font: 0.78rem/1.4 ui-monospace, Consolas, monospace; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 260px; overflow-y: auto; }
 #pattern-rule { width: 100%; font: 0.85rem/1.4 ui-monospace, Consolas, monospace; padding: 8px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); }
+.project { border: 0; padding: 0; margin: 10px 0 0; display: grid; gap: 4px; font-size: 0.88rem; }
+.project legend { padding: 0; margin-bottom: 2px; }
+.approve { margin-top: 10px; padding: 10px 12px; border-radius: 10px; border: 2px solid var(--hi); }
+.approve ul { list-style: none; padding: 8px; margin: 8px 0; }
 .recheck { margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: var(--wash); }
 .recheck p { margin: 0 0 6px; font-weight: 600; }
 .recheck ul { margin: 0; padding-left: 18px; font-size: 0.88rem; }

@@ -2,16 +2,26 @@
 // It makes no AI calls. Stet reads its text through the data-s attributes.
 import { STRINGS, INVOICES } from "./strings.js";
 
-const lang = "en";
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 
-// Changed text, by key. Stet's "Apply to sample" writes it here in place of a
-// coding agent editing strings.js; "Reset sample text" clears it. The same key is
-// named in src/review/review.js (SAMPLE_TEXT_KEY).
-const OVERRIDES_KEY = "lumbung.text";
+// The language shown: English or Indonesian (slice 3.1), kept across reloads.
+const LANG_KEY = "lumbung.lang";
+const storedLang = () => {
+  try {
+    return localStorage.getItem(LANG_KEY) === "id" ? "id" : "en";
+  } catch {
+    return "en";
+  }
+};
+let lang = storedLang();
+
+// Changed text, by key, for each language. Stet's "Apply to sample" writes it
+// here in place of a coding agent editing strings.js; "Reset sample text" clears
+// it. The same keys are named in src/review/review.js (sampleTextKey).
+const overridesKey = () => (lang === "id" ? "lumbung.text.id" : "lumbung.text");
 function overrides() {
   try {
-    return JSON.parse(localStorage.getItem(OVERRIDES_KEY) ?? "{}") ?? {};
+    return JSON.parse(localStorage.getItem(overridesKey()) ?? "{}") ?? {};
   } catch {
     return {};
   }
@@ -23,10 +33,13 @@ const text = (key) => {
   if (!s) throw new Error(`Unknown string key: ${key}`);
   return typeof changed[key] === "string" ? changed[key] : s[lang];
 };
+// The English original travels with each element, so Stet can compare a
+// translation with what it translates.
+const orig = (key) => `data-en="${esc(STRINGS[key].en)}"`;
 // A visible string, wrapped so it can be found and replaced.
-const t = (key, tag = "span", attrs = "") => `<${tag} data-s="${key}" data-kind="${STRINGS[key].kind}"${attrs ? " " + attrs : ""}>${esc(text(key))}</${tag}>`;
+const t = (key, tag = "span", attrs = "") => `<${tag} data-s="${key}" data-kind="${STRINGS[key].kind}" ${orig(key)}${attrs ? " " + attrs : ""}>${esc(text(key))}</${tag}>`;
 // A placeholder lives in an attribute rather than in the element's text.
-const ph = (key) => `data-s="${key}" data-kind="placeholder" data-attr="placeholder" placeholder="${esc(text(key))}"`;
+const ph = (key) => `data-s="${key}" data-kind="placeholder" data-attr="placeholder" ${orig(key)} placeholder="${esc(text(key))}"`;
 const btn = (key, cls = "") => t(key, "button", `type="button"${cls ? ` class="${cls}"` : ""}`);
 
 const SCREENS = {
@@ -114,10 +127,27 @@ function render() {
   document.getElementById("nav").innerHTML = NAV.map(
     ([r, key]) => `<a href="#/${r}"${r === screen ? ` aria-current="page"` : ""}>${t(key)}</a>`,
   ).join("");
-  document.getElementById("screen").innerHTML = SCREENS[screen]();
-  document.getElementById("screen").dataset.screen = screen;
+  const main = document.getElementById("screen");
+  main.innerHTML = SCREENS[screen]();
+  main.dataset.screen = screen;
+  main.lang = lang;
+  document.documentElement.lang = lang;
+  // The switch names the other language, in that language. It is not app text
+  // under review, so it carries no data-s.
+  document.getElementById("lang").textContent = lang === "id" ? "English" : "Bahasa Indonesia";
   document.title = `Lumbung: ${screen}`;
 }
+
+document.getElementById("lang").addEventListener("click", () => {
+  lang = lang === "id" ? "en" : "id";
+  try {
+    localStorage.setItem(LANG_KEY, lang);
+  } catch {
+    // the switch still works until the page is closed
+  }
+  render();
+  dispatchEvent(new CustomEvent("lumbung:lang", { detail: lang })); // lets Stet re-read the screen
+});
 
 addEventListener("hashchange", render);
 render();

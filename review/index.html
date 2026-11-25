@@ -30,7 +30,13 @@
         <button id="stop" type="button" class="quiet" hidden>Stop</button>
         <button id="reset-sample" type="button" class="quiet">Reset sample text</button>
       </div>
+      <fieldset class="project">
+        <legend class="dim">Project</legend>
+        <label><input type="radio" name="project" value="sealed" checked> Sealed: text read only on this laptop</label>
+        <label><input type="radio" name="project" value="open"> Open: laptop first, cloud when needed</label>
+      </fieldset>
       <p id="progress" class="dim" aria-live="polite"></p>
+      <div id="approve-id" class="approve" hidden></div>
       <p id="warm" class="dim"></p>
 
       <details id="guide-box" class="guide-box">
