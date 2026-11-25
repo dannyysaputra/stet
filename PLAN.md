@@ -240,7 +240,9 @@ By tonight Stet reviews the text of your own bilingual prototype, and not only t
 
 By tonight a stranger can open a link and use Stet, with or without the laptop model.
 
-- [ ] **4.1 Hosting and production App Check**
+- [ ] **4.1 Hosting and production App Check** (prepared; needs your yes and two console steps)
+  - Prepared (2026-11-25): firebase.json (public dir dist, no-cache for HTML and the service worker, long cache for hashed assets). Found and fixed before any deploy: src/firebase.js aliased import.meta.env, which put the whole env object, the debug token's variable included, into the production bundle; check-dist now fails on that (red on the old file, green on the fix). The bundle had only been in the local, git-ignored dist/.
+  - Still to do: create a reCAPTCHA Enterprise key for the hosted domain, register it for the web app in App Check, add VITE_RECAPTCHA_ENTERPRISE_SITE_KEY to .env.local, build, deploy (firebase deploy --only hosting), then open the link in a fresh Chrome profile.
   - Build: deploy to Firebase Hosting, with App Check using a production provider for the hosted address and the debug provider only on your machine.
   - Done when: the hosted link works in a fresh Chrome profile.
 
@@ -252,7 +254,7 @@ By tonight a stranger can open a link and use Stet, with or without the laptop m
   - Build: the cloud model name, the daily usage cap for each visitor, and the seriousness threshold all come from Remote Config.
   - Done when: changing the cap in the Firebase console changes the app without a new deploy.
 
-- [ ] **4.3 Saved work**
+- [ ] **4.3 Saved work** (recommend cutting, as the cut order allows: guides, projects and counts already persist in the browser; Firestore would add a database, sign-in and rules to set up and protect for little demo value)
   - Build: guides, standing rules and counts are saved to Firestore for each visitor. Text from a Sealed project is never saved to the cloud.
   - Done when: a guide survives a reload, and Firestore holds no app text for a Sealed project.
 
@@ -313,7 +315,8 @@ Submit by 20:00 WIB. Commits made after the deadline are not judged.
   - Do: in a fresh Chrome profile, open the hosted link, review the sample, review your own files, and repeat with Wi-Fi off.
   - Done when: every step works without touching the code.
 
-- [ ] **6.2 Repo check**
+- [ ] **6.2 Repo check** (history scan done; the repo is not on GitHub yet)
+  - Pre-check (2026-11-25): a scan of the whole local history (21 commits, 82 files, 1.7 MB of patches, run through `rtk proxy git` after a first run read compressed output and scanned 0 commits) found 0 Google API keys, 0 env assignments with values, 0 UUID-like tokens, 0 private keys, 0 service-account files, and no .env file ever committed; its positive controls passed. LICENSE (Apache 2.0) is in the repo. No git remote is set.
   - Do: confirm the repo is public, the license shows, no secret is in the history, and the last commit is in.
   - Done when: a search of the repo for keys and tokens finds nothing.
 
