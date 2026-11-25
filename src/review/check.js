@@ -123,6 +123,31 @@ export async function translationCheck(g, screen, { app = APP, register = "Anda"
   return { ...result, source: r.where === "cloud" ? "cloud" : "laptop" };
 }
 
+// ---------- a better rewrite from the cloud (slice 3.5) ----------
+// Only on request, for one string, after the user has seen exactly what is sent:
+// cloudRewriteRequest() builds it, cloudRewrite() sends that same text.
+
+/** The exact prompt that would go to the cloud for this one finding. */
+export function cloudRewriteRequest(g, screen) {
+  const f = g.result.finding;
+  return `You fix one piece of interface text in an app${g.lang === "id" ? ", written in Indonesian" : ""}, following this wording guide.
+
+${g.lang === "id" ? "(Indonesian: use the base verb for buttons, the app's chosen address, and the terms Indonesian apps already use.)" : currentGuide().markdown}
+
+Screen: ${screen}
+Element: ${g.kind}
+${g.original ? `English original: "${g.original}"\n` : ""}Text: "${g.text}"
+Problem: ${PROBLEM_NAMES[f.problem] ?? f.problem}.
+
+Write the new text only, specific and about as short as the original. Reply with JSON only.`;
+}
+
+/** Sends the request from cloudRewriteRequest() (Cloud only). Returns { text, where, ms }. */
+export async function cloudRewrite(g, request) {
+  const r = await askJson(request, REWRITE_SCHEMA, { mode: "ONLY_IN_CLOUD", purpose: `one string you chose: "${g.text}"` });
+  return { text: unquote(r.data?.text), where: r.where, ms: r.ms };
+}
+
 // ---------- new text for the fix prompt (slice 2.2) ----------
 
 const REWRITE_SCHEMA = { type: "object", properties: { text: { type: "string" } }, required: ["text"] };

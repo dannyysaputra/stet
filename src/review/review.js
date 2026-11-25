@@ -3,7 +3,7 @@
 // Findings are numbered in screen order; the pins on the app and the list in the
 // panel are both drawn from the same groups, so they always match.
 import { KIND_NAMES, collectStrings, groupByKey } from "./collect.js";
-import { ID_ACCURACY, PROBLEM_NAMES, laptopModelStatus, modelCheck, newTextFor, quickCheck, translationCheck, warmUp } from "./check.js";
+import { ID_ACCURACY, PROBLEM_NAMES, cloudRewrite, cloudRewriteRequest, laptopModelStatus, modelCheck, newTextFor, quickCheck, translationCheck, warmUp } from "./check.js";
 import { OPEN, canCheckText, projectMode, setProjectMode } from "../project.js";
 import { buildFixPrompt, parseFixPrompt } from "./fix-prompt.js";
 import { PATTERN_SCHEMA, patternPrompt } from "./pattern.js";
@@ -105,7 +105,19 @@ function findingHtml(i, n) {
       ${fix}
       <span class="ran" data-where="${esc(ran.where)}">${esc(ran.text)}</span>
     </label>
+    <div class="ask">${askHtml(g, i)}</div>
   </li>`;
+}
+
+// "Ask the cloud" (slice 3.5): first shows the exact text, then sends it on a second press.
+function askHtml(g, i) {
+  if (g.asking === "busy") return `<span class="dim">Asking the cloud...</span>`;
+  if (g.asking === "confirm")
+    return `<p class="dim">This exact text goes to the cloud model (${g.askRequest.length.toLocaleString("en")} characters, only this string from your app):</p>
+      <pre class="payload">${esc(g.askRequest)}</pre>
+      <button type="button" class="quiet" data-ask="send" data-i="${i}">Send it</button> <button type="button" class="quiet" data-ask="cancel" data-i="${i}">Cancel</button>`;
+  if (g.askNote) return `<span class="dim">${esc(g.askNote)}</span>`;
+  return `<button type="button" class="quiet small" data-ask="show" data-i="${i}">Ask the cloud for a better rewrite</button>`;
 }
 
 function renderFindings() {
@@ -159,6 +171,37 @@ const placeSoon = () => {
   cancelAnimationFrame(placing);
   placing = requestAnimationFrame(placePins);
 };
+
+findingsList.addEventListener("click", async (e) => {
+  const btn = e.target.closest("button[data-ask]");
+  if (!btn) return;
+  const g = groups[btn.dataset.i];
+  const action = btn.dataset.ask;
+  if (action === "show") {
+    if (projectMode() !== OPEN) {
+      g.askNote = "This project is Sealed: its text never goes to the cloud. Switch it to Open to ask the cloud.";
+    } else {
+      g.asking = "confirm";
+      g.askRequest = cloudRewriteRequest(g, screen);
+    }
+  } else if (action === "cancel") {
+    g.asking = null;
+  } else if (action === "send") {
+    g.asking = "busy";
+    renderFindings();
+    try {
+      const r = await cloudRewrite(g, g.askRequest);
+      g.next = r.text;
+      g.nextProblem = undefined;
+      g.cloudNext = true; // "Make fix prompt" keeps it
+      g.askNote = `Rewrite from the cloud in ${secs(r.ms)} (ran: ${r.where}).`;
+    } catch (err) {
+      g.askNote = `No answer from the cloud: ${err.message ?? err}`;
+    }
+    g.asking = null;
+  }
+  renderFindings();
+});
 
 findingsList.addEventListener("change", (e) => {
   const li = e.target.closest("li[data-i]");
@@ -273,6 +316,7 @@ async function review({ approved = false } = {}) {
   for (const [i, g] of groups.entries()) {
     g.result = g.error = null;
     g.next = g.nextProblem = undefined;
+    g.asking = g.askNote = g.askRequest = g.cloudNext = undefined;
     g.ticked = false;
     const quick = quickCheck(g);
     if (quick) {
@@ -350,6 +394,7 @@ makeFixBtn.addEventListener("click", async () => {
   for (const [n, i] of ticked.entries()) {
     const g = groups[i];
     fixStatus.textContent = `New text ${n + 1} of ${ticked.length}...`;
+    if (g.cloudNext) continue; // the user already asked the cloud for this one
     if (g.lang === "id") {
       // The translation check already gave a better translation.
       g.next = g.result.finding.rewrite ?? "";
@@ -638,6 +683,9 @@ for (const r of document.querySelectorAll('input[name="project"]')) {
   r.addEventListener("change", () => {
     setProjectMode(r.value);
     approveBox.hidden = true;
+    // A note such as "this project is Sealed" no longer holds once the setting changes.
+    for (const g of groups) g.askNote = g.asking = undefined;
+    renderFindings();
     progress.textContent =
       r.value === OPEN
         ? "Open: the laptop model first, the cloud when it is missing; Indonesian is checked in the cloud after you approve the strings."

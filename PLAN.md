@@ -230,7 +230,9 @@ By tonight Stet reviews the text of your own bilingual prototype, and not only t
   - Build: one project setting. In a Sealed project the text is only ever read by the laptop model. In an Open project the laptop model is tried first and the cloud is used when it is missing.
   - Done when: in a browser without the laptop model, an Open project works through the cloud and a Sealed project explains why it cannot run.
 
-- [ ] **3.5 Ask the cloud for a better rewrite (only if time)**
+- [x] **3.5 Ask the cloud for a better rewrite (only if time)**
+  - Result (2026-11-25): each finding on /review/ has "Ask the cloud for a better rewrite". In a Sealed project it explains that the text never goes to the cloud. In an Open project it first shows the exact prompt (only that one string from the app, with its kind, screen and problem, and the guide), and sends it on a second press (Cloud only). The ledger names the string. "Make fix prompt" keeps a rewrite that came from the cloud.
+  - Checked in Chrome on the new screen: Sealed showed the explanation and sent nothing; Open showed a 3,274-character prompt containing "Click here", the ledger then listed `one string you chose: "Click here", 3,274 characters. Ran: cloud.`, the counter read 1, and the new text was "View invoice" (2.0 s). A note from a Sealed press stayed in place after switching to Open; switching the setting now clears it (checked by reading the handler, not yet re-run live).
   - Build: a button on each finding that sends that one string to the cloud for a better rewrite, after showing what will be sent.
   - Done when: the counter shows exactly the strings you sent.
 
