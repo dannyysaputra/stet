@@ -316,7 +316,8 @@ Submit by 20:00 WIB. Commits made after the deadline are not judged.
   - Do: in a fresh Chrome profile, open the hosted link, review the sample, review your own files, and repeat with Wi-Fi off.
   - Done when: every step works without touching the code.
 
-- [ ] **6.2 Repo check** (history scan done; the repo is not on GitHub yet)
+- [ ] **6.2 Repo check** (public repo up; license shows once the PR is merged)
+  - Done (2026-11-25, owner's yes): public repo https://github.com/dannyysaputra/stet. main was created from the first commit (f846e8b) and everything else is in PR #1 from slice/0.1-hybrid-check (22 commits, mergeable). The history was scanned again just before the push (23 commits, 1.7 MB, 0 hits, input size asserted). GitHub does not show the license yet because main has only the first commit; LICENSE arrives with the PR.
   - Pre-check (2026-11-25): a scan of the whole local history (21 commits, 82 files, 1.7 MB of patches, run through `rtk proxy git` after a first run read compressed output and scanned 0 commits) found 0 Google API keys, 0 env assignments with values, 0 UUID-like tokens, 0 private keys, 0 service-account files, and no .env file ever committed; its positive controls passed. LICENSE (Apache 2.0) is in the repo. No git remote is set.
   - Do: confirm the repo is public, the license shows, no secret is in the history, and the last commit is in.
   - Done when: a search of the repo for keys and tokens finds nothing.
