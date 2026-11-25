@@ -4,6 +4,7 @@
 import { getAI, getGenerativeModel, GoogleAIBackend, InferenceMode } from "firebase/ai";
 import { firebaseApp, missingConfig } from "./firebase.js";
 import { recordSent } from "./seam.js";
+import { CapReached, cloudModel, cloudUsedToday, countCloudUse, dailyCloudCap } from "./config.js";
 
 export const MODES = {
   ONLY_ON_DEVICE: { mode: InferenceMode.ONLY_ON_DEVICE, label: "Laptop only", note: "Runs on the laptop model, or fails." },
@@ -12,9 +13,8 @@ export const MODES = {
   ONLY_IN_CLOUD: { mode: InferenceMode.ONLY_IN_CLOUD, label: "Cloud only", note: "Runs in the cloud, or fails." },
 };
 
-// The SDK requires a model name whenever inCloudParams is given. This is the
-// SDK's own default for hybrid use (firebase 13.x).
-const CLOUD_MODEL = import.meta.env.VITE_CLOUD_MODEL || "gemini-3.5-flash-lite";
+// The SDK requires a model name whenever inCloudParams is given. It comes from
+// Remote Config (src/config.js); the default is the SDK's own for hybrid use.
 const TEXT = { type: "text", languages: ["en"] };
 
 const ai = firebaseApp ? getAI(firebaseApp, { backend: new GoogleAIBackend() }) : null;
@@ -24,14 +24,15 @@ const queues = new Map();
 function modelFor(modeKey, { schema, image } = {}) {
   if (!ai) throw new Error(`Firebase is not configured. Missing: ${missingConfig.join(", ")}. See README.md.`);
   if (!MODES[modeKey]) throw new Error(`Unknown mode: ${modeKey}`);
-  const key = `${modeKey}|${schema ? JSON.stringify(schema) : "-"}|${image ? "image" : "text"}`;
+  const model = cloudModel();
+  const key = `${modeKey}|${model}|${schema ? JSON.stringify(schema) : "-"}|${image ? "image" : "text"}`;
   if (!models.has(key)) {
     models.set(
       key,
       getGenerativeModel(ai, {
         mode: MODES[modeKey].mode,
         inCloudParams: {
-          model: CLOUD_MODEL,
+          model,
           ...(schema ? { generationConfig: { responseMimeType: "application/json", responseJsonSchema: schema, temperature: 0 } } : {}),
         },
         onDeviceParams: {
@@ -71,6 +72,9 @@ function whereItRan(response) {
  * every failed call in a mode that could have reached the cloud.
  */
 export async function ask(prompt, { mode = "PREFER_ON_DEVICE", schema, image, purpose = "a prompt" } = {}) {
+  // The daily cloud cap (Remote Config), checked before any call that may reach the cloud.
+  const mayUseCloud = mode === "ONLY_IN_CLOUD" || mode === "PREFER_IN_CLOUD" || (mode === "PREFER_ON_DEVICE" && (await laptopModelStatus()) !== "available");
+  if (mayUseCloud && cloudUsedToday() >= dailyCloudCap()) throw new CapReached(dailyCloudCap());
   const { key, model } = modelFor(mode, { schema, image });
   const request = image ? [prompt, { inlineData: { mimeType: image.mimeType, data: image.data } }] : prompt;
   const sent = (where) => recordSent({ purpose, chars: prompt.length, image: Boolean(image), where, mode });
@@ -80,12 +84,18 @@ export async function ask(prompt, { mode = "PREFER_ON_DEVICE", schema, image, pu
     try {
       result = await model.generateContent(request);
     } catch (e) {
-      if (mode !== "ONLY_ON_DEVICE") sent("failed, may have reached the cloud");
+      if (mode !== "ONLY_ON_DEVICE") {
+        sent("failed, may have reached the cloud");
+        if (mayUseCloud) countCloudUse();
+      }
       throw e;
     }
     const ms = Math.round(performance.now() - started);
     const where = whereItRan(result.response);
-    if (where !== "laptop") sent(where);
+    if (where !== "laptop") {
+      sent(where);
+      countCloudUse();
+    }
     return { text: result.response.text(), where, ms, mode };
   });
 }

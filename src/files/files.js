@@ -7,6 +7,7 @@ import { buildFixPrompt } from "../review/fix-prompt.js";
 import { pairFiles, parsePasted } from "./parse.js";
 import { OPEN, SEALED, canCheckText, projectMode, setProjectMode } from "../project.js";
 import { onSeamChange } from "../seam.js";
+import { severityShown } from "../config.js";
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
@@ -89,7 +90,7 @@ showLaptopState();
 
 // ---------- the review ----------
 
-const isFinding = (g) => g.result?.finding.verdict === "problem";
+const isFinding = (g) => g.result?.finding.verdict === "problem" && severityShown(g.result.finding.severity);
 
 // In an Open project, text goes to the cloud only after the user has seen exactly
 // which strings will be sent: the Indonesian pairs always (decision 2), and the

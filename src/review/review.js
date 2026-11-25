@@ -5,6 +5,11 @@
 import { KIND_NAMES, collectStrings, groupByKey } from "./collect.js";
 import { ID_ACCURACY, PROBLEM_NAMES, cloudRewrite, cloudRewriteRequest, laptopModelStatus, modelCheck, newTextFor, quickCheck, translationCheck, warmUp } from "./check.js";
 import { OPEN, canCheckText, projectMode, setProjectMode } from "../project.js";
+import { configReady, configSource, cloudModel, dailyCloudCap, minSeverity, severityShown } from "../config.js";
+
+configReady.then(() => {
+  window.__config = { source: configSource(), cloudModel: cloudModel(), dailyCloudCap: dailyCloudCap(), minSeverity: minSeverity() };
+});
 import { buildFixPrompt, parseFixPrompt } from "./fix-prompt.js";
 import { PATTERN_SCHEMA, patternPrompt } from "./pattern.js";
 import { askJson } from "../ai.js";
@@ -41,7 +46,8 @@ function screenName(doc) {
   return doc.getElementById("screen")?.dataset.screen || doc.location.hash.replace(/^#\//, "");
 }
 
-const isFinding = (g) => g.result?.finding.verdict === "problem";
+// A finding is shown when it is at least as serious as Remote Config's min_severity.
+const isFinding = (g) => g.result?.finding.verdict === "problem" && severityShown(g.result.finding.severity);
 
 // Group indexes with a finding, in screen order. Finding number = position + 1.
 const findingIndexes = () => groups.flatMap((g, i) => (isFinding(g) ? [i] : []));

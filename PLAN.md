@@ -244,7 +244,11 @@ By tonight a stranger can open a link and use Stet, with or without the laptop m
   - Build: deploy to Firebase Hosting, with App Check using a production provider for the hosted address and the debug provider only on your machine.
   - Done when: the hosted link works in a fresh Chrome profile.
 
-- [ ] **4.2 Remote Config (parallel)**
+- [ ] **4.2 Remote Config (parallel)** (built; the console step is yours)
+  - Result (2026-11-25): src/config.js reads cloud_model, daily_cloud_cap and min_severity from Firebase Remote Config, with defaults in the code (gemini-3.5-flash-lite, 60, low) so Stet works before a template exists and offline. src/ai.js takes the cloud model name from it and checks the cap before any call that may reach the cloud; the count is kept per browser per day. Over the cap, cloud steps say "Today's cloud limit for this browser is reached (60 calls). Laptop steps keep working; the cloud steps are back tomorrow." Findings less serious than min_severity are not shown.
+  - Checked in Chrome: the fetch succeeded with no template published (values = defaults); with the day's count set past the cap, "Write the guide" showed the message and nothing was sent (ledger 0, 0 model API requests).
+  - Limit: the cap is counted in the browser, so it slows ordinary visitors but is not a hard limit; App Check and the project's quota are.
+  - Still to do (you, in the Firebase console): publish a template with daily_cloud_cap, then change it and confirm the app follows within the fetch interval (1 hour on the hosted build).
   - Build: the cloud model name, the daily usage cap for each visitor, and the seriousness threshold all come from Remote Config.
   - Done when: changing the cap in the Firebase console changes the app without a new deploy.
 
@@ -252,7 +256,7 @@ By tonight a stranger can open a link and use Stet, with or without the laptop m
   - Build: guides, standing rules and counts are saved to Firestore for each visitor. Text from a Sealed project is never saved to the cloud.
   - Done when: a guide survives a reload, and Firestore holds no app text for a Sealed project.
 
-- [ ] **4.4 First run and the no-model path** (built; the usage-cap message comes with 4.2)
+- [x] **4.4 First run and the no-model path** (the usage-cap message came with 4.2)
   - Result (2026-11-25): the first page explains the laptop model in two sentences, shows its state in plain words (ready, not downloaded, downloading, unavailable, unsupported), offers "Download the laptop model" with a progress bar when Chrome can download it (only from the button: browsers require a click), says what happens without it (Open projects use the cloud after approval; Sealed projects wait), and leads to "Review the sample app" or "Review your own text".
   - Checked in Chrome: from opening the first page to the first findings pinned on the sample (4 pins from the plain rules) took 10.8 s, including the test script's own delays; the laptop model's findings follow over about a minute.
   - Build: a first screen that explains the laptop model, shows the download with progress, and says what happens without it. Add the message shown when the usage cap is reached.
