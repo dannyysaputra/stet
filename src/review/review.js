@@ -3,7 +3,8 @@
 // Findings are numbered in screen order; the pins on the app and the list in the
 // panel are both drawn from the same groups, so they always match.
 import { KIND_NAMES, collectStrings, groupByKey } from "./collect.js";
-import { PROBLEM_NAMES, laptopModelStatus, modelCheck, quickCheck, warmUp } from "./check.js";
+import { PROBLEM_NAMES, laptopModelStatus, modelCheck, newTextFor, quickCheck, warmUp } from "./check.js";
+import { buildFixPrompt } from "./fix-prompt.js";
 import { onSeamChange } from "../seam.js";
 import { MAX_GUIDE_CHARS, currentGuide, resetGuide, saveEditedGuide, writeGuideFromBrief } from "../guide.js";
 
@@ -25,6 +26,13 @@ const secs = (ms) => `${(ms / 1000).toFixed(1)} s`;
 let groups = [];
 let screen = "";
 let run = 0; // bumped to stop a review in progress
+let reviewing = false;
+
+// Where the sample app keeps its text. The fix prompt names this file and key.
+const SOURCE_FILE = "src/sample/strings.js";
+const makeFixBtn = document.getElementById("make-fix");
+const fixBox = document.getElementById("fix-prompt");
+const fixStatus = document.getElementById("fix-status");
 
 function screenName(doc) {
   return doc.getElementById("screen")?.dataset.screen || doc.location.hash.replace(/^#\//, "");
@@ -75,14 +83,23 @@ function findingHtml(i, n) {
   const g = groups[i];
   const f = g.result.finding;
   const ran = ranLabel(g.result);
-  const fix = f.rewrite ? `Try: "${esc(f.rewrite)}"` : f.note ? esc(f.note) : "";
+  const fix =
+    g.next !== undefined
+      ? g.next
+        ? `<span class="fix new">New: "${esc(g.next)}"</span>${g.nextProblem ? `<span class="fix warn">Check this: ${esc(g.nextProblem)}.</span>` : ""}`
+        : `<span class="fix warn">No new text yet: write it in the fix prompt.</span>`
+      : f.rewrite
+        ? `<span class="fix">Try: "${esc(f.rewrite)}"</span>`
+        : f.note
+          ? `<span class="fix">${esc(f.note)}</span>`
+          : "";
   return `<li data-i="${i}" data-severity="${esc(f.severity)}">
     <input type="checkbox" id="f-${i}" ${g.ticked ? "checked" : ""}>
     <label for="f-${i}">
       <span class="num">${n}</span>
       <b>${esc(PROBLEM_NAMES[f.problem] ?? "Problem")}</b>, ${esc(f.severity)}
       <span class="quote">"${esc(g.text)}" <span class="dim">(${esc(KIND_NAMES[g.kind] ?? g.kind)}${g.els.length > 1 ? `, x${g.els.length}` : ""})</span></span>
-      ${fix ? `<span class="fix">${fix}</span>` : ""}
+      ${fix}
       <span class="ran" data-where="${esc(ran.where)}">${esc(ran.text)}</span>
     </label>
   </li>`;
@@ -92,6 +109,8 @@ function renderFindings() {
   const idx = findingIndexes();
   const ticked = idx.filter((i) => groups[i].ticked).length;
   findingsCount.textContent = idx.length ? `${idx.length}, ${ticked} ticked` : "";
+  makeFixBtn.disabled = ticked === 0 || reviewing;
+  if (!fixBox.hidden) refreshFixPrompt();
   findingsList.innerHTML = idx.length
     ? idx.map((i, k) => findingHtml(i, k + 1)).join("")
     : `<li class="none dim">${groups.some((g) => g.result) ? "No findings on this screen." : "Press Review to check this screen."}</li>`;
@@ -167,12 +186,14 @@ function show() {
   textCount.textContent = groups.length;
   progress.textContent = "";
   list.innerHTML = groups.map(rowHtml).join("");
+  hideFix();
   renderFindings();
   reviewBtn.disabled = !groups.length;
 }
 
 function stop() {
   run++;
+  reviewing = false;
   stopBtn.hidden = true;
   reviewBtn.disabled = false;
   for (const [i, g] of groups.entries()) if (g.pending) (g.pending = false), renderRow(i);
@@ -187,6 +208,8 @@ async function review() {
     return;
   }
   const me = ++run;
+  reviewing = true;
+  hideFix();
   const started = performance.now();
   reviewBtn.disabled = true;
   stopBtn.hidden = false;
@@ -218,6 +241,7 @@ async function review() {
   const forModel = [];
   for (const [i, g] of groups.entries()) {
     g.result = g.error = null;
+    g.next = g.nextProblem = undefined;
     g.ticked = false;
     const quick = quickCheck(g);
     if (quick) {
@@ -248,12 +272,83 @@ async function review() {
     report(false);
   }
   report(true);
+  reviewing = false;
   stopBtn.hidden = true;
   reviewBtn.disabled = false;
+  renderFindings();
   window.__lastReview = { screen, guideId: guide.id, ms: Math.round(performance.now() - started), counts, groups: groups.map(({ els, ...g }) => g) };
 }
 
 reviewBtn.addEventListener("click", review);
+
+// ---------- the fix prompt (slice 2.2) ----------
+
+const fixLabel = document.getElementById("fix-label");
+const fixActions = document.getElementById("fix-actions");
+const copyStatus = document.getElementById("copy-status");
+
+function hideFix() {
+  fixBox.hidden = fixLabel.hidden = fixActions.hidden = true;
+  fixStatus.textContent = copyStatus.textContent = "";
+}
+
+// The prompt is rebuilt from the ticked findings whenever a tick changes.
+function refreshFixPrompt() {
+  const items = findingIndexes()
+    .filter((i) => groups[i].ticked)
+    .map((i) => {
+      const g = groups[i];
+      return { key: g.key, kind: g.kind, screen, count: g.els.length, old: g.text, next: g.next ?? "", problem: PROBLEM_NAMES[g.result.finding.problem] ?? "Problem" };
+    });
+  const { text, missing } = buildFixPrompt({ app: "Lumbung", file: SOURCE_FILE, items });
+  fixBox.value = text;
+  fixBox.rows = Math.min(18, items.length + 6);
+  window.__fixPrompt = { text, lines: items.length, missing };
+  return { lines: items.length, missing };
+}
+
+makeFixBtn.addEventListener("click", async () => {
+  const me = run;
+  const ticked = findingIndexes().filter((i) => groups[i].ticked);
+  const others = groups.map((g) => g.text).filter(Boolean).slice(0, 25);
+  const started = performance.now();
+  makeFixBtn.disabled = reviewBtn.disabled = true;
+  let written = 0;
+  for (const [n, i] of ticked.entries()) {
+    const g = groups[i];
+    fixStatus.textContent = `New text ${n + 1} of ${ticked.length}...`;
+    try {
+      const r = await newTextFor(g, screen, others);
+      if (me !== run) return; // the screen changed
+      if (r.source === "laptop") written++;
+      g.next = r.problem && (!r.text || r.text.toLowerCase() === g.text.toLowerCase()) ? "" : r.text;
+      g.nextProblem = r.problem;
+    } catch (e) {
+      if (me !== run) return;
+      g.next = "";
+      g.nextProblem = `the laptop model failed (${e.message ?? e})`;
+    }
+  }
+  fixBox.hidden = fixLabel.hidden = fixActions.hidden = false;
+  renderFindings();
+  const { lines, missing } = refreshFixPrompt();
+  const flagged = ticked.filter((i) => groups[i].next && groups[i].nextProblem).length;
+  fixStatus.textContent =
+    `${lines} lines in ${secs(performance.now() - started)}. ${written} new texts written on the laptop.` +
+    (missing ? ` ${missing} still need your text: look for "(write the new text here)".` : "") +
+    (flagged ? ` ${flagged} new text still fails a plain rule: check it before sending.` : "");
+  makeFixBtn.disabled = reviewBtn.disabled = false;
+});
+
+document.getElementById("copy-fix").addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(fixBox.value);
+    copyStatus.textContent = "Copied.";
+  } catch {
+    fixBox.select();
+    copyStatus.textContent = document.execCommand("copy") ? "Copied." : "Select the text and copy it by hand.";
+  }
+});
 stopBtn.addEventListener("click", () => {
   stop();
   progress.textContent += " Stopped.";

@@ -6,7 +6,7 @@
 // Note: the rules were written with this data in view, so its hit rate is optimistic.
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { parseTerms, ruleCheck, usedInBrief } from "../src/review/rules.js";
+import { copiedExample, parseTerms, ruleCheck, usedInBrief } from "../src/review/rules.js";
 
 const rows = JSON.parse(readFileSync(resolve(import.meta.dirname, "../data/eval/en-strings.json"), "utf8"));
 
@@ -70,6 +70,19 @@ for (const [word, want] of BRIEF_CONTROL) {
   if (usedInBrief(word, BRIEF) !== want) fail(`usedInBrief("${word}") should be ${want}`);
 }
 
+// New text copied from the guide's examples is refused unless it is about the screen.
+const SCREEN = "Invoice Creation Module Line items No data Click here new preview Link to #/new Save draft Submit";
+const EXAMPLE_CONTROL = [
+  ["Read the refund policy", SCREEN, true],
+  ["read the refund policy", SCREEN, true],
+  ["Send invoice", SCREEN, false], // a guide example, but "invoice" is on this screen
+  ["Preview the invoice", SCREEN, false], // not a guide example
+  ["Read the refund policy", "Refund policy settings", false],
+];
+for (const [text, screen, want] of EXAMPLE_CONTROL) {
+  if (copiedExample(text, starterGuide, screen) !== want) fail(`copiedExample("${text}") should be ${want}`);
+}
+
 let hits = 0;
 let rightKind = 0;
 const byType = {};
@@ -91,4 +104,4 @@ if (failed) {
   console.log(`FAIL check-rules: ${failed} failure(s).`);
   process.exit(1);
 }
-console.log(`OK check-rules: ${CONTROL.length} controls, ${TERM_CONTROL.length} term controls and ${BRIEF_CONTROL.length} brief controls pass, 0 false alarms, 0 wrong kinds.`);
+console.log(`OK check-rules: ${CONTROL.length} controls, ${TERM_CONTROL.length} term controls, ${BRIEF_CONTROL.length} brief controls and ${EXAMPLE_CONTROL.length} example controls pass, 0 false alarms, 0 wrong kinds.`);

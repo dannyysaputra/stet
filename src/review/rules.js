@@ -24,6 +24,23 @@ const VAGUE_BUTTONS = new Set(["submit", "ok", "okay", "yes", "go", "confirm", "
 // Link text that does not say where it goes (guide: vague_link).
 const VAGUE_LINKS = new Set(["click here", "here", "read more", "learn more", "more", "link", "this link", "see more"]);
 
+// ---------- new text copied from the guide's examples ----------
+// The laptop model copies the guide's examples (measured 2026-11-25: "Click here"
+// became "Read the refund policy" in an invoicing app, three runs in a row). An
+// example is fine as new text only when one of its words belongs to the screen.
+
+const COMMON = new Set(["this", "that", "your", "with", "from", "have", "will", "here", "what", "when", "into"]);
+const wordsOf = (s) => (String(s).toLowerCase().match(/[a-z]{4,}/g) ?? []).filter((w) => !COMMON.has(w)).map((w) => w.replace(/s$/, ""));
+
+/** True if text is one of the guide's quoted examples and none of its words is on the screen. */
+export function copiedExample(text, guideMarkdown, screenText) {
+  const t = String(text).trim().toLowerCase();
+  const examples = new Set([...String(guideMarkdown).matchAll(/"([^"\n]{3,60})"/g)].map((m) => m[1].toLowerCase()));
+  if (!examples.has(t)) return false;
+  const onScreen = new Set(wordsOf(screenText));
+  return !wordsOf(t).some((w) => onScreen.has(w));
+}
+
 // ---------- preferred terms (guide: inconsistent_term) ----------
 // A guide written from a brief has a "| Use | Not |" table. The laptop model does
 // not apply it reliably to one string at a time (measured 2026-11-25: "Customer

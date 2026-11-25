@@ -48,6 +48,14 @@
       <h2>Findings <span id="findings-count" class="dim"></span></h2>
       <p class="dim">Ticked findings go into the fix prompt.</p>
       <ol id="findings"></ol>
+      <div class="row"><button id="make-fix" type="button" disabled>Make fix prompt</button></div>
+      <p id="fix-status" class="dim" aria-live="polite"></p>
+      <label for="fix-prompt" id="fix-label" class="fix-label" hidden>Fix prompt for your coding agent (you can edit it)</label>
+      <textarea id="fix-prompt" rows="10" spellcheck="false" hidden></textarea>
+      <div class="row" id="fix-actions" hidden>
+        <button id="copy-fix" type="button" class="quiet">Copy</button>
+        <span id="copy-status" class="dim" aria-live="polite"></span>
+      </div>
 
       <details class="all-text">
         <summary>All text on this screen (<span id="text-count">0</span>)</summary>

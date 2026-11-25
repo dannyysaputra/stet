@@ -38,6 +38,17 @@ function contextFor(doc, el) {
     const name = fieldName(doc, doc.querySelector(`[aria-describedby~="${CSS.escape(el.id)}"]`));
     if (name) return `Shown under the "${name}" field.`;
   }
+  // A link's destination: without it, a better link text can only be guessed.
+  const href = el.closest("a[href]")?.getAttribute("href");
+  if (href) return `Link to ${href}`;
+  // Messages that belong to the label just above them ("No data" under "Line items").
+  if (["empty", "helper", "error", "status"].includes(el.dataset.kind)) {
+    let prev = el.previousElementSibling;
+    for (let hops = 0; prev && hops < 3; hops++, prev = prev.previousElementSibling) {
+      const label = prev.matches('[data-kind="label"], [data-kind="heading"]') ? prev : prev.querySelector('[data-kind="label"], [data-kind="heading"]');
+      if (label) return `Shown under the "${clean(label.textContent)}" ${label.dataset.kind}.`;
+    }
+  }
   return "";
 }
 
