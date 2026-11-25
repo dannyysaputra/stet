@@ -66,7 +66,8 @@ Today decides whether Stet goes ahead and where the Indonesian check runs. The d
   - Done when: /check shows one reply from the laptop model and one from the cloud model, each labelled with where it ran.
   - (you) Create the Firebase project, turn on AI Logic, register the debug token, and join the hackathon on Devpost.
 
-- [ ] **0.2 Test data**
+- [x] **0.2 Test data**
+  - Result (2026-11-25): data/eval/en-strings.json (150: 60 ok, 90 problems in 8 kinds, 20 of them generated filler), data/eval/id-pairs.json (80: 40 ok, 40 problems in 4 kinds), wording-guide.md, id-rules.md, and id-pairs.csv for review. `npm run eval:data` checks counts and schema and rewrites the CSV.
   - Build: 150 English interface strings with correct answers, 80 English and Indonesian pairs with correct answers, a wording guide, and the Indonesian rules.
   - Done when: the files exist and the pairs are also exported as a spreadsheet.
 

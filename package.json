@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "vite build && node scripts/check-dist.mjs",
     "preview": "vite preview",
-    "setup:env": "node scripts/setup-env.mjs"
+    "setup:env": "node scripts/setup-env.mjs",
+    "eval:data": "node scripts/validate-eval-data.mjs"
   },
   "dependencies": {
     "firebase": "^13.4.0"
