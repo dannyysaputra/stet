@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stet: hybrid check</title>
+<link rel="stylesheet" href="/src/base.css">
+</head>
+<body>
+<main>
+  <p><a href="/">Stet</a></p>
+  <h1>Hybrid check</h1>
+  <p class="dim">One prompt, sent through Firebase AI Logic in each of the four modes. Each reply is labelled with where it ran.</p>
+
+  <p class="warn" id="config" hidden></p>
+
+  <section class="box">
+    <dl class="facts">
+      <dt>Laptop model</dt><dd id="status">checking...</dd>
+      <dt>App Check</dt><dd id="appcheck"></dd>
+      <dt>Connection</dt><dd id="online"></dd>
+    </dl>
+    <div class="row">
+      <button type="button" id="prepare">Prepare the laptop model</button>
+      <span id="progress" class="dim"></span>
+    </div>
+  </section>
+
+  <section class="box">
+    <p class="dim">Prompt</p>
+    <p id="prompt"></p>
+  </section>
+
+  <div id="modes"></div>
+</main>
+<script type="module" src="/src/check.js"></script>
+</body>
+</html>
