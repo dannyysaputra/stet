@@ -1,24 +1,12 @@
 // Phase 0 accuracy test: prompts, schemas and scoring for the three checks.
 // Every model call goes through src/ai.js.
 import { askJson } from "./ai.js";
+import { EN_SCHEMA, enPrompt, wordingGuide } from "./english-check.js";
 import enStrings from "../data/eval/en-strings.json";
 import idPairs from "../data/eval/id-pairs.json";
-import wordingGuide from "../data/eval/wording-guide.md?raw";
 import idRules from "../data/eval/id-rules.md?raw";
 
-const EN_TYPES = ["sounds_generated", "vague_button", "blames_user", "unclear_message", "jargon", "leftover_text", "vague_link", "inconsistent_term"];
 const ID_TYPES = ["wrong_sense", "word_for_word", "wrong_verb_form", "mixed_register"];
-
-const EN_SCHEMA = {
-  type: "object",
-  properties: {
-    verdict: { type: "string", enum: ["ok", "problem"] },
-    problem: { type: "string", enum: [...EN_TYPES, "none"] },
-    severity: { type: "string", enum: ["high", "medium", "low", "none"] },
-    rewrite: { type: "string" },
-  },
-  required: ["verdict", "problem", "severity", "rewrite"],
-};
 
 const ID_SCHEMA = {
   type: "object",
@@ -36,18 +24,6 @@ const READ_SCHEMA = {
   properties: { texts: { type: "array", items: { type: "string" } } },
   required: ["texts"],
 };
-
-const enPrompt = (r) => `You review the interface text of an app, one piece at a time, against this wording guide.
-
-${wordingGuide}
-
-Judge this one piece of text.
-App: ${r.app}
-Screen: ${r.screen}
-Element: ${r.kind}
-${r.context ? `Context: ${r.context}\n` : ""}Text: "${r.text}"
-
-Reply with JSON only. If the text is fine, use verdict "ok", problem "none", severity "none" and rewrite "". Otherwise give the single best-matching problem kind, its seriousness, and a rewrite that follows the guide.`;
 
 const idPrompt = (r) => `You review Indonesian interface text against its English original, using these rules.
 

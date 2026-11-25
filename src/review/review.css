@@ -11,6 +11,15 @@
 #strings .text { overflow-wrap: anywhere; }
 #strings .count { color: var(--dim); font-size: 0.85rem; }
 #strings .key { grid-column: 2 / -1; color: var(--dim); font-size: 0.75rem; }
+#strings .verdict { grid-column: 2 / -1; font-size: 0.88rem; margin-top: 2px; }
+.verdict small { color: var(--dim); margin-left: 4px; }
+.verdict.ok { color: var(--dim); }
+.verdict.err { color: var(--red); }
+.verdict.problem { border-left: 3px solid var(--hi); padding-left: 8px; }
+.verdict.problem[data-severity="high"] { border-left-color: var(--red); }
+.verdict .rewrite { display: block; }
+#progress { margin-top: 10px; min-height: 1.5em; }
+button.quiet { background: var(--paper); color: var(--ink); border: 1.5px solid var(--line); }
 
 .kind { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; padding: 2px 7px; border-radius: 999px; background: var(--paper); color: var(--dim); white-space: nowrap; }
 .kind[data-kind="button"], .kind[data-kind="link"], .kind[data-kind="nav"] { background: var(--wash); color: var(--ink); }

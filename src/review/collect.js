@@ -19,15 +19,37 @@ export const KIND_NAMES = {
   toast: "notification",
 };
 
-// Returns one entry per element, in screen order: { key, kind, text, el }.
+const clean = (s) => (s ?? "").replace(/\s+/g, " ").trim();
+
+// The name of a form field, from its <label for> or its aria-label.
+function fieldName(doc, input) {
+  if (!input) return "";
+  const label = input.id ? doc.querySelector(`label[for="${CSS.escape(input.id)}"]`) : null;
+  return clean(label?.textContent || input.getAttribute("aria-label"));
+}
+
+// Where a piece of text sits, for text that means little on its own.
+function contextFor(doc, el) {
+  if (el.dataset.attr === "placeholder") {
+    const name = fieldName(doc, el);
+    return name ? `Hint inside the empty "${name}" field.` : "";
+  }
+  if (el.id) {
+    const name = fieldName(doc, doc.querySelector(`[aria-describedby~="${CSS.escape(el.id)}"]`));
+    if (name) return `Shown under the "${name}" field.`;
+  }
+  return "";
+}
+
+// Returns one entry per element, in screen order: { key, kind, text, context, el }.
 export function collectStrings(doc) {
   return [...doc.querySelectorAll("[data-s]")].map((el) => {
     const attr = el.dataset.attr;
-    const raw = attr ? el.getAttribute(attr) : el.textContent;
     return {
       key: el.dataset.s,
       kind: el.dataset.kind || "unknown",
-      text: (raw ?? "").replace(/\s+/g, " ").trim(),
+      text: clean(attr ? el.getAttribute(attr) : el.textContent),
+      context: contextFor(doc, el),
       el,
     };
   });
@@ -40,7 +62,7 @@ export function groupByKey(items) {
   for (const item of items) {
     const group = groups.get(item.key);
     if (group) group.els.push(item.el);
-    else groups.set(item.key, { key: item.key, kind: item.kind, text: item.text, els: [item.el] });
+    else groups.set(item.key, { key: item.key, kind: item.kind, text: item.text, context: item.context, els: [item.el] });
   }
   return [...groups.values()];
 }

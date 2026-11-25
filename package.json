@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && node scripts/check-dist.mjs",
+    "build": "node scripts/check-rules.mjs && vite build && node scripts/check-dist.mjs",
+    "check:rules": "node scripts/check-rules.mjs",
     "preview": "vite preview",
     "setup:env": "node scripts/setup-env.mjs",
     "eval:data": "node scripts/validate-eval-data.mjs"

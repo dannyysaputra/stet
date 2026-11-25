@@ -14,7 +14,13 @@
   </section>
   <aside class="panel" aria-labelledby="panel-title">
     <h1 id="panel-title">Text on this screen</h1>
-    <p id="summary" class="dim" aria-live="polite">Loading the app...</p>
+    <p id="summary" class="dim">Loading the app...</p>
+    <div class="row">
+      <button id="review" type="button" disabled>Review this screen</button>
+      <button id="stop" type="button" class="quiet" hidden>Stop</button>
+    </div>
+    <p id="progress" class="dim" aria-live="polite"></p>
+    <p id="warm" class="dim"></p>
     <ol id="strings"></ol>
   </aside>
 </div>
