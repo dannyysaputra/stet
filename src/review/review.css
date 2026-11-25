@@ -1,0 +1,23 @@
+/* Review page: the app on the left, the panel on the right. Stacks on narrow screens. */
+.review { display: grid; grid-template-columns: minmax(0, 1fr) 380px; height: 100vh; }
+.stage { padding: 16px; min-width: 0; }
+.stage iframe { width: 100%; height: 100%; border: 1.5px solid var(--line); border-radius: 14px; background: #fff; }
+.panel { border-left: 1.5px solid var(--line); background: var(--card); padding: 20px 16px; overflow-y: auto; }
+.panel h1 { font-size: 1.4rem; }
+
+#strings { list-style: none; margin: 12px 0 0; padding: 0; }
+#strings li { display: grid; grid-template-columns: auto 1fr auto; gap: 2px 10px; align-items: baseline; padding: 8px 6px; border-bottom: 1px solid var(--line); border-radius: 6px; cursor: default; }
+#strings li:hover, #strings li:focus { background: var(--wash); outline: none; }
+#strings .text { overflow-wrap: anywhere; }
+#strings .count { color: var(--dim); font-size: 0.85rem; }
+#strings .key { grid-column: 2 / -1; color: var(--dim); font-size: 0.75rem; }
+
+.kind { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; padding: 2px 7px; border-radius: 999px; background: var(--paper); color: var(--dim); white-space: nowrap; }
+.kind[data-kind="button"], .kind[data-kind="link"], .kind[data-kind="nav"] { background: var(--wash); color: var(--ink); }
+.kind[data-kind="error"], .kind[data-kind="toast"] { background: var(--hi); color: var(--hi-ink); }
+
+@media (max-width: 860px) {
+  .review { grid-template-columns: 1fr; height: auto; }
+  .stage iframe { height: 70vh; }
+  .panel { border-left: 0; border-top: 1.5px solid var(--line); }
+}

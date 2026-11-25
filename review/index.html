@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stet: review</title>
+<link rel="stylesheet" href="/src/base.css">
+<link rel="stylesheet" href="/src/review/review.css">
+</head>
+<body>
+<div class="review">
+  <section class="stage" aria-label="App under review">
+    <iframe id="app" src="/sample/" title="Sample app under review"></iframe>
+  </section>
+  <aside class="panel" aria-labelledby="panel-title">
+    <h1 id="panel-title">Text on this screen</h1>
+    <p id="summary" class="dim" aria-live="polite">Loading the app...</p>
+    <ol id="strings"></ol>
+  </aside>
+</div>
+<script type="module" src="/src/review/review.js"></script>
+</body>
+</html>

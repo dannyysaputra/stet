@@ -128,7 +128,8 @@ By tonight, pressing Review on the built-in sample app pins real findings from t
   - Build: three deliberately sloppy invoicing screens inside Stet (new invoice, invoice list, settings), in English, with every piece of text addressable.
   - Done when: you can click through the three screens at /sample.
 
-- [ ] **1.2 Collect the text**
+- [x] **1.2 Collect the text**
+  - Result (2026-11-25): /review/ shows the sample app in a frame with a panel beside it. src/review/collect.js reads every [data-s] element (placeholders from the attribute named by data-attr) and groups repeats by key; the panel lists kind, text, key and a repeat count, re-reads on every screen change, and outlines the matching elements when a row is pointed at. Checked in Chrome against src/sample/strings.js: new 20 of 20, list 22 pieces in 18 rows (Paid x2, More x4), settings 18 of 18; same order as the screen, 0 text and 0 kind mismatches. Negative check: removing data-attr from a placeholder makes its text empty, which the comparison flags.
   - Build: Stet reads every label, button, message and placeholder on the current screen, with the kind of element each one is.
   - Done when: a list of every string and its kind shows beside the screen.
 
