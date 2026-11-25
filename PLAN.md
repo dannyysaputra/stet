@@ -123,7 +123,8 @@ These bars are my judgment of what makes the product feel trustworthy. They are 
 
 By tonight, pressing Review on the built-in sample app pins real findings from the laptop model, with Wi-Fi off.
 
-- [ ] **1.1 Sample app**
+- [x] **1.1 Sample app**
+  - Result (2026-11-25): /sample/ with #/new, #/list and #/settings. All text lives in src/sample/strings.js; every element carries data-s (key) and data-kind. 20, 22 and 18 text elements per screen (56 unique keys), none empty. No AI calls in the sample.
   - Build: three deliberately sloppy invoicing screens inside Stet (new invoice, invoice list, settings), in English, with every piece of text addressable.
   - Done when: you can click through the three screens at /sample.
 

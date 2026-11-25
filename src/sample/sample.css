@@ -1,0 +1,44 @@
+/* The sample app's own look: a plain, generic invoicing app, unlike Stet's pages. */
+:root { color-scheme: light; --line: #d8dde6; --ink: #1d2330; --dim: #667085; --brand: #0f766e; --bad: #c62828; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #f6f7f9; color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { display: flex; align-items: center; gap: 24px; padding: 12px 24px; background: #fff; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.brand { font-weight: 700; color: var(--brand); }
+nav { display: flex; gap: 18px; }
+nav a { color: var(--dim); text-decoration: none; }
+nav a[aria-current="page"] { color: var(--ink); font-weight: 600; }
+main { max-width: 760px; margin: 24px auto; padding: 24px; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+h1 { font-size: 1.5rem; margin: 0 0 4px; }
+h2 { font-size: 1.1rem; margin: 0 0 6px; }
+.sub { color: var(--dim); margin: 0 0 18px; }
+.field { margin-bottom: 14px; display: grid; gap: 6px; }
+label, .lbl { font-weight: 600; font-size: 0.9rem; margin: 0; }
+input { font: inherit; padding: 9px 11px; border: 1px solid var(--line); border-radius: 8px; }
+input.bad { border-color: var(--bad); }
+.err { color: var(--bad); font-size: 0.88rem; margin: 0; }
+.items { border: 1px dashed var(--line); border-radius: 8px; padding: 12px; }
+.empty { color: var(--dim); margin: 0; }
+a { color: var(--brand); }
+button { font: inherit; font-weight: 600; border-radius: 8px; padding: 8px 14px; cursor: pointer; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+button.solid { background: var(--brand); border-color: var(--brand); color: #fff; }
+button.warn { background: var(--bad); border-color: var(--bad); color: #fff; }
+.items button { justify-self: start; }
+.actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; flex-wrap: wrap; }
+.titlebar { display: flex; justify-content: space-between; align-items: start; gap: 12px; flex-wrap: wrap; }
+.search { display: flex; gap: 8px; margin-bottom: 14px; }
+.search input { flex: 1; }
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; padding: 9px 8px; border-bottom: 1px solid var(--line); }
+th { font-size: 0.85rem; color: var(--dim); }
+td.num { font-variant-numeric: tabular-nums; }
+.badge { padding: 2px 8px; border-radius: 999px; font-size: 0.82rem; font-weight: 600; background: #eef2f6; }
+.badge.paid { background: #e6f4ea; color: #1e6b34; }
+.badge.overdue { background: #fdecea; color: var(--bad); }
+.badge.failed { background: #fff4e5; color: #8a4b00; }
+.toast { background: #e6f4ea; color: #1e6b34; border-radius: 8px; padding: 8px 12px; margin-bottom: 16px; font-weight: 600; }
+.card { border: 1px solid var(--line); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+.card.row { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.card.danger { border-color: #f3c0bb; margin-top: 24px; }
+.help { color: var(--dim); margin: 4px 0 0; font-size: 0.9rem; }
+.switch { display: flex; align-items: center; gap: 8px; }
+@media (max-width: 600px) { main { margin: 0; border-radius: 0; border-inline: 0; padding: 16px; } }
