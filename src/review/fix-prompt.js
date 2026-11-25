@@ -16,6 +16,27 @@ export function fixLine(item, file) {
   return `- ${where}: ${q(item.old)} -> ${next} (${item.problem})`;
 }
 
+const unq = (s) => s.replace(/\\"/g, '"');
+const LINE = /^- (.+?), key "((?:[^"\\]|\\.)*)" \([^)]*\): "((?:[^"\\]|\\.)*)" -> (?:"((?:[^"\\]|\\.)*)"|\(write the new text here\))/;
+
+/**
+ * Reads a fix prompt back into changes, the way an agent would follow it.
+ * Returns { changes: [{ file, key, old, next }], skipped: [{ line, reason }] }.
+ * A line without new text is skipped, and so is any other line that is not a change.
+ */
+export function parseFixPrompt(text) {
+  const changes = [];
+  const skipped = [];
+  for (const line of String(text).split("\n")) {
+    if (!line.startsWith("- ")) continue;
+    const m = line.match(LINE);
+    if (!m) skipped.push({ line, reason: "not a change line" });
+    else if (m[4] === undefined) skipped.push({ line, reason: "no new text" });
+    else changes.push({ file: m[1], key: unq(m[2]), old: unq(m[3]), next: unq(m[4]) });
+  }
+  return { changes, skipped };
+}
+
 /**
  * The whole prompt.
  * spec: { app, file, items: [...] }. Returns { text, missing: number of lines without new text }.

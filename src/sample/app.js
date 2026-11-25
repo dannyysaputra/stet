@@ -4,10 +4,24 @@ import { STRINGS, INVOICES } from "./strings.js";
 
 const lang = "en";
 const esc = (s) => s.replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+
+// Changed text, by key. Stet's "Apply to sample" writes it here in place of a
+// coding agent editing strings.js; "Reset sample text" clears it. The same key is
+// named in src/review/review.js (SAMPLE_TEXT_KEY).
+const OVERRIDES_KEY = "lumbung.text";
+function overrides() {
+  try {
+    return JSON.parse(localStorage.getItem(OVERRIDES_KEY) ?? "{}") ?? {};
+  } catch {
+    return {};
+  }
+}
+
+let changed = overrides();
 const text = (key) => {
   const s = STRINGS[key];
   if (!s) throw new Error(`Unknown string key: ${key}`);
-  return s[lang];
+  return typeof changed[key] === "string" ? changed[key] : s[lang];
 };
 // A visible string, wrapped so it can be found and replaced.
 const t = (key, tag = "span", attrs = "") => `<${tag} data-s="${key}" data-kind="${STRINGS[key].kind}"${attrs ? " " + attrs : ""}>${esc(text(key))}</${tag}>`;
@@ -94,6 +108,7 @@ const NAV = [
 ];
 
 function render() {
+  changed = overrides();
   const route = location.hash.replace(/^#\//, "") || "new";
   const screen = SCREENS[route] ? route : "new";
   document.getElementById("nav").innerHTML = NAV.map(

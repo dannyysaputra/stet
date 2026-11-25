@@ -4,7 +4,7 @@
 // panel are both drawn from the same groups, so they always match.
 import { KIND_NAMES, collectStrings, groupByKey } from "./collect.js";
 import { PROBLEM_NAMES, laptopModelStatus, modelCheck, newTextFor, quickCheck, warmUp } from "./check.js";
-import { buildFixPrompt } from "./fix-prompt.js";
+import { buildFixPrompt, parseFixPrompt } from "./fix-prompt.js";
 import { onSeamChange } from "../seam.js";
 import { MAX_GUIDE_CHARS, currentGuide, resetGuide, saveEditedGuide, writeGuideFromBrief } from "../guide.js";
 
@@ -277,6 +277,7 @@ async function review() {
   reviewBtn.disabled = false;
   renderFindings();
   window.__lastReview = { screen, guideId: guide.id, ms: Math.round(performance.now() - started), counts, groups: groups.map(({ els, ...g }) => g) };
+  if (recheck?.screen === screen && recheck.waiting) finishRecheck();
 }
 
 reviewBtn.addEventListener("click", review);
@@ -340,6 +341,104 @@ makeFixBtn.addEventListener("click", async () => {
   makeFixBtn.disabled = reviewBtn.disabled = false;
 });
 
+// ---------- apply to the sample and re-check (slice 2.3) ----------
+// "Apply to sample" does what a coding agent would do with the prompt: it reads
+// the prompt as it stands in the box (edits included) and changes the sample's
+// text. The sample keeps changed text by key in its own storage, in place of an
+// edited src/sample/strings.js. Then Stet reviews the screen again and marks each
+// earlier finding resolved or still open.
+
+const SAMPLE_TEXT_KEY = "lumbung.text"; // the key src/sample/app.js reads
+const recheckBox = document.getElementById("recheck");
+let recheck = null; // { screen, before: [{ key, text, problem }], applied: Set, skipped, waiting }
+
+function sampleText() {
+  try {
+    return JSON.parse(localStorage.getItem(SAMPLE_TEXT_KEY) ?? "{}") ?? {};
+  } catch {
+    return {};
+  }
+}
+
+document.getElementById("apply-fix").addEventListener("click", () => {
+  const { changes, skipped } = parseFixPrompt(fixBox.value);
+  const current = new Map(groups.map((g) => [g.key, g.text]));
+  const apply = [];
+  const notFound = [];
+  for (const c of changes) {
+    // An agent finds the text by its old value: a line whose old text is not in the app is not applied.
+    if (current.get(c.key) === c.old) apply.push(c);
+    else notFound.push({ line: `${c.key}: "${c.old}"`, reason: current.has(c.key) ? "the old text is not what the app shows" : "no such key on this screen" });
+  }
+  const text = sampleText();
+  for (const c of apply) text[c.key] = c.next;
+  try {
+    localStorage.setItem(SAMPLE_TEXT_KEY, JSON.stringify(text));
+  } catch {
+    fixStatus.textContent = "Could not change the sample: this browser blocks storage for the page.";
+    return;
+  }
+  recheck = {
+    screen,
+    before: findingIndexes().map((i) => ({ key: groups[i].key, text: groups[i].text, problem: groups[i].result.finding.problem })),
+    applied: new Set(apply.map((c) => c.key)),
+    skipped: [...skipped, ...notFound],
+    waiting: true,
+  };
+  renderRecheck(`Applied ${apply.length} change${apply.length === 1 ? "" : "s"} to the sample. Reviewing the screen again...`);
+  frame.contentWindow.location.reload(); // the load handler re-reads the screen and the review starts
+});
+
+document.getElementById("reset-sample").addEventListener("click", () => {
+  try {
+    localStorage.removeItem(SAMPLE_TEXT_KEY);
+  } catch {
+    // nothing stored
+  }
+  recheck = null;
+  renderRecheck("");
+  frame.contentWindow.location.reload();
+});
+
+// Each earlier finding, judged against the new review of the same screen.
+function finishRecheck() {
+  recheck.waiting = false;
+  const now = new Map(groups.map((g) => [g.key, g]));
+  recheck.results = recheck.before.map((b) => {
+    const g = now.get(b.key);
+    if (!g) return { ...b, status: "open", why: "no longer on the screen, so it could not be checked" };
+    if (g.text === b.text) return { ...b, status: "open", why: recheck.applied.has(b.key) ? "the text did not change" : "not changed" };
+    if (isFinding(g)) return { ...b, now: g.text, status: "open", why: `the new text is still a problem: ${PROBLEM_NAMES[g.result.finding.problem] ?? "problem"}` };
+    if (g.error) return { ...b, now: g.text, status: "open", why: "the new text could not be checked" };
+    return { ...b, now: g.text, status: "resolved" };
+  });
+  const resolved = recheck.results.filter((r) => r.status === "resolved").length;
+  const fresh = findingIndexes().filter((i) => !recheck.before.some((b) => b.key === groups[i].key)).length;
+  renderRecheck(
+    `Re-check: ${resolved} of ${recheck.results.length} findings resolved, ${recheck.results.length - resolved} still open.` +
+      (fresh ? ` ${fresh} new finding${fresh === 1 ? "" : "s"} on text that was fine before.` : "") +
+      (recheck.skipped.length ? ` ${recheck.skipped.length} line${recheck.skipped.length === 1 ? "" : "s"} of the prompt not applied.` : ""),
+  );
+  window.__recheck = { resolved, open: recheck.results.length - resolved, fresh, results: recheck.results, skipped: recheck.skipped };
+}
+
+function renderRecheck(summaryText) {
+  if (!summaryText) {
+    recheckBox.hidden = true;
+    recheckBox.innerHTML = "";
+    return;
+  }
+  recheckBox.hidden = false;
+  const rows = (recheck?.results ?? [])
+    .map(
+      (r) => `<li data-status="${r.status}"><b>${r.status === "resolved" ? "Resolved" : "Still open"}</b>: "${esc(r.text)}"${r.now ? ` -> "${esc(r.now)}"` : ""}
+        <span class="dim">${esc(PROBLEM_NAMES[r.problem] ?? r.problem)}${r.why ? `; ${esc(r.why)}` : ""}</span></li>`,
+    )
+    .join("");
+  const skipped = (recheck?.skipped ?? []).map((s) => `<li data-status="skipped">Not applied: ${esc(s.line)} <span class="dim">(${esc(s.reason)})</span></li>`).join("");
+  recheckBox.innerHTML = `<p>${esc(summaryText)}</p>${rows || skipped ? `<ul>${rows}${skipped}</ul>` : ""}`;
+}
+
 document.getElementById("copy-fix").addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(fixBox.value);
@@ -375,6 +474,8 @@ function attach() {
   frame.contentWindow.addEventListener("scroll", placeSoon);
   frame.contentWindow.addEventListener("resize", placeSoon);
   show();
+  // After "Apply to sample" the app reloads with its new text: review it again.
+  if (recheck?.waiting && recheck.screen === screen) review();
 }
 frame.addEventListener("load", attach);
 // The frame may have finished loading before this module ran.

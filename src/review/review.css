@@ -17,6 +17,12 @@
 .fix-label { display: block; margin: 12px 0 4px; font-size: 0.88rem; font-weight: 600; }
 #fix-prompt { width: 100%; font: 0.8rem/1.45 ui-monospace, Consolas, monospace; padding: 8px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); resize: vertical; }
 #findings .fix.new { font-weight: 600; }
+.recheck { margin-top: 14px; padding: 10px 12px; border-radius: 10px; background: var(--wash); }
+.recheck p { margin: 0 0 6px; font-weight: 600; }
+.recheck ul { margin: 0; padding-left: 18px; font-size: 0.88rem; }
+.recheck li { margin: 4px 0; overflow-wrap: anywhere; }
+.recheck li[data-status="resolved"] b { color: var(--ink); }
+.recheck li[data-status="open"] b, .recheck li[data-status="skipped"] { color: var(--red); }
 #findings .fix.warn { color: var(--red); }
 .stage { padding: 16px; min-width: 0; position: relative; }
 .pins { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }

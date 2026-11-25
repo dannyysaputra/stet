@@ -25,6 +25,7 @@
       <div class="row">
         <button id="review" type="button" disabled>Review this screen</button>
         <button id="stop" type="button" class="quiet" hidden>Stop</button>
+        <button id="reset-sample" type="button" class="quiet">Reset sample text</button>
       </div>
       <p id="progress" class="dim" aria-live="polite"></p>
       <p id="warm" class="dim"></p>
@@ -45,6 +46,8 @@
         <p id="guide-status" class="dim" aria-live="polite"></p>
       </details>
 
+      <div id="recheck" class="recheck" aria-live="polite" hidden></div>
+
       <h2>Findings <span id="findings-count" class="dim"></span></h2>
       <p class="dim">Ticked findings go into the fix prompt.</p>
       <ol id="findings"></ol>
@@ -54,6 +57,7 @@
       <textarea id="fix-prompt" rows="10" spellcheck="false" hidden></textarea>
       <div class="row" id="fix-actions" hidden>
         <button id="copy-fix" type="button" class="quiet">Copy</button>
+        <button id="apply-fix" type="button" class="quiet">Apply to sample</button>
         <span id="copy-status" class="dim" aria-live="polite"></span>
       </div>
 

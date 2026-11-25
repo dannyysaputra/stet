@@ -181,7 +181,10 @@ By tonight the whole English loop runs: brief, guide, review, fix prompt, re-che
   - Build: the ticked findings become one prompt for a coding agent, with a copy button.
   - Done when: every line of the prompt names the place, the old text and the new text.
 
-- [ ] **2.3 Re-check**
+- [x] **2.3 Re-check**
+  - Result (2026-11-25): "Apply to sample" reads the fix prompt as it stands in the box (edits included) with parseFixPrompt, the way an agent would follow it, and changes the sample's text. The sample keeps changed text by key in its own browser storage ("lumbung.text"), standing in for an edited src/sample/strings.js; "Reset sample text" clears it. A line whose old text is not what the app shows is not applied and is listed. The sample reloads, Stet reviews the screen again (unchanged text reuses its verdicts, so only changed text goes to the laptop model), and each earlier finding is marked Resolved (the text changed and the new text has no finding) or Still open (not changed, or the new text is still a problem), with a count of new findings on text that was fine before.
+  - Checked in Chrome on the new screen: 9 findings, one unticked, 8 lines in the prompt, one line's old text deliberately broken, so 7 applied. The app showed the new text for exactly those 7 keys and the original text for the rest. Stet reported 6 of 9 resolved and 3 still open (the broken line, "not applied"; the subtitle, whose new text was still filler; the unticked link), and the count computed independently from the second review was also 6. The re-check took 27 s (12 verdicts reused, 7 laptop calls). Reset put all 20 strings back to src/sample/strings.js.
+  - Gate: check-fix-prompt now also checks the round trip (build the prompt, read it back: same keys, old and new text, quotes included; a line without new text and a stray line skipped). Mutation-proved: without unescaping quotes it went red; restored, green.
   - Build: an "Apply to sample" button changes the sample app's text the way the agent would. Stet then reviews again and marks each finding resolved or still open.
   - Done when: the resolved count is right after you apply only some of the fixes.
 
