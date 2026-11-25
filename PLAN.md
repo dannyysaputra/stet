@@ -252,7 +252,9 @@ By tonight a stranger can open a link and use Stet, with or without the laptop m
   - Build: guides, standing rules and counts are saved to Firestore for each visitor. Text from a Sealed project is never saved to the cloud.
   - Done when: a guide survives a reload, and Firestore holds no app text for a Sealed project.
 
-- [ ] **4.4 First run and the no-model path**
+- [ ] **4.4 First run and the no-model path** (built; the usage-cap message comes with 4.2)
+  - Result (2026-11-25): the first page explains the laptop model in two sentences, shows its state in plain words (ready, not downloaded, downloading, unavailable, unsupported), offers "Download the laptop model" with a progress bar when Chrome can download it (only from the button: browsers require a click), says what happens without it (Open projects use the cloud after approval; Sealed projects wait), and leads to "Review the sample app" or "Review your own text".
+  - Checked in Chrome: from opening the first page to the first findings pinned on the sample (4 pins from the plain rules) took 10.8 s, including the test script's own delays; the laptop model's findings follow over about a minute.
   - Build: a first screen that explains the laptop model, shows the download with progress, and says what happens without it. Add the message shown when the usage cap is reached.
   - Done when: a first-time visitor gets from the landing screen to findings on the sample in under a minute.
 

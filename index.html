@@ -4,18 +4,46 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stet</title>
+<meta name="description" content="A design reviewer for the interface text of apps built by AI coding agents.">
 <link rel="stylesheet" href="/src/base.css">
+<link rel="stylesheet" href="/src/home.css">
 </head>
 <body>
-<main>
+<main class="home">
   <h1>Stet</h1>
-  <p>A reviewer for the interface text of apps built by AI coding agents.</p>
-  <p class="dim">The review screens arrive in Phase 1. For now:</p>
-  <p><a href="/check/">Hybrid check</a>: confirm the laptop model and the cloud model both answer.</p>
-  <p><a href="/eval/">Accuracy test</a>: run the Phase 0 test data through each check.</p>
-  <p><a href="/sample/">Sample app</a>: three deliberately sloppy invoicing screens for Stet to review.</p>
-  <p><a href="/review/">Review</a>: the sample app with every piece of its text listed beside it.</p>
-  <p><a href="/files/">Your own text</a>: review your app's language files or a pasted list.</p>
+  <p class="lead">A design reviewer for apps built by AI coding agents. It reads every label, button and message on a screen, checks it on your laptop, pins what is wrong, and gives your agent one prompt to fix it. Your app's text stays on your laptop.</p>
+
+  <section class="box" aria-labelledby="model-title">
+    <h2 id="model-title">1. The laptop model</h2>
+    <p>Stet checks text with the model built into Chrome (Gemini Nano), on this computer, through Firebase AI Logic. Nothing you review is sent anywhere for that.</p>
+    <p id="model-state" class="state" aria-live="polite">Checking this browser...</p>
+    <div class="row">
+      <button id="prepare" type="button" hidden>Download the laptop model</button>
+      <progress id="prepare-progress" max="1" value="0" hidden></progress>
+    </div>
+    <details>
+      <summary>Without the laptop model</summary>
+      <p>Chrome desktop 139 or newer can run it; it needs about 22 GB of free disk space. Without it, an <b>Open</b> project still works: Stet shows you the exact strings first, and sends them to the cloud model only after you approve. A <b>Sealed</b> project never sends its text, so it waits for the laptop model.</p>
+      <p>In Chrome, turn on <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>, restart Chrome, then download the model here.</p>
+    </details>
+  </section>
+
+  <section class="box" aria-labelledby="try-title">
+    <h2 id="try-title">2. Try it</h2>
+    <div class="cards">
+      <a class="card" href="/review/">
+        <b>Review the sample app</b>
+        <span>Three sloppy invoicing screens, in English and Indonesian. Press "Review this screen": the first findings appear in seconds.</span>
+      </a>
+      <a class="card" href="/files/">
+        <b>Review your own text</b>
+        <span>Drop in your app's English and Indonesian language files, or paste a list of strings.</span>
+      </a>
+    </div>
+  </section>
+
+  <p class="dim foot">More: <a href="/check/">hybrid check</a> (both models answer, in all four modes), <a href="/eval/">accuracy test</a>, <a href="/sample/">the sample app on its own</a>.</p>
 </main>
+<script type="module" src="/src/home.js"></script>
 </body>
 </html>
