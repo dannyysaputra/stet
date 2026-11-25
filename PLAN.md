@@ -78,6 +78,19 @@ Today decides whether Stet goes ahead and where the Indonesian check runs. The d
 - [ ] **0.4 Run the accuracy test**
   - Build: an /eval page that runs the English check, the translation check and screen reading, on the laptop and in the cloud, and writes a results file.
   - Done when: the results file shows accuracy, false alarms and speed for each check.
+  - Status (2026-11-25): English and screen reading measured; translation waits for 0.3. Files in data/eval/results/ (earlier runs in results/archive/). One run per mode so far.
+
+    | Check | Laptop | Cloud | Bar |
+    | --- | --- | --- | --- |
+    | English problems caught | 81.1% | 98.9% | at least 80% |
+    | False alarms on good English | 1.7% | 0% | at most 10% |
+    | Generated filler caught | 95% | 100% | at least 70% |
+    | Right problem kind | 72.2% | 96.7% | none |
+    | Median time per string | 2.9 s | 1.5 s | none |
+    | Laptop speed | 20 strings a minute | not comparable (spaced for quota) | at least 60 |
+    | Screen text read from a screenshot | 98.5% | 98.5% | none |
+
+  - Method notes: the "placeholder" problem kind was renamed "leftover_text" after the first run, because it collided with the "placeholder" element kind and caused 5 of 8 false alarms. That fix was made after seeing results on this same data, so the numbers are slightly optimistic. Cloud runs are spaced 4.5 s apart because the free Gemini tier returned 429 quota errors at 77 requests a minute.
 
 - [ ] **0.5 Go or no-go (you and Claude)**
   - Decide: go ahead as planned or simplify, and run the Indonesian check on the laptop or in the cloud.

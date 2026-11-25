@@ -46,7 +46,7 @@ const enCounts = check(en, {
   okCount: 60,
   textField: "text",
   required: ["id", "app", "screen", "kind", "text", "expect"],
-  types: { sounds_generated: 20, vague_button: 12, blames_user: 10, unclear_message: 12, jargon: 12, placeholder: 8, vague_link: 6, inconsistent_term: 10 },
+  types: { sounds_generated: 20, vague_button: 12, blames_user: 10, unclear_message: 12, jargon: 12, leftover_text: 8, vague_link: 6, inconsistent_term: 10 },
 });
 
 const id = load("id-pairs.json");

@@ -20,7 +20,7 @@ line here is sent with every check.
 | blames_user | Says the user made a mistake: "you entered", "you forgot", "you failed", "invalid", "illegal", "wrong". | Say how to fix it: what is allowed, with an example. |
 | unclear_message | Says something failed or is empty without saying what or what to do: "No data", "Something went wrong", "Error 500", error codes. | Name what is missing or failed, then the next step. |
 | jargon | System or developer words: "module", "entity", "persist", "instantiate", "payload", "token", "query", "boolean", HTTP codes. | The word the user would say. |
-| placeholder | Text never replaced: "Lorem ipsum", "TODO", "Title goes here", "Button", "undefined", "[Insert ...]". | The real text. |
+| leftover_text | Draft or developer text that was never replaced: "Lorem ipsum", "TODO", "Title goes here", "Button", "undefined", "[Insert ...]", "Placeholder text". | The real text. |
 | vague_link | Link text that does not say where it goes: "Click here", "here", "Read more", "Learn more", "More", "Link". | The destination: "Read the refund policy". |
 | inconsistent_term | One thing called two names in the same app: client/customer, delete/remove, sign in/log in. | The app's chosen word. |
 
@@ -37,3 +37,8 @@ line here is sent with every check.
 Short labels ("Client", "Due date"), standard links ("Forgot password?"),
 plain confirmations ("Changes saved."), and specific errors that say how to
 fix them are fine. Do not flag text only because it is short.
+
+Hint text inside an empty field (the element kind "placeholder") is fine when
+it shows a real example or format, such as "name@company.com", "DD/MM/YYYY",
+"Such as 250.00" or "Search tasks". Only flag it when it is leftover draft
+text.

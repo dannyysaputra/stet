@@ -1,0 +1,369 @@
+{
+  "run": {
+    "check": "reading",
+    "mode": "ONLY_IN_CLOUD",
+    "startedAt": "2026-11-25T06:52:41.994Z",
+    "wallMs": 31257,
+    "complete": true,
+    "stopped": false,
+    "appCheck": "debug (new token, see console)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  },
+  "summary": {
+    "definitions": {
+      "textFound": "visible strings returned exactly (case, quotes and final full stop ignored) / strings drawn",
+      "extraText": "returned strings that were not drawn"
+    },
+    "textFoundPct": 98.5,
+    "extraText": 1,
+    "screens": 12,
+    "errors": 0,
+    "where": {
+      "cloud": 12
+    },
+    "speed": {
+      "itemsPerMinute": 23,
+      "medianMs": 2533
+    }
+  },
+  "results": [
+    {
+      "item": {
+        "id": "screen01",
+        "name": "invoices / New invoice",
+        "texts": [
+          "Unlock seamless invoicing and elevate your workflow!",
+          "Submit",
+          "Error: you entered an invalid amount.",
+          "No data",
+          "Invoice Creation Module",
+          "Lorem ipsum",
+          "Click here",
+          "Customer email"
+        ]
+      },
+      "where": "cloud",
+      "ms": 3806,
+      "score": {
+        "expected": 8,
+        "found": 8,
+        "extra": 0,
+        "got": [
+          "Unlock seamless invoicing and elevate your workflow!",
+          "Submit",
+          "Error: you entered an invalid amount.",
+          "No data",
+          "Invoice Creation Module",
+          "Lorem ipsum",
+          "Click here",
+          "Customer email"
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen02",
+        "name": "tasks / Task detail",
+        "texts": [
+          "Success! Your amazing changes have been saved.",
+          "Something went wrong.",
+          "Persist changes",
+          "Sync conflict detected (409).",
+          "Remove",
+          "Back to tasks",
+          "Assignee",
+          "We couldn't save your changes. Check your connection and try again."
+        ]
+      },
+      "where": "cloud",
+      "ms": 2759,
+      "score": {
+        "expected": 8,
+        "found": 8,
+        "extra": 0,
+        "got": [
+          "Success! Your amazing changes have been saved.",
+          "Something went wrong.",
+          "Persist changes",
+          "Sync conflict detected (409).",
+          "Remove",
+          "Back to tasks",
+          "Assignee",
+          "We couldn't save your changes. Check your connection and try again."
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen03",
+        "name": "clinic / Book",
+        "texts": [
+          "Experience a whole new level of convenience.",
+          "Discover the magic of effortless scheduling.",
+          "Submit form",
+          "You forgot to fill in the date.",
+          "Try again later.",
+          "Choose a practitioner",
+          "Book appointment",
+          "Appointment time"
+        ]
+      },
+      "where": "cloud",
+      "ms": 2016,
+      "score": {
+        "expected": 8,
+        "found": 8,
+        "extra": 0,
+        "got": [
+          "Experience a whole new level of convenience.",
+          "Discover the magic of effortless scheduling.",
+          "Submit form",
+          "You forgot to fill in the date.",
+          "Try again later.",
+          "Choose a practitioner",
+          "Book appointment",
+          "Appointment time"
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen04",
+        "name": "tasks / Team",
+        "texts": [
+          "Take your team collaboration to the next level!",
+          "Invite teammates",
+          "Invite members",
+          "Members"
+        ]
+      },
+      "where": "cloud",
+      "ms": 1339,
+      "score": {
+        "expected": 4,
+        "found": 4,
+        "extra": 0,
+        "got": [
+          "Take your team collaboration to the next level!",
+          "Invite teammates",
+          "Invite members",
+          "Members"
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen05",
+        "name": "expenses / Reports",
+        "texts": [
+          "Empower your finances with actionable insights.",
+          "Execute",
+          "Operation failed.",
+          "Export to CSV"
+        ]
+      },
+      "where": "cloud",
+      "ms": 2831,
+      "score": {
+        "expected": 4,
+        "found": 4,
+        "extra": 0,
+        "got": [
+          "Empower your finances with actionable insights.",
+          "Execute",
+          "Operation failed.",
+          "Export to CSV"
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen06",
+        "name": "courses / Home",
+        "texts": [
+          "Unleash your potential with personalized recommendations.",
+          "Hi undefined,",
+          "Your courses",
+          "You haven't enrolled in a course yet. Browse the catalogue."
+        ]
+      },
+      "where": "cloud",
+      "ms": 2382,
+      "score": {
+        "expected": 4,
+        "found": 3,
+        "extra": 1,
+        "got": [
+          "Unleash your potential with personalized recommendati",
+          "Hi undefined,",
+          "Your courses",
+          "You haven't enrolled in a course yet. Browse the catalogue."
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen07",
+        "name": "tasks / Task list",
+        "texts": [
+          "Go",
+          "Request timed out (ERR_TIMEOUT_3).",
+          "Failed",
+          "Placeholder text",
+          "Apply filters",
+          "Search tasks"
+        ]
+      },
+      "where": "cloud",
+      "ms": 2189,
+      "score": {
+        "expected": 6,
+        "found": 6,
+        "extra": 0,
+        "got": [
+          "Go",
+          "Request timed out (ERR_TIMEOUT_3).",
+          "Failed",
+          "Placeholder text",
+          "Apply filters",
+          "Search tasks"
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen08",
+        "name": "expenses / New expense",
+        "texts": [
+          "You did not select a file.",
+          "Your file is wrong. Upload a correct file.",
+          "An error has occurred. Code: 0x80004005",
+          "Payload too large.",
+          "Receipt",
+          "This file is over 10 MB. Choose a smaller file."
+        ]
+      },
+      "where": "cloud",
+      "ms": 2533,
+      "score": {
+        "expected": 6,
+        "found": 6,
+        "extra": 0,
+        "got": [
+          "You did not select a file.",
+          "Your file is wrong. Upload a correct file.",
+          "An error has occurred. Code: 0x80004005",
+          "Payload too large.",
+          "Receipt",
+          "This file is over 10 MB. Choose a smaller file."
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen09",
+        "name": "courses / Sign up",
+        "texts": [
+          "Invalid input.",
+          "Email address",
+          "name@company.com",
+          "Use 8 or more characters, with at least one number."
+        ]
+      },
+      "where": "cloud",
+      "ms": 3495,
+      "score": {
+        "expected": 4,
+        "found": 4,
+        "extra": 0,
+        "got": [
+          "Invalid input.",
+          "Email address",
+          "name@company.com",
+          "Use 8 or more characters, with at least one number."
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen10",
+        "name": "clinic / Home",
+        "texts": [
+          "Initialize booking workflow",
+          "Title goes here",
+          "More",
+          "Upcoming appointments",
+          "No appointments this week."
+        ]
+      },
+      "where": "cloud",
+      "ms": 2288,
+      "score": {
+        "expected": 5,
+        "found": 5,
+        "extra": 0,
+        "got": [
+          "Initialize booking workflow",
+          "Title goes here",
+          "More",
+          "Upcoming appointments",
+          "No appointments this week."
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen11",
+        "name": "courses / Course page",
+        "texts": [
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "Link",
+          "Class progress",
+          "Enroll in course",
+          "Start lesson",
+          "Open the course syllabus"
+        ]
+      },
+      "where": "cloud",
+      "ms": 3654,
+      "score": {
+        "expected": 6,
+        "found": 6,
+        "extra": 0,
+        "got": [
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+          "Link",
+          "Class progress",
+          "Enroll in course",
+          "Start lesson",
+          "Open the course syllabus"
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen12",
+        "name": "expenses / Claim detail",
+        "texts": [
+          "here",
+          "Submit report",
+          "Submit claim for approval",
+          "Download receipt (PDF)"
+        ]
+      },
+      "where": "cloud",
+      "ms": 1817,
+      "score": {
+        "expected": 4,
+        "found": 4,
+        "extra": 0,
+        "got": [
+          "here",
+          "Submit report",
+          "Submit claim for approval",
+          "Download receipt (PDF)"
+        ]
+      }
+    }
+  ]
+}

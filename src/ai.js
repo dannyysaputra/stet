@@ -11,29 +11,45 @@ export const MODES = {
   ONLY_IN_CLOUD: { mode: InferenceMode.ONLY_IN_CLOUD, label: "Cloud only", note: "Runs in the cloud, or fails." },
 };
 
-const cloudModel = import.meta.env.VITE_CLOUD_MODEL || undefined;
+// The SDK requires a model name whenever inCloudParams is given. This is the
+// SDK's own default for hybrid use (firebase 13.x).
+const CLOUD_MODEL = import.meta.env.VITE_CLOUD_MODEL || "gemini-3.5-flash-lite";
+const TEXT = { type: "text", languages: ["en"] };
+
 const ai = firebaseApp ? getAI(firebaseApp, { backend: new GoogleAIBackend() }) : null;
 const models = new Map();
+const queues = new Map();
 
-function modelFor(modeKey) {
+function modelFor(modeKey, { schema, image } = {}) {
   if (!ai) throw new Error(`Firebase is not configured. Missing: ${missingConfig.join(", ")}. See README.md.`);
   if (!MODES[modeKey]) throw new Error(`Unknown mode: ${modeKey}`);
-  if (!models.has(modeKey)) {
+  const key = `${modeKey}|${schema ? JSON.stringify(schema) : "-"}|${image ? "image" : "text"}`;
+  if (!models.has(key)) {
     models.set(
-      modeKey,
+      key,
       getGenerativeModel(ai, {
         mode: MODES[modeKey].mode,
-        ...(cloudModel ? { inCloudParams: { model: cloudModel } } : {}),
+        inCloudParams: {
+          model: CLOUD_MODEL,
+          ...(schema ? { generationConfig: { responseMimeType: "application/json", responseJsonSchema: schema, temperature: 0 } } : {}),
+        },
         onDeviceParams: {
-          createOptions: {
-            expectedInputs: [{ type: "text", languages: ["en"] }],
-            expectedOutputs: [{ type: "text", languages: ["en"] }],
-          },
+          createOptions: { expectedInputs: image ? [TEXT, { type: "image" }] : [TEXT], expectedOutputs: [TEXT] },
+          ...(schema ? { promptOptions: { responseConstraint: schema } } : {}),
         },
       }),
     );
   }
-  return models.get(modeKey);
+  return { key, model: models.get(key) };
+}
+
+// The SDK creates a new on-device session for every call and destroys the
+// previous one, so two overlapping calls on one model break each other.
+// Calls on the same model therefore run one after another.
+function enqueue(key, job) {
+  const run = (queues.get(key) ?? Promise.resolve()).then(job, job);
+  queues.set(key, run.catch(() => {}));
+  return run;
 }
 
 // Where a reply ran, as the SDK reports it. Never guessed from the mode:
@@ -45,28 +61,46 @@ function whereItRan(response) {
   return "unknown";
 }
 
-/** Send one prompt. Returns { text, where: "laptop" | "cloud" | "unknown", ms, mode }. */
-export async function ask(prompt, { mode = "PREFER_ON_DEVICE" } = {}) {
-  const model = modelFor(mode);
-  const started = performance.now();
-  const result = await model.generateContent(prompt);
-  const ms = Math.round(performance.now() - started);
-  return { text: result.response.text(), where: whereItRan(result.response), ms, mode };
+/**
+ * Send one prompt. Returns { text, where: "laptop" | "cloud" | "unknown", ms, mode }.
+ * options.schema: a JSON schema; the reply is then constrained to it on both sides.
+ * options.image: { mimeType: "image/png" | "image/jpeg", data: base64 } sent with the prompt.
+ */
+export async function ask(prompt, { mode = "PREFER_ON_DEVICE", schema, image } = {}) {
+  const { key, model } = modelFor(mode, { schema, image });
+  const request = image ? [prompt, { inlineData: { mimeType: image.mimeType, data: image.data } }] : prompt;
+  return enqueue(key, async () => {
+    const started = performance.now();
+    const result = await model.generateContent(request);
+    const ms = Math.round(performance.now() - started);
+    return { text: result.response.text(), where: whereItRan(result.response), ms, mode };
+  });
+}
+
+/** Like ask(), with a JSON schema; returns { data, text, where, ms, mode }. Throws if the reply is not JSON. */
+export async function askJson(prompt, schema, options = {}) {
+  const r = await ask(prompt, { ...options, schema });
+  const cleaned = r.text.trim().replace(/^```(?:json)?\s*/i, "").replace(/```$/, "").trim();
+  try {
+    return { ...r, data: JSON.parse(cleaned) };
+  } catch {
+    const err = new Error(`The model did not return JSON: ${r.text.slice(0, 120)}`);
+    err.where = r.where;
+    err.ms = r.ms;
+    throw err;
+  }
 }
 
 /** Start (or confirm) the laptop model download. Call from a click. onProgress gets 0..1. */
 export async function prepareLaptopModel(onProgress) {
-  await modelFor("ONLY_ON_DEVICE").initializeDeviceModel((fraction) => onProgress?.(fraction));
+  await modelFor("ONLY_ON_DEVICE").model.initializeDeviceModel((fraction) => onProgress?.(fraction));
 }
 
 /** Read-only status of Chrome's built-in model. This does not generate anything. */
 export async function laptopModelStatus() {
   if (!("LanguageModel" in self)) return "unsupported";
   try {
-    return await self.LanguageModel.availability({
-      expectedInputs: [{ type: "text", languages: ["en"] }],
-      expectedOutputs: [{ type: "text", languages: ["en"] }],
-    });
+    return await self.LanguageModel.availability({ expectedInputs: [TEXT], expectedOutputs: [TEXT] });
   } catch {
     return "unsupported";
   }

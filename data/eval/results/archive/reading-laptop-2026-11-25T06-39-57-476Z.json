@@ -1,0 +1,180 @@
+{
+  "run": {
+    "check": "reading",
+    "mode": "ONLY_ON_DEVICE",
+    "startedAt": "2026-11-25T06:39:57.476Z",
+    "wallMs": 24974,
+    "complete": false,
+    "stopped": false,
+    "appCheck": "debug (new token, see console)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  },
+  "summary": {
+    "definitions": {
+      "textFound": "visible strings returned exactly (case, quotes and final full stop ignored) / strings drawn",
+      "extraText": "returned strings that were not drawn"
+    },
+    "textFoundPct": 100,
+    "extraText": 0,
+    "screens": 5,
+    "errors": 0,
+    "where": {
+      "laptop": 5
+    },
+    "speed": {
+      "itemsPerMinute": 12,
+      "medianMs": 3553
+    }
+  },
+  "results": [
+    {
+      "item": {
+        "id": "screen01",
+        "name": "invoices / New invoice",
+        "texts": [
+          "Unlock seamless invoicing and elevate your workflow!",
+          "Submit",
+          "Error: you entered an invalid amount.",
+          "No data",
+          "Invoice Creation Module",
+          "Lorem ipsum",
+          "Click here",
+          "Customer email"
+        ]
+      },
+      "where": "laptop",
+      "ms": 11386,
+      "score": {
+        "expected": 8,
+        "found": 8,
+        "extra": 0,
+        "got": [
+          "Unlock seamless invoicing and elevate your workflow!",
+          "Submit",
+          "Error: you entered an invalid amount.",
+          "No data",
+          "Invoice Creation Module",
+          "Lorem ipsum",
+          "Click here",
+          "Customer email"
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen02",
+        "name": "tasks / Task detail",
+        "texts": [
+          "Success! Your amazing changes have been saved.",
+          "Something went wrong.",
+          "Persist changes",
+          "Sync conflict detected (409).",
+          "Remove",
+          "Back to tasks",
+          "Assignee",
+          "We couldn't save your changes. Check your connection and try again."
+        ]
+      },
+      "where": "laptop",
+      "ms": 4679,
+      "score": {
+        "expected": 8,
+        "found": 8,
+        "extra": 0,
+        "got": [
+          "Success! Your amazing changes have been saved.",
+          "Something went wrong.",
+          "Persist changes",
+          "Sync conflict detected (409).",
+          "Remove",
+          "Back to tasks",
+          "Assignee",
+          "We couldn't save your changes. Check your connection and try again."
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen03",
+        "name": "clinic / Book",
+        "texts": [
+          "Experience a whole new level of convenience.",
+          "Discover the magic of effortless scheduling.",
+          "Submit form",
+          "You forgot to fill in the date.",
+          "Try again later.",
+          "Choose a practitioner",
+          "Book appointment",
+          "Appointment time"
+        ]
+      },
+      "where": "laptop",
+      "ms": 3553,
+      "score": {
+        "expected": 8,
+        "found": 8,
+        "extra": 0,
+        "got": [
+          "Experience a whole new level of convenience.",
+          "Discover the magic of effortless scheduling.",
+          "Submit form",
+          "You forgot to fill in the date.",
+          "Try again later.",
+          "Choose a practitioner",
+          "Book appointment",
+          "Appointment time"
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen04",
+        "name": "tasks / Team",
+        "texts": [
+          "Take your team collaboration to the next level!",
+          "Invite teammates",
+          "Invite members",
+          "Members"
+        ]
+      },
+      "where": "laptop",
+      "ms": 2678,
+      "score": {
+        "expected": 4,
+        "found": 4,
+        "extra": 0,
+        "got": [
+          "Take your team collaboration to the next level!",
+          "Invite teammates",
+          "Invite members",
+          "Members"
+        ]
+      }
+    },
+    {
+      "item": {
+        "id": "screen05",
+        "name": "expenses / Reports",
+        "texts": [
+          "Empower your finances with actionable insights.",
+          "Execute",
+          "Operation failed.",
+          "Export to CSV"
+        ]
+      },
+      "where": "laptop",
+      "ms": 2573,
+      "score": {
+        "expected": 4,
+        "found": 4,
+        "extra": 0,
+        "got": [
+          "Empower your finances with actionable insights",
+          "Execute",
+          "Operation failed.",
+          "Export to CSV"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,182 @@
+{
+  "run": {
+    "check": "english",
+    "mode": "ONLY_ON_DEVICE",
+    "startedAt": "2026-11-25T06:38:49.763Z",
+    "wallMs": 28886,
+    "complete": false,
+    "stopped": false,
+    "appCheck": "debug (new token, see console)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  },
+  "summary": {
+    "definitions": {
+      "problemsCaughtPct": "problem items the model flagged as a problem / all problem items (errors count as missed)",
+      "problemKindRightPct": "problem items flagged with the right problem kind / all problem items",
+      "falseAlarmPct": "good items the model flagged as a problem / all good items (errors not counted as alarms)",
+      "fillerCaughtPct": "generated-filler items flagged as a problem / all generated-filler items"
+    },
+    "problemsCaughtPct": 100,
+    "problemKindRightPct": 100,
+    "falseAlarmPct": null,
+    "fillerCaughtPct": 100,
+    "byType": {
+      "sounds_generated": {
+        "n": 5,
+        "flagged": 5,
+        "typeMatch": 5
+      }
+    },
+    "items": 5,
+    "errors": 0,
+    "where": {
+      "laptop": 5
+    },
+    "speed": {
+      "itemsPerMinute": 10.4,
+      "medianMs": 3067
+    }
+  },
+  "results": [
+    {
+      "item": {
+        "id": "en001",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "subtitle",
+        "text": "Unlock seamless invoicing and elevate your workflow!",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "Fill in the details and send it to your client."
+      },
+      "where": "laptop",
+      "ms": 16848,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "high",
+          "rewrite": "Create invoice. We'll help you manage your finances."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en002",
+        "app": "tasks",
+        "screen": "Dashboard",
+        "kind": "subtitle",
+        "text": "Supercharge your productivity with our powerful dashboard.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "Your open tasks, due dates and recent changes."
+      },
+      "where": "laptop",
+      "ms": 2831,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "This dashboard helps you manage your tasks efficiently."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en003",
+        "app": "courses",
+        "screen": "My courses",
+        "kind": "empty",
+        "text": "Embark on your learning journey today!",
+        "context": "Shown when the student has no courses.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "You have no courses yet. Browse the catalogue to enroll."
+      },
+      "where": "laptop",
+      "ms": 3042,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "You don't have any courses yet. Browse available courses."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en004",
+        "app": "clinic",
+        "screen": "Appointments",
+        "kind": "subtitle",
+        "text": "Effortlessly manage all your appointments in one place.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "See, move or cancel your appointments."
+      },
+      "where": "laptop",
+      "ms": 3094,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Manage your appointments in one place."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en005",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "toast",
+        "text": "Success! Your amazing changes have been saved.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Changes saved."
+      },
+      "where": "laptop",
+      "ms": 3067,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "low",
+          "rewrite": "Task saved."
+        }
+      }
+    }
+  ]
+}
