@@ -274,7 +274,8 @@ By tonight a stranger can open a link and use Stet, with or without the laptop m
 
 By tonight the video is uploaded and the repo explains itself. Judges may score from the video and the description alone, so this phase gets a full day.
 
-- [ ] **5.1 Accuracy numbers**
+- [x] **5.1 Accuracy numbers**
+  - Result (2026-11-25): the README has an "Accuracy and speed" table (English laptop and cloud, 5-per-call, Indonesian laptop and cloud, screenshot reading) and the method in five lines, from the saved runs in data/eval/results/. The prompts in those runs are the app's prompts (checked identical when they moved to the shared modules), so the English runs were not repeated. The Indonesian rows are marked provisional until the pairs are reviewed (0.3); after that review, run Translation again on /eval/ and update the two rows.
   - Build: run the Phase 0 test again on the final prompts and put the results in the README, with the method in five lines.
   - Done when: the README shows accuracy, false alarms and speed for the laptop model and the cloud model.
 

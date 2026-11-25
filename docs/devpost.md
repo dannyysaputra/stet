@@ -39,6 +39,12 @@ text private, and speaks to the coding agent in a form it can act on.
   app recorded, and the model API requests the browser itself saw.
 - Works offline for everything that runs on the laptop; cloud steps wait for
   the connection and say so.
+- Checks Indonesian against its English original and explains each mistake in
+  plain English ("Dekat" means nearby; a Close button is "Tutup").
+- Reviews your own language files (English and Indonesian JSON) as well as
+  the built-in sample, and the fix prompt names each file and key.
+- Sealed projects never send their text anywhere; Open projects can use the
+  cloud when the laptop model is missing, always after showing what is sent.
 
 ## How we built it
 
@@ -61,8 +67,13 @@ text private, and speaks to the coding agent in a form it can act on.
 - Firebase Hosting for the public link.
 - We measured before building (Phase 0): 150 labelled English strings and 80
   English and Indonesian pairs, run through the laptop model and the cloud
-  model. Results (from 5.1): [laptop: problems caught, false alarms, speed]
-  [cloud: the same].
+  model. English on the laptop: 80 to 81% of problems caught, 0 to 1.7%
+  false alarms, 95% of generated filler caught, about 2.9 s a string. English
+  in the cloud: 98.9% caught, 0% false alarms. Indonesian against English:
+  laptop 65% caught with 22.5% false alarms, cloud 100% caught with 0% false
+  alarms (provisional until a native speaker reviews the pairs). So English is
+  checked on the laptop, and Indonesian in the cloud for Open projects, on
+  strings the user approves.
 
 ## Challenges we ran into
 
@@ -99,4 +110,4 @@ languages after Indonesian.
 ## Built with
 
 Firebase AI Logic, Gemini Nano (Chrome built-in AI), Gemini API, Firebase App
-Check, Firebase Hosting, JavaScript, Vite.
+Check, Firebase Remote Config, Firebase Hosting, JavaScript, Vite.

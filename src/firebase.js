@@ -2,15 +2,18 @@
 import { initializeApp } from "firebase/app";
 import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
-const env = import.meta.env;
-
+// Each value is read as import.meta.env.VITE_X, written out in full. Never alias
+// import.meta.env (const env = import.meta.env): Vite then puts the whole env
+// object into the bundle, development-only values included. That happened here
+// on 2026-11-25 (the App Check debug token's variable was in the production
+// bundle) and scripts/check-dist.mjs now fails the build if it happens again.
 const firebaseConfig = {
-  apiKey: env.VITE_FIREBASE_API_KEY,
-  authDomain: env.VITE_FIREBASE_AUTH_DOMAIN,
-  projectId: env.VITE_FIREBASE_PROJECT_ID,
-  storageBucket: env.VITE_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-  appId: env.VITE_FIREBASE_APP_ID,
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
 
 export const missingConfig = ["apiKey", "projectId", "appId"].filter((k) => !firebaseConfig[k]);
@@ -18,7 +21,7 @@ export const missingConfig = ["apiKey", "projectId", "appId"].filter((k) => !fir
 // `import.meta.env.DEV` must be written out in full (not through an alias) so the
 // bundler removes the debug branches from the hosted build. scripts/check-dist.mjs
 // fails the build if any of them survive.
-let siteKey = env.VITE_RECAPTCHA_ENTERPRISE_SITE_KEY;
+let siteKey = import.meta.env.VITE_RECAPTCHA_ENTERPRISE_SITE_KEY;
 if (import.meta.env.DEV) {
   // With a debug token set, the site key is never used, so a placeholder is fine locally.
   siteKey ||= "local-dev-placeholder";

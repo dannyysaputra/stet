@@ -7,13 +7,20 @@ const FORBIDDEN = [
   "local-dev-placeholder", // the stand-in reCAPTCHA key
   "debug (saved token)", // debug-provider status labels
   "debug (new token",
+  // The debug token's variable name. It appears only if the debug branch survived
+  // or the whole env object was inlined (aliasing import.meta.env does that, and
+  // puts every VITE_ value in the bundle; seen 2026-11-25).
+  "VITE_APPCHECK_DEBUG_TOKEN",
 ];
+// The inlined env object itself: Vite writes it as {BASE_URL:...,DEV:...}.
+const ENV_OBJECT = /\{\s*BASE_URL\s*:/;
 
-const hits = (text) => FORBIDDEN.filter((needle) => text.includes(needle));
+const hits = (text) => [...FORBIDDEN.filter((needle) => text.includes(needle)), ...(ENV_OBJECT.test(text) ? ["an inlined import.meta.env object"] : [])];
 
-// Positive control: the scanner must flag a string it is meant to catch,
+// Positive control: the scanner must flag each string it is meant to catch,
 // and must pass a clean one. If it cannot, its "clean" result means nothing.
-if (hits("x local-dev-placeholder x").length !== 1 || hits("clean bundle").length !== 0) {
+const controls = ["x local-dev-placeholder x", "var K={VITE_APPCHECK_DEBUG_TOKEN:`x`}", "var K={BASE_URL:`/`,DEV:!1}"];
+if (controls.some((c) => hits(c).length === 0) || hits("clean bundle").length !== 0) {
   console.error("FAIL check-dist: the scanner failed its own control.");
   process.exit(2);
 }
