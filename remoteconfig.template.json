@@ -1,0 +1,19 @@
+{
+  "parameters": {
+    "cloud_model": {
+      "defaultValue": { "value": "gemini-3.5-flash-lite" },
+      "description": "Cloud model name used by Firebase AI Logic (src/config.js).",
+      "valueType": "STRING"
+    },
+    "daily_cloud_cap": {
+      "defaultValue": { "value": "60" },
+      "description": "Cloud calls each browser may make per day (src/config.js).",
+      "valueType": "NUMBER"
+    },
+    "min_severity": {
+      "defaultValue": { "value": "low" },
+      "description": "Least serious finding shown: low, medium or high (src/config.js).",
+      "valueType": "STRING"
+    }
+  }
+}

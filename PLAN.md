@@ -250,11 +250,12 @@ By tonight a stranger can open a link and use Stet, with or without the laptop m
   - Result (2026-11-25): src/config.js reads cloud_model, daily_cloud_cap and min_severity from Firebase Remote Config, with defaults in the code (gemini-3.5-flash-lite, 60, low) so Stet works before a template exists and offline. src/ai.js takes the cloud model name from it and checks the cap before any call that may reach the cloud; the count is kept per browser per day. Over the cap, cloud steps say "Today's cloud limit for this browser is reached (60 calls). Laptop steps keep working; the cloud steps are back tomorrow." Findings less serious than min_severity are not shown.
   - Checked in Chrome: the fetch succeeded with no template published (values = defaults); with the day's count set past the cap, "Write the guide" showed the message and nothing was sent (ledger 0, 0 model API requests).
   - Limit: the cap is counted in the browser, so it slows ordinary visitors but is not a hard limit; App Check and the project's quota are.
-  - Still to do (you, in the Firebase console): publish a template with daily_cloud_cap, then change it and confirm the app follows within the fetch interval (1 hour on the hosted build).
+  - Published (2026-11-25, owner's yes): remoteconfig.template.json via `firebase deploy --only remoteconfig`; read back from the project: cloud_model = gemini-3.5-flash-lite, daily_cloud_cap = 60, min_severity = low.
+  - Still to do (you, in the Firebase console): change daily_cloud_cap and confirm the app follows without a deploy (within a minute in development, an hour on the hosted build).
   - Build: the cloud model name, the daily usage cap for each visitor, and the seriousness threshold all come from Remote Config.
   - Done when: changing the cap in the Firebase console changes the app without a new deploy.
 
-- [ ] **4.3 Saved work** (recommend cutting, as the cut order allows: guides, projects and counts already persist in the browser; Firestore would add a database, sign-in and rules to set up and protect for little demo value)
+- [ ] **4.3 Saved work** CUT (owner's decision, 2026-11-25, as the cut order allows): guides, the project setting and the daily count persist in the browser; Firestore would add a database, sign-in and rules to set up and protect for little demo value.
   - Build: guides, standing rules and counts are saved to Firestore for each visitor. Text from a Sealed project is never saved to the cloud.
   - Done when: a guide survives a reload, and Firestore holds no app text for a Sealed project.
 
