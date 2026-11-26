@@ -79,7 +79,7 @@ Then open http://127.0.0.1:5173/ and pick a page:
 - `/files/`: review your own text. Drag "Scan with Stet" to the bookmarks bar, open your app (localhost or deployed) on its own tab and click the bookmark: the screen's visible text, with each element's kind, goes straight to Stet's tab by postMessage and nowhere else. Or drop in language files (English and Indonesian JSON), or paste a list.
 - `/sample/`: the sample app on its own (three deliberately sloppy invoicing screens).
 - `/check/`: confirm the laptop model and the cloud model both answer, in all four modes.
-- `/eval/`: the accuracy test on the Phase 0 test data.
+- `/eval/`: the accuracy test on the Phase 0 test data. Development server only: it is left out of the hosted build, so visitors cannot start its 150 cloud calls.
 
 `npm run build` runs the gates first (see "Checks" below) and then builds to `dist/`.
 
