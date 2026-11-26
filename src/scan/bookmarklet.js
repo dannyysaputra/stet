@@ -8,7 +8,9 @@
 export function scanWithStet(stet) {
   const MAX = 300;
   const LEN = 300;
-  const clean = (s) => String(s || "").replace(/\s+/g, " ").trim();
+  // Invisible format characters (zero-width spaces that page builders leave in
+  // empty paragraphs) are not text.
+  const clean = (s) => String(s || "").replace(/\p{Cf}/gu, "").replace(/\s+/g, " ").trim();
   const items = [];
   const seen = new Map();
   const done = new Set();
