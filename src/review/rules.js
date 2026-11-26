@@ -75,6 +75,21 @@ export function usedInBrief(word, brief) {
   const own = String(brief).replace(/\b(never|not|no|avoid|instead of|rather than)\s+(say|use|call\s+them|call)?\s*["']?[\w-]+/gi, " ");
   return new RegExp(`\\b${escRe(stem)}`, "i").test(own);
 }
+
+/**
+ * True if the brief names this as the app's word ("We call them clients", "we
+ * always say client", "call it a bill"). Then the brief's other words for the
+ * same thing are what it renames, so they may stay "not" words (measured
+ * 2026-11-26: "owners bill customers ... We call them clients" lost "customer").
+ */
+export function namedInBrief(use, brief) {
+  const stem = String(use).toLowerCase().trim().replace(/(es|e|s)$/, "");
+  if (stem.length < 3) return false;
+  return new RegExp(`\\b(call(ed)?\\s+(them|it|these|this|those)|we\\s+(always\\s+)?(say|use|call)|always\\s+say)\\s+["']?((the|a|an)\\s+)?${escRe(stem)}`, "i").test(String(brief));
+}
+
+/** Whether a "not" word from the cloud model is kept for the term whose app word is `use`. */
+export const keepNotWord = (word, use, brief) => namedInBrief(use, brief) || !usedInBrief(word, brief);
 // Keep the case of the replaced word: "Customer" -> "Client", "customers" -> "clients".
 function matchCase(word, like) {
   if (like === like.toUpperCase() && like.length > 1) return word.toUpperCase();

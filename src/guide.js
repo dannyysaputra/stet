@@ -6,7 +6,7 @@
 // problem names keep matching the review's reply schema.
 import { askJson } from "./ai.js";
 import { wordingGuide as STARTER } from "./english-check.js";
-import { usedInBrief } from "./review/rules.js";
+import { keepNotWord } from "./review/rules.js";
 
 const KEY = "stet.guide";
 // Every line of the guide is sent with every laptop check, and the laptop model
@@ -62,7 +62,7 @@ export function composeGuide(brief, s) {
   const lines = ["# Wording guide", "", "Written from this brief:", ...brief.split("\n").map((l) => `> ${l}`), "", "## Voice", ""];
   for (const v of s.voice ?? []) lines.push(`- ${cell(v)}`);
   const terms = (s.terms ?? [])
-    .map((t) => ({ use: t.use, not: (t.not ?? []).filter((w) => !usedInBrief(w, brief)) }))
+    .map((t) => ({ use: t.use, not: (t.not ?? []).filter((w) => keepNotWord(w, t.use, brief)) }))
     .filter((t) => t.use && t.not.length);
   if (terms.length) {
     lines.push("", "## Preferred terms", "", "| Use | Not |", "| --- | --- |");
