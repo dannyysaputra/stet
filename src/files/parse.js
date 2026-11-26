@@ -55,6 +55,41 @@ export function pairFiles(enJson, idJson) {
   };
 }
 
+// What the "Scan with Stet" bookmarklet may send (slice 3.6). Any page can open
+// Stet and post a message, so the message is checked, never trusted.
+export const SCAN_KINDS = ["button", "link", "nav", "heading", "label", "placeholder", "column", "error", "status", "text"];
+export const SCAN_MAX = 300;
+// One line of plain text: the real scanner already collapses white space, so a
+// newline or control character can only come from a crafted message, where it
+// could forge extra lines in the fix prompt the user pastes into their agent.
+const str = (v, max) => (typeof v === "string" && v.length <= max ? v.replace(/[\u0000-\u001f\u007f-\u009f\s]+/g, " ").trim() : null);
+
+/**
+ * Checks a message from the bookmarklet. Returns { page, title, lang, items:
+ * [{ key, kind, en, id, context, count }], dropped, truncated } or null when it
+ * is not a scan at all. Items beyond SCAN_MAX or with a bad field are dropped and
+ * counted; a list far longer than that is not read at all.
+ */
+export function acceptScan(data) {
+  if (!data || typeof data !== "object" || data.type !== "stet-scan" || data.v !== 1 || !Array.isArray(data.items)) return null;
+  if (data.items.length > SCAN_MAX * 2) return null;
+  const page = str(data.page, 200);
+  if (!page) return null;
+  const items = [];
+  let dropped = 0;
+  for (const it of data.items) {
+    const text = str(it?.text, 300);
+    const ok = text && SCAN_KINDS.includes(it.kind) && str(it.context ?? "", 200) !== null && str(it.where ?? "", 80) !== null && items.length < SCAN_MAX;
+    if (!ok) {
+      dropped++;
+      continue;
+    }
+    const count = Number.isInteger(it.count) && it.count > 0 ? Math.min(it.count, 999) : 1;
+    items.push({ key: str(it.where ?? "", 80) || it.kind, kind: it.kind, en: text, id: "", context: str(it.context ?? "", 200), count });
+  }
+  return { page, title: str(data.title ?? "", 120) ?? "", lang: str(data.lang ?? "", 10) ?? "", items, dropped, truncated: data.truncated === true };
+}
+
 /** A pasted list, one English string per line. Keys are line numbers. */
 export function parsePasted(text) {
   return String(text)

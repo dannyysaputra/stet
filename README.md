@@ -76,7 +76,7 @@ npm run dev
 Then open http://127.0.0.1:5173/ and pick a page:
 
 - `/review/`: the review, with the sample app on the left (switch it to Indonesian with its language button).
-- `/files/`: review your own language files (English and Indonesian JSON) or a pasted list.
+- `/files/`: review your own text. Drag "Scan with Stet" to the bookmarks bar, open your app (localhost or deployed) on its own tab and click the bookmark: the screen's visible text, with each element's kind, goes straight to Stet's tab by postMessage and nowhere else. Or drop in language files (English and Indonesian JSON), or paste a list.
 - `/sample/`: the sample app on its own (three deliberately sloppy invoicing screens).
 - `/check/`: confirm the laptop model and the cloud model both answer, in all four modes.
 - `/eval/`: the accuracy test on the Phase 0 test data.
@@ -157,7 +157,7 @@ session per call and closes the previous one.
   key, old text and new text, and the prompt reads back exactly.
 - `scripts/check-pattern.mjs`: only clean counts can reach the cloud prompt for
   the standing rule, and no sample text does.
-- `scripts/check-files.mjs`: language files are flattened, paired by key and
+- `scripts/check-files.mjs`: a scan message from the bookmarklet is checked (wrong shape refused, bad items dropped, at most 300 strings); language files are flattened, paired by key and
   given an element kind as expected.
 - `scripts/check-dist.mjs`: no development-only App Check code in the bundle.
 
