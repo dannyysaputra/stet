@@ -6,7 +6,7 @@
 // Note: the rules were written with this data in view, so its hit rate is optimistic.
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { copiedExample, parseTerms, ruleCheck, usedInBrief } from "../src/review/rules.js";
+import { copiedExample, keepNotWord, namedInBrief, parseTerms, ruleCheck, usedInBrief } from "../src/review/rules.js";
 
 const rows = JSON.parse(readFileSync(resolve(import.meta.dirname, "../data/eval/en-strings.json"), "utf8"));
 
@@ -70,6 +70,28 @@ for (const [word, want] of BRIEF_CONTROL) {
   if (usedInBrief(word, BRIEF) !== want) fail(`usedInBrief("${word}") should be ${want}`);
 }
 
+// A brief that describes with one word and then names the app's word: the
+// renamed word stays a "not" word; a word the brief only uses is still dropped.
+const RENAMING = "Invoicing for small shops; owners bill customers between other jobs. We call them clients.\nCalm, plain and a little warm. Never salesy.";
+const KEEP_CONTROL = [
+  ["customer", "client", RENAMING, true], // renamed by "We call them clients" (the 2026-11-26 miss)
+  ["buyer", "client", RENAMING, true],
+  ["invoice", "bill", RENAMING, false], // "bill" is only a verb here, so "Invoicing" stays the owner's word
+  ["shop", "store", RENAMING, false],
+  ["customer", "client", BRIEF, true], // "never customer"
+  ["invoice", "bill", BRIEF, false],
+  ["customer", "client", "Owners bill customers. Clients pay.", false], // "client" used, not named
+];
+for (const [word, use, brief, want] of KEEP_CONTROL) {
+  if (keepNotWord(word, use, brief) !== want) fail(`keepNotWord("${word}", "${use}") should be ${want} for: ${brief.split("\n")[0]}`);
+}
+for (const [use, brief, want] of [
+  ["client", "We always say client.", true],
+  ["bill", "Call it a bill.", true],
+  ["client", "Our clients call us often.", false],
+])
+  if (namedInBrief(use, brief) !== want) fail(`namedInBrief("${use}") should be ${want} for: ${brief}`);
+
 // New text copied from the guide's examples is refused unless it is about the screen.
 const SCREEN = "Invoice Creation Module Line items No data Click here new preview Link to #/new Save draft Submit";
 const EXAMPLE_CONTROL = [
@@ -104,4 +126,4 @@ if (failed) {
   console.log(`FAIL check-rules: ${failed} failure(s).`);
   process.exit(1);
 }
-console.log(`OK check-rules: ${CONTROL.length} controls, ${TERM_CONTROL.length} term controls, ${BRIEF_CONTROL.length} brief controls and ${EXAMPLE_CONTROL.length} example controls pass, 0 false alarms, 0 wrong kinds.`);
+console.log(`OK check-rules: ${CONTROL.length} controls, ${TERM_CONTROL.length} term controls, ${BRIEF_CONTROL.length} brief controls, ${KEEP_CONTROL.length} renaming controls and ${EXAMPLE_CONTROL.length} example controls pass, 0 false alarms, 0 wrong kinds.`);

@@ -4,7 +4,9 @@
 
 export const MISSING = "(write the new text here)";
 
-const q = (s) => `"${String(s).replace(/"/g, '\\"')}"`;
+// A quoted value on one line: backslashes and quotes escaped, line breaks turned
+// into spaces, so no value can end its line early or start a forged one.
+const q = (s) => `"${String(s).replace(/[^\S ]+/g, " ").replace(/\\/g, "\\\\").replace(/"/g, '\\"')}"`;
 
 /**
  * One line for one finding.
@@ -17,7 +19,7 @@ export function fixLine(item, file) {
   return `- ${where}: ${q(item.old)} -> ${next} (${item.problem})`;
 }
 
-const unq = (s) => s.replace(/\\"/g, '"');
+const unq = (s) => s.replace(/\\(["\\])/g, "$1");
 const LINE = /^- (.+?), key "((?:[^"\\]|\\.)*)" \([^)]*\): "((?:[^"\\]|\\.)*)" -> (?:"((?:[^"\\]|\\.)*)"|\(write the new text here\))/;
 
 /**
@@ -40,20 +42,34 @@ export function parseFixPrompt(text) {
 
 /**
  * The whole prompt.
- * spec: { app, file, items: [...] }. Returns { text, missing: number of lines without new text }.
+ * spec: { app, file, items: [...], source? }. source "page": the text was read
+ * from a running page (slice 3.6), so "file" is the page and "key" the element;
+ * there are no keys, and the agent finds each string in the code.
+ * Returns { text, missing: number of lines without new text }.
  */
-export function buildFixPrompt({ app, file, items, lang = "en" }) {
+export function buildFixPrompt({ app, file, items, lang = "en", source = "keys" }) {
   const lines = items.map((it) => fixLine(it, file));
   const oneFile = items.every((it) => !it.file || it.file === file);
+  const head =
+    source === "page"
+      ? [
+          "This text was read from the running app's screen. Each line names the page, then the element (tag and id) where the text was shown, then the text on screen.",
+          "Find each string in the code that renders that page and change it there.",
+        ]
+      : [
+          oneFile
+            ? `Each string is the ${lang === "id" ? "Indonesian" : "English"} value ("${lang}") of the key shown, in ${file}.`
+            : "Each line names the file and the key; change that key's value in that file.",
+        ];
   const text = [
     `Change the interface text of ${app}. Change only the strings listed below and nothing else.`,
-    oneFile
-      ? `Each string is the ${lang === "id" ? "Indonesian" : "English"} value ("${lang}") of the key shown, in ${file}.`
-      : "Each line names the file and the key; change that key's value in that file.",
+    ...head,
     "",
     ...lines,
     "",
-    "Keep each key as it is. After the change, each key above shows its new text.",
+    source === "page"
+      ? "Change only the visible text, not ids, class names, routes or logic. If a string comes from a language file, change it there."
+      : "Keep each key as it is. After the change, each key above shows its new text.",
   ].join("\n");
   return { text, missing: lines.filter((l) => l.includes(MISSING)).length };
 }

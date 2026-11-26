@@ -18,10 +18,20 @@
 </header>
 <main class="files">
   <h1>Review your own text</h1>
-  <p class="dim">Drop in your app's language files, or paste a list of strings. The same review and fix prompt run on them, and the fix prompt names each file and key.</p>
+  <p class="dim">Scan a screen of the app you are building, or drop in its language files. The same review and fix prompt run on the text, and the fix prompt says where each string is.</p>
 
-  <section class="box">
+  <section class="box" id="scan">
     <h2>1. Your text</h2>
+    <div class="scan">
+      <a id="bookmarklet" class="bookmarklet" href="#" draggable="true">Scan with Stet</a>
+      <ol class="steps">
+        <li>Drag the button to your bookmarks bar (once). Press Ctrl+Shift+B if the bar is hidden.</li>
+        <li>Open your app in Chrome, on its own tab, at the screen you want checked.</li>
+        <li>Click "Scan with Stet" in the bookmarks bar. The screen's text opens here. It goes from your app's tab straight to this tab, and nowhere else.</li>
+      </ol>
+      <p id="bookmarklet-note" class="dim" aria-live="polite"></p>
+    </div>
+    <p class="dim or">Or use your language files:</p>
     <div class="grid2">
       <label class="drop">English file (JSON)
         <input id="file-en" type="file" accept=".json,application/json">

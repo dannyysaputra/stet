@@ -7,7 +7,12 @@
 .files input[type="text"], .files select, .files textarea { font: inherit; padding: 8px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); width: 100%; }
 .files textarea { font: 0.85rem/1.45 ui-monospace, Consolas, monospace; }
 .files details { margin-top: 12px; }
+.scan { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; align-items: start; margin-top: 10px; }
+.bookmarklet { display: inline-block; padding: 10px 16px; border-radius: 999px; background: var(--pencil); color: var(--on-pencil); font-weight: 700; text-decoration: none; cursor: grab; white-space: nowrap; }
+.scan .steps { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: 0.92rem; }
+.scan #bookmarklet-note { grid-column: 1 / -1; margin: 0; }
+.files .or { margin: 16px 0 0; }
 .project { border: 0; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
 .project label { font-weight: 400; }
 #findings .lang { font-size: 0.72rem; font-weight: 700; margin-right: 6px; color: var(--dim); }
-@media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+@media (max-width: 700px) { .grid2, .scan { grid-template-columns: 1fr; } }

@@ -4,7 +4,8 @@
 import { KIND_NAMES } from "../review/collect.js";
 import { PROBLEM_NAMES, laptopModelStatus, modelCheck, newTextFor, quickCheck, translationCheck, ID_ACCURACY } from "../review/check.js";
 import { buildFixPrompt } from "../review/fix-prompt.js";
-import { pairFiles, parsePasted } from "./parse.js";
+import { acceptScan, pairFiles, parsePasted } from "./parse.js";
+import { bookmarkletHref } from "../scan/bookmarklet.js";
 import { OPEN, SEALED, canCheckText, projectMode, setProjectMode } from "../project.js";
 import { onSeamChange } from "../seam.js";
 import { severityShown } from "../config.js";
@@ -13,8 +14,10 @@ const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
 const secs = (ms) => `${(ms / 1000).toFixed(1)} s`;
 
-let items = []; // [{ key, kind, en, id }]
+let items = []; // [{ key, kind, en, id, context?, count? }]
 let files = { en: "", id: "" };
+let source = "keys"; // "keys": language files or a pasted list; "page": scanned from a running app
+let screenName = "language file";
 let groups = []; // one per check: { key, kind, lang, text, original?, file, result?, error?, ticked, next? }
 let run = 0;
 
@@ -40,6 +43,8 @@ async function loadFiles() {
     const paired = pairFiles(en.json, id.json);
     items = paired.items;
     files = { en: en.name, id: id.name };
+    source = "keys";
+    screenName = "language file";
     const notes = [];
     if (paired.onlyEn.length) notes.push(`${paired.onlyEn.length} key${paired.onlyEn.length === 1 ? " has" : "s have"} no Indonesian`);
     if (paired.onlyId.length) notes.push(`${paired.onlyId.length} Indonesian key${paired.onlyId.length === 1 ? " has" : "s have"} no English`);
@@ -62,8 +67,53 @@ $("file-id").addEventListener("change", loadFiles);
 $("use-pasted").addEventListener("click", () => {
   items = parsePasted($("pasted").value);
   files = { en: "the pasted list", id: "" };
+  source = "keys";
+  screenName = "language file";
   loaded(`${items.length} strings from the pasted list.`);
 });
+
+// ---------- scanning a running app (slice 3.6) ----------
+
+$("bookmarklet").href = bookmarkletHref(location.origin);
+$("bookmarklet").addEventListener("click", (e) => {
+  e.preventDefault();
+  $("bookmarklet-note").textContent = "Drag this button to your bookmarks bar, then click it there while your app is open.";
+});
+
+// Opened by the bookmarklet: tell the page that opened this tab we are ready, and
+// take its text once. Only that page's messages are read, and each is checked.
+if (location.hash === "#scan" && window.opener) {
+  const onScan = (e) => {
+    if (e.source !== window.opener) return;
+    if (!$("stop").hidden) return; // a review is running: its text is not swapped under it
+    const scan = acceptScan(e.data);
+    if (!scan) return;
+    removeEventListener("message", onScan); // one scan per tab
+    // The page's own claims (address, title) are shown next to the address the
+    // browser vouches for, so a page cannot pass itself off as another.
+    const host = new URL(e.origin).host;
+    const sameHost = host === scan.page.split("/")[0];
+    const from = sameHost ? scan.page : `${host} (says ${scan.page})`;
+    if (scan.lang.toLowerCase().startsWith("id")) {
+      items = [];
+      loaded(`The page ${from} is in Indonesian. A scan checks English text for now; for Indonesian, use your language files above.`, true);
+      return;
+    }
+    items = scan.items;
+    files = { en: `page ${from}`, id: "" };
+    source = "page";
+    screenName = scan.title ? `page "${scan.title}" on ${host}` : `page ${from}`;
+    if (sameHost && scan.title && $("app-name").value === "My app") $("app-name").value = scan.title;
+    window.__scan = { page: scan.page, dropped: scan.dropped, truncated: scan.truncated, items: items.map((i) => `${i.kind}|${i.en}|${i.context}|${i.key}|${i.count}`) };
+    const left = [scan.dropped && `${scan.dropped} left out: too long, too many or not text`, scan.truncated && `the screen has more text than the ${items.length} read`].filter(Boolean);
+    loaded(
+      `${items.length} pieces of text read from ${from}${left.length ? ` (${left.join("; ")})` : ""}. Names or other details shown as text on that screen are included. Nothing has been checked or sent yet: press Review.`,
+    );
+    $("scan").scrollIntoView({ block: "start" });
+  };
+  addEventListener("message", onScan);
+  window.opener.postMessage({ type: "stet-ready" }, "*");
+}
 
 // ---------- project and laptop model ----------
 
@@ -98,8 +148,8 @@ const isFinding = (g) => g.result?.finding.verdict === "problem" && severityShow
 function askApproval(toCloud) {
   const box = $("approve");
   box.hidden = false;
-  box.innerHTML = `<p><b>This Open project sends these ${toCloud.length} strings to the cloud model, one per call.</b> Nothing else is sent.</p>
-    <ul class="payload">${toCloud.map((g) => `<li>${g.lang.toUpperCase()} ${esc(g.key)}: "${esc(g.text)}"${g.original ? ` <span class="dim">for "${esc(g.original)}"</span>` : ""}</li>`).join("")}</ul>
+  box.innerHTML = `<p><b>This Open project sends these ${toCloud.length} strings to the cloud model, one per call.</b> Each call also carries the app name ("${esc($("app-name").value.trim() || "An app")}"), the screen name (${esc(screenName)}), the element kind and the note in brackets. Nothing else from your app is sent.</p>
+    <ul class="payload">${toCloud.map((g) => `<li>${g.lang.toUpperCase()} ${esc(g.key)}: "${esc(g.text)}"${g.original ? ` <span class="dim">for "${esc(g.original)}"</span>` : ""}${g.context ? ` <span class="dim">(${esc(g.context)})</span>` : ""}</li>`).join("")}</ul>
     <div class="row"><button id="approve-send" type="button">Send these ${toCloud.length}</button><button id="approve-cancel" type="button" class="quiet">Cancel</button></div>`;
   $("approve-send").onclick = () => {
     box.hidden = true;
@@ -121,7 +171,7 @@ async function review({ approved = false } = {}) {
   const app = $("app-name").value.trim() || "An app";
   const register = $("register").value;
   const all = [
-    ...items.filter((i) => i.en).map((i) => ({ key: i.key, kind: i.kind, lang: "en", text: i.en, file: files.en })),
+    ...items.filter((i) => i.en).map((i) => ({ key: i.key, kind: i.kind, lang: "en", text: i.en, context: i.context ?? "", count: i.count ?? 1, file: files.en })),
     ...items.filter((i) => i.id && i.en).map((i) => ({ key: i.key, kind: i.kind, lang: "id", text: i.id, original: i.en, file: files.id })),
   ];
   if (projectMode() === OPEN && !approved) {
@@ -152,8 +202,8 @@ async function review({ approved = false } = {}) {
       g.result =
         quickCheck(g, { app, register }) ??
         (g.lang === "id"
-          ? await translationCheck(g, "language file", { app, register, where: projectMode() === OPEN ? "cloud" : "laptop" })
-          : await modelCheck(g, "language file", { app }));
+          ? await translationCheck(g, screenName, { app, register, where: projectMode() === OPEN ? "cloud" : "laptop" })
+          : await modelCheck(g, screenName, { app }));
     } catch (e) {
       g.error = e.message ?? String(e);
     }
@@ -227,7 +277,9 @@ function refreshFix() {
   const list = groups.filter((g) => isFinding(g) && g.ticked);
   const { text, missing } = buildFixPrompt({
     app: $("app-name").value.trim() || "the app",
-    items: list.map((g) => ({ file: g.file, lang: g.lang, key: g.key, kind: g.kind, screen: "", count: 1, old: g.text, next: g.next ?? "", problem: PROBLEM_NAMES[g.result.finding.problem] ?? "Problem" })),
+    items: list.map((g) => ({ file: g.file, lang: g.lang, key: g.key, kind: g.kind, screen: "", count: g.count ?? 1, old: g.text, next: g.next ?? "", problem: PROBLEM_NAMES[g.result.finding.problem] ?? "Problem" })),
+    file: source === "page" ? files.en : undefined,
+    source,
   });
   $("fix-prompt").value = text;
   window.__filesFix = { text, lines: list.length, missing };
@@ -248,7 +300,7 @@ $("make-fix").addEventListener("click", async () => {
     }
     try {
       const others = groups.filter((x) => x.lang === "en").map((x) => x.text).slice(0, 25);
-      const r = await newTextFor(g, "language file", others, { app: $("app-name").value.trim() });
+      const r = await newTextFor(g, screenName, others, { app: $("app-name").value.trim() });
       if (me !== run) return;
       if (r.source === "laptop") written++;
       g.next = r.problem && (!r.text || r.text.toLowerCase() === g.text.toLowerCase()) ? "" : r.text;
