@@ -3,6 +3,9 @@
 Copy each section into the matching Devpost field. Numbers marked "from 5.1"
 are filled after the final accuracy run. Platform: Web (Chrome).
 
+Links: app https://stet-hybrid-ai-2026.web.app, code
+https://github.com/dannyysaputra/stet, video (after 5.3).
+
 ## Tagline
 
 A design reviewer for agent-built apps: checks every string on your laptop,
@@ -41,8 +44,14 @@ text private, and speaks to the coding agent in a form it can act on.
   the connection and say so.
 - Checks Indonesian against its English original and explains each mistake in
   plain English ("Dekat" means nearby; a Close button is "Tutup").
-- Reviews your own language files (English and Indonesian JSON) as well as
-  the built-in sample, and the fix prompt names each file and key.
+- Scans your own running app with one bookmark: drag "Scan with Stet" to the
+  bookmarks bar, open your app (localhost or deployed), click it. The screen's
+  text goes straight to Stet's tab and nowhere else; the fix prompt names the
+  page and element and tells your agent to find each string in the code.
+  Language files (English and Indonesian JSON) work too.
+- Made for app interface text. On a marketing page it still finds real
+  defects (unfilled "[##]" figures, empty separators, "Learn More"), but among
+  many false alarms, and we say so in the app and the README.
 - Sealed projects never send their text anywhere; Open projects can use the
   cloud when the laptop model is missing, always after showing what is sent.
 
@@ -86,7 +95,16 @@ text private, and speaks to the coding agent in a form it can act on.
   a link in an invoicing app), so links now carry their destination and
   copied examples are refused.
 - The cloud model once listed the owner's own word ("invoice") as a word to
-  avoid; words the brief uses are now dropped from that list.
+  avoid; words the brief uses are now dropped from that list. That rule then
+  dropped "customer" from a brief that said "owners bill customers... We call
+  them clients", so a word the brief renames is kept.
+- The scan bookmark runs on someone else's page and talks to Stet by
+  postMessage, so an independent security review went over it: a crafted
+  message could have forged lines in the fix prompt, and record ids in links
+  could have reached Stet. Both are closed and covered by gates.
+- On a real organisation's marketing home page the laptop model flagged most
+  plain copy as generated. A guide written from that site's brief did not
+  help, so we narrowed the claim to app interface text.
 
 ## Accomplishments that we're proud of
 
@@ -104,8 +122,9 @@ very little of the user's data to do them.
 
 ## What's next for Stet
 
-Live review of a running app on localhost, screenshot review, and more
-languages after Indonesian.
+Pins on the running app itself (the scan lists findings today), a mode for
+marketing pages that judges copy differently from interface text, screenshot
+review, and more languages after Indonesian.
 
 ## Built with
 
