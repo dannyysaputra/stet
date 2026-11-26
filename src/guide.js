@@ -86,7 +86,18 @@ export function loadGuide() {
   } catch {
     saved = null;
   }
-  const g = saved?.markdown ? saved : starter();
+  let g = saved?.markdown ? saved : starter();
+  // A guide written from a brief carries a copy of the starter guide's fixed part
+  // (problem kinds, seriousness, not a problem). When the starter changes, the
+  // owner's part (voice, terms, filler) is kept and the fixed part is brought up
+  // to date. A guide the owner edited by hand is left exactly as it is.
+  if (g.source === "brief") {
+    const at = g.markdown.indexOf("## Problem kinds");
+    if (at >= 0 && g.markdown.slice(at) !== fixedPart()) {
+      g = { ...g, markdown: g.markdown.slice(0, at) + fixedPart() };
+      save(g);
+    }
+  }
   return { ...g, id: guideId(g.markdown) };
 }
 

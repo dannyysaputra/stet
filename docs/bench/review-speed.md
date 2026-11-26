@@ -96,14 +96,39 @@ first cut. All seven were fixed before V1-A2:
 Result: B from 46.3 s to 0.11 s with identical verdicts; A unchanged (45 to 54 s
 across runs, run-to-run noise); counter 0 throughout.
 
-### Not run: V2, a shorter guide
+### V2: a shorter starter guide (rejected)
 
-The probe shows the guide costs about 1.4 s of each 3 s call. A guide a third
-shorter could take scenario A to roughly 38 to 42 s. It is not run here because
-it changes the measured prompt (an English eval rerun on /eval/, about 8
-minutes, must show caught >= 80% and false alarms <= 2%), and the guide saved in
-the browser holds the old fixed part, so it would need writing again from the
-brief. Stopped at the best measured admissible variant, V1.
+Hypothesis: the guide costs about 1.4 s of each 3 s call (probe), so a guide a
+third shorter takes scenario A to roughly 38 to 42 s.
+
+Change: data/eval/wording-guide.md compacted from 2,784 to 1,947 characters,
+same rules. src/guide.js gained a migration: a guide written from a brief gets
+its fixed part (from "## Problem kinds") replaced by the current starter's, and
+keeps the owner's voice, terms and filler. A hand-edited guide is left alone.
+
+| Run | Code | Scenario | Wall time | Model calls | Problems on "new" | Decision |
+| --- | --- | --- | --- | --- | --- | --- |
+| V2-eval | V2 guide | English laptop eval, 150 items | median 3.4 s per call | 150 | caught 94.4%, false alarms 1.7%, 0 errors | passes the frozen limits |
+| V2-A1 | V2 guide | A | 108.2 s | 16 (3.5 to 9.7 s each) | 11 | laptop was slow at the time, not comparable |
+| V2-B1 | V2 guide | B | 0.102 s | 0 | 11 | |
+| V2-A2 | V2 guide | A | 88.3 s | 16 (4.0 to 7.4 s each) | 10 | laptop still slow |
+| ctrl-A | old guide, restored by the migration (guide id back to 1y3c5tt) | A, right after V2-A2 | 51.6 s | 16 (2.8 to 4.2 s each) | 8, exactly the planted ones | same-conditions control |
+| V2-A3 | V2 guide | A, right after ctrl-A | 47.1 s | 16 (2.5 to 3.3 s each) | 13 | **rejected** |
+
+Result: about 9% faster than the control run next to it, which is inside the
+run-to-run spread of scenario A (45 to 54 s). It added five false alarms on the
+sample screen: "Home" (vague_link), "Choose a client" (inconsistent_term),
+"Add line item", "Save draft" and "Close" (vague_button). The control run found
+exactly the eight planted problems. The eval did not catch this because it
+checks against the starter guide, not a guide written from a brief. Lesson: a
+guide change needs the review-page check as well as the eval.
+
+Kept: the migration in src/guide.js. It moved the saved brief guide to the V2
+fixed part and back to the original byte for byte (guide id 1y3c5tt again), so
+a future starter change reaches guides written from a brief. The V2 eval result
+is kept in data/eval/results/archive/ as the record of the rejected variant.
+
+Stopped at the best measured admissible variant, V1.
 
 ## Rollback
 
