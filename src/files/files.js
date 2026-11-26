@@ -125,7 +125,7 @@ async function review({ approved = false } = {}) {
     ...items.filter((i) => i.id && i.en).map((i) => ({ key: i.key, kind: i.kind, lang: "id", text: i.id, original: i.en, file: files.id })),
   ];
   if (projectMode() === OPEN && !approved) {
-    const toCloud = all.filter((g) => !quickCheck(g) && (g.lang === "id" || can.viaCloud));
+    const toCloud = all.filter((g) => !quickCheck(g, { app, register }) && (g.lang === "id" || can.viaCloud));
     if (toCloud.length) {
       askApproval(toCloud);
       return;
@@ -150,7 +150,7 @@ async function review({ approved = false } = {}) {
     if (me !== run) return;
     try {
       g.result =
-        quickCheck(g) ??
+        quickCheck(g, { app, register }) ??
         (g.lang === "id"
           ? await translationCheck(g, "language file", { app, register, where: projectMode() === OPEN ? "cloud" : "laptop" })
           : await modelCheck(g, "language file", { app }));

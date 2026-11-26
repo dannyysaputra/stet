@@ -1,11 +1,12 @@
 // Checks one piece of interface text: plain rules first, then a verdict already
 // reached for the same text, then the laptop model (Laptop only, never the cloud).
 import { askJson, laptopModelStatus } from "../ai.js";
-import { EN_SCHEMA, enPrompt } from "../english-check.js";
+import { EN_SCHEMA, enPrompt, wordingGuide } from "../english-check.js";
 import { copiedExample, parseTerms, ruleCheck } from "./rules.js";
-import { currentGuide } from "../guide.js";
-import { ID_SCHEMA, idPrompt } from "../translation-check.js";
+import { currentGuide, guideId } from "../guide.js";
+import { ID_SCHEMA, idPrompt, idRules } from "../translation-check.js";
 import { OPEN, projectMode, textMode } from "../project.js";
+import { cloudModel } from "../config.js";
 
 export const APP = "Lumbung, an invoicing app for small businesses";
 
@@ -31,15 +32,76 @@ export const PROBLEM_NAMES = {
   mixed_register: "Mixed address",
 };
 
-// Verdicts by guide, element kind and text, for this page session. The same text
-// on another screen reuses the verdict instead of a second call; a different
-// guide never reuses a verdict reached under the old one. Indonesian verdicts
-// are keyed by their English original too.
+// Verdicts already reached, kept in the browser so they survive a reload (bench
+// variant V1, docs/bench/review-speed.md). The key holds everything that goes
+// into the prompt except the screen name: the prompt version (a hash of the
+// prompt templates and schemas, so changed code never reuses old verdicts), the
+// app, the guide, the element kind, the context and the text. Leaving the screen
+// out is the 0.5 decision: the same string on another screen reuses its verdict.
+// Indonesian verdicts are keyed by their English original and by where they ran:
+// the laptop and the cloud differ a lot there (decision 2), so an Open project
+// never reuses a laptop verdict.
+// The version covers the prompt code, the schemas, and the text the prompts pull
+// in (the starter wording guide and the Indonesian rules), so editing any of them
+// starts a fresh set of verdicts.
+const PROMPT_VERSION = guideId(
+  [enPrompt, idPrompt].map(String).join("\n") + JSON.stringify([EN_SCHEMA, ID_SCHEMA]) + wordingGuide + idRules,
+);
+const STORE = "stet.verdicts";
+const STORE_MAX = 500;
 const cache = new Map();
-// Indonesian verdicts also record where they ran: the laptop and the cloud differ a
-// lot here (decision 2), so an Open project never reuses a laptop verdict.
+const valid = (r) => r && typeof r === "object" && r.finding && (r.finding.verdict === "ok" || r.finding.verdict === "problem");
+
+function readStore() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(STORE) ?? "null");
+    return saved?.v === PROMPT_VERSION && Array.isArray(saved.entries) ? saved.entries.filter(([k, r]) => typeof k === "string" && valid(r)) : [];
+  } catch {
+    return []; // nothing saved, or storage blocked: start empty
+  }
+}
+for (const [k, r] of readStore()) cache.set(k, r);
+
+// Saved verdicts are merged with what another page or tab saved meanwhile, the
+// most recently used last, and capped; on a full store, half as many are kept.
+function save() {
+  const merged = new Map(readStore());
+  for (const [k, r] of cache) {
+    merged.delete(k);
+    merged.set(k, r);
+  }
+  const entries = [...merged].slice(-STORE_MAX);
+  for (const n of [entries.length, Math.floor(entries.length / 2)]) {
+    try {
+      localStorage.setItem(STORE, JSON.stringify({ v: PROMPT_VERSION, entries: entries.slice(-n) }));
+      return;
+    } catch {
+      // full or blocked: try once with fewer, then keep them for this page session only
+    }
+  }
+}
+let saving = 0;
+function remember(key, result) {
+  cache.delete(key); // most recently used goes last, so the cap drops the oldest
+  cache.set(key, result);
+  if (cache.size > STORE_MAX) cache.delete(cache.keys().next().value);
+  clearTimeout(saving);
+  saving = setTimeout(save, 300);
+}
+addEventListener("pagehide", () => {
+  clearTimeout(saving);
+  save();
+});
+
 const idWhere = () => (projectMode() === OPEN ? "cloud" : "laptop");
-const cacheKey = (g, where = idWhere()) => (g.lang === "id" ? `id\n${where}\n${g.kind}\n${g.original}\n${g.text}` : `${currentGuide().id}\n${g.kind}\n${g.text}`);
+// JSON keeps the fields apart even when a string contains a newline. The guide id
+// is passed in by the caller that built the prompt, never read again later, so a
+// guide changed during a review cannot label an old verdict as a new one. Cloud
+// verdicts also carry the cloud model's name.
+const cacheKey = (g, { app = APP, where = idWhere(), register = "Anda", guideAt = currentGuide().id } = {}) =>
+  g.lang === "id"
+    ? JSON.stringify([PROMPT_VERSION, "id", where, where === "cloud" ? cloudModel() : "", app, register, g.kind, g.original, g.text])
+    : JSON.stringify([PROMPT_VERSION, "en", app, guideAt, g.kind, g.context ?? "", g.text]);
 
 export { laptopModelStatus };
 
@@ -53,12 +115,13 @@ const guideTerms = () => {
 /**
  * The verdict for one group from collect.js, without calling the model.
  * Returns { finding, source: "rule" | "reused" } or null if the model has to judge it.
+ * opts: { app, register } when the text is not the sample's (the /files/ page).
  */
-export function quickCheck(g) {
+export function quickCheck(g, opts = {}) {
   // The plain rules are written for English; Indonesian text only reuses verdicts.
   const rule = g.lang === "id" ? null : ruleCheck(g.text, g.kind, guideTerms());
   if (rule) return { finding: rule, source: "rule" };
-  const hit = cache.get(cacheKey(g));
+  const hit = cache.get(cacheKey(g, opts));
   if (hit) return { ...hit, source: "reused" };
   return null;
 }
@@ -93,7 +156,7 @@ export async function modelCheck(g, screen, { app = APP } = {}) {
   };
   const result = { finding, where: r.where, ms: r.ms, guideId: guide.id };
   // Only a reply the SDK says ran on the laptop is reused.
-  if (r.where === "laptop") cache.set(cacheKey(g), result);
+  if (r.where === "laptop") remember(cacheKey(g, { app, guideAt: guide.id }), result);
   return { ...result, source: r.where === "cloud" ? "cloud" : "laptop" };
 }
 
@@ -104,6 +167,7 @@ export async function modelCheck(g, screen, { app = APP } = {}) {
  * translation becomes the rewrite, and the plain-English note is kept.
  */
 export async function translationCheck(g, screen, { app = APP, register = "Anda", where = "laptop" } = {}) {
+  const key = cacheKey(g, { app, register, where }); // built before the call, like the prompt
   const r = await askJson(
     idPrompt({ register, app, screen, kind: g.kind, en: g.original, id_text: g.text }),
     ID_SCHEMA,
@@ -119,7 +183,8 @@ export async function translationCheck(g, screen, { app = APP, register = "Anda"
     note: d.note_en ?? "",
   };
   const result = { finding, where: r.where, ms: r.ms };
-  cache.set(cacheKey(g, r.where === "cloud" ? "cloud" : "laptop"), result);
+  // Kept only when it ran where it was asked to (always, for the Only modes used here).
+  if (r.where === where) remember(key, result);
   return { ...result, source: r.where === "cloud" ? "cloud" : "laptop" };
 }
 
