@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stet: accuracy test</title>
+<link rel="stylesheet" href="/src/base.css">
+<style>
+  .out pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.85rem; background: var(--paper); border: 1.5px solid var(--line); border-radius: 10px; padding: 10px 12px; max-height: 420px; overflow: auto; }
+  .out h3 { font-size: 1rem; margin: 14px 0 6px; }
+  label input { width: 6em; font: inherit; padding: 4px 6px; margin-left: 6px; }
+  button.quiet { background: transparent; color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--ink); }
+</style>
+</head>
+<body>
+<main>
+  <p><a href="/">Stet</a> · <a href="/check/">Hybrid check</a></p>
+  <h1>Accuracy test</h1>
+  <p class="dim">Runs the Phase 0 test data through each check, one item at a time, on the laptop model or in the cloud. Each finished run is saved to data/eval/results/ (or downloaded when that is not possible).</p>
+  <p class="warn" id="config" hidden></p>
+
+  <section class="box">
+    <dl class="facts">
+      <dt>Laptop model</dt><dd id="status">checking...</dd>
+      <dt>App Check</dt><dd id="appcheck"></dd>
+    </dl>
+    <div class="row">
+      <button type="button" id="prepare" class="quiet">Prepare the laptop model</button>
+      <label>Items per run <input id="limit" type="number" min="1" placeholder="all"></label>
+      <button type="button" id="stop" class="quiet" disabled>Stop</button>
+    </div>
+    <p id="progress" class="dim" aria-live="polite" style="margin-top:12px">Idle.</p>
+  </section>
+
+  <div id="grid"></div>
+</main>
+<script type="module" src="/src/eval.js"></script>
+</body>
+</html>

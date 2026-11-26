@@ -1,0 +1,190 @@
+{
+  "run": {
+    "check": "translation",
+    "mode": "ONLY_ON_DEVICE",
+    "startedAt": "2026-11-25T06:41:02.217Z",
+    "wallMs": 17480,
+    "complete": false,
+    "stopped": false,
+    "appCheck": "debug (new token, see console)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  },
+  "summary": {
+    "definitions": {
+      "problemsCaughtPct": "problem items the model flagged as a problem / all problem items (errors count as missed)",
+      "problemKindRightPct": "problem items flagged with the right problem kind / all problem items",
+      "falseAlarmPct": "good items the model flagged as a problem / all good items (errors not counted as alarms)"
+    },
+    "problemsCaughtPct": 100,
+    "problemKindRightPct": 100,
+    "falseAlarmPct": null,
+    "byType": {
+      "wrong_sense": {
+        "n": 5,
+        "flagged": 5,
+        "typeMatch": 5
+      }
+    },
+    "items": 5,
+    "errors": 0,
+    "where": {
+      "laptop": 5
+    },
+    "speed": {
+      "itemsPerMinute": 17.2,
+      "medianMs": 3529
+    }
+  },
+  "results": [
+    {
+      "item": {
+        "id": "id001",
+        "app": "invoices",
+        "screen": "Top menu",
+        "kind": "nav",
+        "en": "Home",
+        "id_text": "Rumah",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Beranda",
+        "note_en": "\"Rumah\" means a house. The English means the start page."
+      },
+      "where": "laptop",
+      "ms": 3248,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Beranda",
+          "note_en": "Rumah means house, but in context, Beranda (Home) is more appropriate."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id002",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Close",
+        "id_text": "Dekat",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Tutup",
+        "note_en": "\"Dekat\" means nearby. The English means close this screen."
+      },
+      "where": "laptop",
+      "ms": 3529,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Tutup",
+          "note_en": "Dekat means nearby, not close. The correct translation for \"Close\" should be \"Tutup.\""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id003",
+        "app": "clinic",
+        "screen": "Doctor profile",
+        "kind": "button",
+        "en": "Book",
+        "id_text": "Buku",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Pesan",
+        "note_en": "\"Buku\" is a book you read. The English is the verb, to reserve a time."
+      },
+      "where": "laptop",
+      "ms": 3380,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Jadwalkan",
+          "note_en": "Buku means book, not book a doctor's appointment."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id004",
+        "app": "invoices",
+        "screen": "Payment",
+        "kind": "button",
+        "en": "Charge card",
+        "id_text": "Isi daya kartu",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Tagih ke kartu",
+        "note_en": "Reads as \"charge the card's battery\"."
+      },
+      "where": "laptop",
+      "ms": 3744,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Kartu debit",
+          "note_en": "Isi daya kartu means 'recharge card', but the English refers to a 'charge card'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id005",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "button",
+        "en": "Clear",
+        "id_text": "Jelas",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "medium",
+        "better": "Hapus filter",
+        "note_en": "\"Jelas\" means obvious or clear to understand. The English means remove the filters."
+      },
+      "where": "laptop",
+      "ms": 3578,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Hapus",
+          "note_en": "Jelas means \"clear\", but the English word is \"Clear\", meaning to remove something. These meanings are different."
+        }
+      }
+    }
+  ]
+}

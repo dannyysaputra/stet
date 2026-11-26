@@ -1,0 +1,4429 @@
+{
+  "run": {
+    "check": "english",
+    "mode": "ONLY_ON_DEVICE",
+    "startedAt": "2026-11-25T07:22:34.388Z",
+    "wallMs": 456176,
+    "complete": true,
+    "stopped": false,
+    "quotaRetries": 0,
+    "cloudGapMs": 0,
+    "appCheck": "debug (new token, see console)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  },
+  "summary": {
+    "definitions": {
+      "problemsCaughtPct": "problem items the model flagged as a problem / all problem items (errors count as missed)",
+      "problemKindRightPct": "problem items flagged with the right problem kind / all problem items",
+      "falseAlarmPct": "good items the model flagged as a problem / all good items (errors not counted as alarms)",
+      "fillerCaughtPct": "generated-filler items flagged as a problem / all generated-filler items"
+    },
+    "problemsCaughtPct": 80,
+    "problemKindRightPct": 70,
+    "falseAlarmPct": 0,
+    "fillerCaughtPct": 95,
+    "byType": {
+      "sounds_generated": {
+        "n": 20,
+        "flagged": 19,
+        "typeMatch": 19
+      },
+      "vague_button": {
+        "n": 12,
+        "flagged": 5,
+        "typeMatch": 5
+      },
+      "blames_user": {
+        "n": 10,
+        "flagged": 8,
+        "typeMatch": 8
+      },
+      "unclear_message": {
+        "n": 12,
+        "flagged": 10,
+        "typeMatch": 9
+      },
+      "jargon": {
+        "n": 12,
+        "flagged": 11,
+        "typeMatch": 5
+      },
+      "leftover_text": {
+        "n": 8,
+        "flagged": 7,
+        "typeMatch": 7
+      },
+      "vague_link": {
+        "n": 6,
+        "flagged": 5,
+        "typeMatch": 5
+      },
+      "inconsistent_term": {
+        "n": 10,
+        "flagged": 7,
+        "typeMatch": 5
+      }
+    },
+    "items": 150,
+    "errors": 0,
+    "where": {
+      "laptop": 150
+    },
+    "speed": {
+      "itemsPerMinute": 19.7,
+      "medianMs": 2786
+    }
+  },
+  "results": [
+    {
+      "item": {
+        "id": "en001",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "subtitle",
+        "text": "Unlock seamless invoicing and elevate your workflow!",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "Fill in the details and send it to your client."
+      },
+      "where": "laptop",
+      "ms": 13703,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Create new invoice"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en002",
+        "app": "tasks",
+        "screen": "Dashboard",
+        "kind": "subtitle",
+        "text": "Supercharge your productivity with our powerful dashboard.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "Your open tasks, due dates and recent changes."
+      },
+      "where": "laptop",
+      "ms": 2912,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Get more done with our dashboard."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en003",
+        "app": "courses",
+        "screen": "My courses",
+        "kind": "empty",
+        "text": "Embark on your learning journey today!",
+        "context": "Shown when the student has no courses.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "You have no courses yet. Browse the catalogue to enroll."
+      },
+      "where": "laptop",
+      "ms": 3151,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "You don't have any courses yet. Explore our course catalog."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en004",
+        "app": "clinic",
+        "screen": "Appointments",
+        "kind": "subtitle",
+        "text": "Effortlessly manage all your appointments in one place.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "See, move or cancel your appointments."
+      },
+      "where": "laptop",
+      "ms": 2902,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Manage your appointments in one place."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en005",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "toast",
+        "text": "Success! Your amazing changes have been saved.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Changes saved."
+      },
+      "where": "laptop",
+      "ms": 2579,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en006",
+        "app": "expenses",
+        "screen": "First run",
+        "kind": "heading",
+        "text": "Welcome to the future of expense tracking!",
+        "context": "First screen after sign-up.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "Add your first expense to get started."
+      },
+      "where": "laptop",
+      "ms": 2930,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Welcome to Expenses. Track your expenses here."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en007",
+        "app": "tasks",
+        "screen": "Settings",
+        "kind": "helper",
+        "text": "Harness the power of AI to streamline your tasks.",
+        "context": "Helper text under a toggle that suggests due dates.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Suggest a due date for tasks that have none."
+      },
+      "where": "laptop",
+      "ms": 2609,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "AI can help you automate tasks."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en008",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "subtitle",
+        "text": "Experience a whole new level of convenience.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Pick a doctor and a time. It takes under a minute."
+      },
+      "where": "laptop",
+      "ms": 2547,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Book your appointment online."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en009",
+        "app": "invoices",
+        "screen": "Home",
+        "kind": "subtitle",
+        "text": "Your one-stop solution for all things billing.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Invoices, payments and reminders."
+      },
+      "where": "laptop",
+      "ms": 2750,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "We help you manage your billing."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en010",
+        "app": "courses",
+        "screen": "Catalogue",
+        "kind": "subtitle",
+        "text": "Dive into a world of knowledge and growth.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "12 new courses this month."
+      },
+      "where": "laptop",
+      "ms": 2883,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Discover courses for your development."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en011",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "subtitle",
+        "text": "Take your team collaboration to the next level!",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Assign tasks and see who is working on what."
+      },
+      "where": "laptop",
+      "ms": 3069,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "We help your team work together more effectively."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en012",
+        "app": "clinic",
+        "screen": "Settings",
+        "kind": "helper",
+        "text": "Seamlessly integrate with your favorite tools.",
+        "context": "Helper text beside a Connect calendar button.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "low",
+        "rewrite": "Connect your calendar to see appointments there."
+      },
+      "where": "laptop",
+      "ms": 2703,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Connect to your calendar."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en013",
+        "app": "expenses",
+        "screen": "Help panel",
+        "kind": "helper",
+        "text": "We've got you covered every step of the way.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "low",
+        "rewrite": "Questions? Read the guide or message support."
+      },
+      "where": "laptop",
+      "ms": 2778,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "We'll guide you through each step."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en014",
+        "app": "expenses",
+        "screen": "Trips",
+        "kind": "subtitle",
+        "text": "Revolutionize the way you travel for work.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Log trips and claim expenses in one place."
+      },
+      "where": "laptop",
+      "ms": 2803,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Track your work trips."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en015",
+        "app": "courses",
+        "screen": "Teacher profile",
+        "kind": "helper",
+        "text": "Elevate your profile to unlock endless opportunities.",
+        "context": "Shown above empty photo and bio fields.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Add a photo and a short bio so students know who you are."
+      },
+      "where": "laptop",
+      "ms": 2850,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Show your profile to connect with learners."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en016",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "heading",
+        "text": "Discover the magic of effortless scheduling.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "Book an appointment"
+      },
+      "where": "laptop",
+      "ms": 2738,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Book an appointment."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en017",
+        "app": "expenses",
+        "screen": "Reports",
+        "kind": "subtitle",
+        "text": "Empower your finances with actionable insights.",
+        "context": "Above a chart of spending by category.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Spending by category for this month."
+      },
+      "where": "laptop",
+      "ms": 2789,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "This chart shows your spending by category."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en018",
+        "app": "tasks",
+        "screen": "Dashboard",
+        "kind": "loading",
+        "text": "Get ready to transform your workflow!",
+        "context": "Shown while tasks load.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "low",
+        "rewrite": "Loading your tasks..."
+      },
+      "where": "laptop",
+      "ms": 3256,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Loading tasks."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en019",
+        "app": "invoices",
+        "screen": "Settings",
+        "kind": "subtitle",
+        "text": "A robust, scalable and intuitive settings experience.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Change your account, reminders and billing details."
+      },
+      "where": "laptop",
+      "ms": 2843,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "You can customize your settings here."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en020",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "heading",
+        "text": "Unleash your potential with personalized recommendations.",
+        "context": "Heading above a row of suggested courses.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Picked for you from your recent lessons"
+      },
+      "where": "laptop",
+      "ms": 3973,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Here are some courses we think you'll like."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en021",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "text": "Submit",
+        "context": "Primary button. Sends the invoice to the client.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "medium",
+        "rewrite": "Send invoice"
+      },
+      "where": "laptop",
+      "ms": 2860,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_button",
+          "severity": "medium",
+          "rewrite": "Send invoice"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en022",
+        "app": "tasks",
+        "screen": "Delete task dialog",
+        "kind": "button",
+        "text": "OK",
+        "context": "Confirms deleting the task.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "high",
+        "rewrite": "Delete task"
+      },
+      "where": "laptop",
+      "ms": 2442,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_button",
+          "severity": "medium",
+          "rewrite": "Delete task"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en023",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "button",
+        "text": "Go",
+        "context": "Next to the search field.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "low",
+        "rewrite": "Search"
+      },
+      "where": "laptop",
+      "ms": 2315,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en024",
+        "app": "clinic",
+        "screen": "Cancel dialog",
+        "kind": "button",
+        "text": "Yes",
+        "context": "Dialog asks whether to cancel the appointment.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "medium",
+        "rewrite": "Cancel appointment"
+      },
+      "where": "laptop",
+      "ms": 2583,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "ok"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en025",
+        "app": "clinic",
+        "screen": "Payment",
+        "kind": "button",
+        "text": "Proceed",
+        "context": "Charges the card 120.00 for the visit.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "high",
+        "rewrite": "Pay 120.00"
+      },
+      "where": "laptop",
+      "ms": 2758,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en026",
+        "app": "courses",
+        "screen": "Archive dialog",
+        "kind": "button",
+        "text": "Confirm",
+        "context": "Archives the course.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "medium",
+        "rewrite": "Archive course"
+      },
+      "where": "laptop",
+      "ms": 2669,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en027",
+        "app": "expenses",
+        "screen": "Reports",
+        "kind": "button",
+        "text": "Execute",
+        "context": "Builds the monthly report.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "medium",
+        "rewrite": "Build report"
+      },
+      "where": "laptop",
+      "ms": 2818,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_button",
+          "severity": "medium",
+          "rewrite": "Build monthly report"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en028",
+        "app": "invoices",
+        "screen": "Payment detail",
+        "kind": "button",
+        "text": "Process",
+        "context": "Refunds 45.00 to the client.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "high",
+        "rewrite": "Refund 45.00"
+      },
+      "where": "laptop",
+      "ms": 3212,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_button",
+          "severity": "medium",
+          "rewrite": "Refund 45.00 to the client"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en029",
+        "app": "tasks",
+        "screen": "Bulk actions",
+        "kind": "button",
+        "text": "Do it",
+        "context": "Archives the 8 selected tasks.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "medium",
+        "rewrite": "Archive 8 tasks"
+      },
+      "where": "laptop",
+      "ms": 3019,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en030",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "button",
+        "text": "Submit form",
+        "context": "Books the chosen time.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "medium",
+        "rewrite": "Book appointment"
+      },
+      "where": "laptop",
+      "ms": 2892,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_button",
+          "severity": "medium",
+          "rewrite": "Confirm appointment"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en031",
+        "app": "courses",
+        "screen": "Checkout",
+        "kind": "button",
+        "text": "Finish",
+        "context": "Pays for the course and enrolls the student.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "high",
+        "rewrite": "Pay and enroll"
+      },
+      "where": "laptop",
+      "ms": 2417,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en032",
+        "app": "invoices",
+        "screen": "Choose plan",
+        "kind": "button",
+        "text": "Continue",
+        "context": "Charges 29.00 a month and starts the plan.",
+        "expect": "problem",
+        "type": "vague_button",
+        "severity": "high",
+        "rewrite": "Pay 29.00 and start plan"
+      },
+      "where": "laptop",
+      "ms": 2518,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_button",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "Continue"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en033",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "error",
+        "text": "Error: you entered an invalid amount.",
+        "context": "Amount field contains -40.",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "high",
+        "rewrite": "Enter an amount above 0, such as 250.00."
+      },
+      "where": "laptop",
+      "ms": 4088,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "blames_user",
+          "severity": "high",
+          "rewrite": "The amount you entered is invalid. Please enter a positive number, such as 25.00."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en034",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "error",
+        "text": "You forgot to fill in the date.",
+        "context": "",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "medium",
+        "rewrite": "Choose a date for the appointment."
+      },
+      "where": "laptop",
+      "ms": 3044,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "blames_user",
+          "severity": "medium",
+          "rewrite": "Please enter the date."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en035",
+        "app": "tasks",
+        "screen": "Sign in",
+        "kind": "error",
+        "text": "You have entered an incorrect password.",
+        "context": "",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "medium",
+        "rewrite": "That password doesn't match. Try again or reset it."
+      },
+      "where": "laptop",
+      "ms": 3141,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "blames_user",
+          "severity": "high",
+          "rewrite": "Incorrect password. Try again."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en036",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "error",
+        "text": "You did not select a file.",
+        "context": "Receipt upload field.",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "medium",
+        "rewrite": "Choose a receipt to upload."
+      },
+      "where": "laptop",
+      "ms": 2936,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en037",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "error",
+        "text": "Your file is wrong. Upload a correct file.",
+        "context": "Receipt was a 30 MB video.",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "high",
+        "rewrite": "Upload a PDF, JPG or PNG under 10 MB."
+      },
+      "where": "laptop",
+      "ms": 4013,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "blames_user",
+          "severity": "medium",
+          "rewrite": "The file you uploaded is too large. Please upload a file under 30 MB."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en038",
+        "app": "courses",
+        "screen": "Checkout",
+        "kind": "error",
+        "text": "You made a mistake in the card number.",
+        "context": "",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "medium",
+        "rewrite": "Check the card number. It should have 16 digits."
+      },
+      "where": "laptop",
+      "ms": 4283,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "blames_user",
+          "severity": "medium",
+          "rewrite": "The card number you entered is invalid. Please check it and try again."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en039",
+        "app": "tasks",
+        "screen": "New project",
+        "kind": "error",
+        "text": "Illegal character entered by user.",
+        "context": "Project name field.",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "medium",
+        "rewrite": "Use letters, numbers and hyphens only."
+      },
+      "where": "laptop",
+      "ms": 3873,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "blames_user",
+          "severity": "medium",
+          "rewrite": "The project name cannot contain that character. Please use only letters, numbers, and spaces. For example: 'My Awesome Project'"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en040",
+        "app": "courses",
+        "screen": "Sign in",
+        "kind": "error",
+        "text": "You failed to verify your email.",
+        "context": "",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "medium",
+        "rewrite": "Verify your email to continue. The link is in your inbox."
+      },
+      "where": "laptop",
+      "ms": 3358,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "blames_user",
+          "severity": "high",
+          "rewrite": "To continue, please verify your email address. Click here to resend the verification email."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en041",
+        "app": "tasks",
+        "screen": "Project settings",
+        "kind": "error",
+        "text": "You can't do that.",
+        "context": "A member without owner rights tried to delete the project.",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "medium",
+        "rewrite": "Only project owners can delete a project."
+      },
+      "where": "laptop",
+      "ms": 4964,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "blames_user",
+          "severity": "high",
+          "rewrite": "You do not have permission to delete this project. Please contact the project owner to request changes."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en042",
+        "app": "clinic",
+        "screen": "Patient details",
+        "kind": "error",
+        "text": "Wrong format, try again.",
+        "context": "Date of birth field.",
+        "expect": "problem",
+        "type": "blames_user",
+        "severity": "medium",
+        "rewrite": "Use the format DD/MM/YYYY, such as 25/11/1990."
+      },
+      "where": "laptop",
+      "ms": 3056,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "blames_user",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en043",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "empty",
+        "text": "No data",
+        "context": "Empty line items section.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "medium",
+        "rewrite": "No line items yet. Add the first one."
+      },
+      "where": "laptop",
+      "ms": 3607,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "No invoice items added yet. Add services or products."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en044",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "error",
+        "text": "Something went wrong.",
+        "context": "Saving the task failed.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "medium",
+        "rewrite": "We couldn't save the task. Check your connection and try again."
+      },
+      "where": "laptop",
+      "ms": 4615,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "Failed to save task. Please try again."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en045",
+        "app": "clinic",
+        "screen": "Appointments",
+        "kind": "error",
+        "text": "Error 500",
+        "context": "",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "high",
+        "rewrite": "Appointments didn't load. Try again in a minute."
+      },
+      "where": "laptop",
+      "ms": 4782,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "Something went wrong. Please try again later."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en046",
+        "app": "courses",
+        "screen": "Sign up",
+        "kind": "error",
+        "text": "Invalid input.",
+        "context": "Email field contains 'sari@'.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "medium",
+        "rewrite": "Enter a full email address, such as name@company.com."
+      },
+      "where": "laptop",
+      "ms": 6065,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "blames_user",
+          "severity": "medium",
+          "rewrite": "Invalid email address. Please enter a valid email format, such as sari@company.com."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en047",
+        "app": "expenses",
+        "screen": "Reports",
+        "kind": "error",
+        "text": "Operation failed.",
+        "context": "CSV export failed.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "medium",
+        "rewrite": "The export didn't finish. Try again with fewer than 5,000 rows."
+      },
+      "where": "laptop",
+      "ms": 5630,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "CSV export failed. Please check your file format and try again."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en048",
+        "app": "invoices",
+        "screen": "Delete dialog",
+        "kind": "heading",
+        "text": "Are you sure?",
+        "context": "Dialog title before deleting an invoice.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "medium",
+        "rewrite": "Delete this invoice? This can't be undone."
+      },
+      "where": "laptop",
+      "ms": 4088,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en049",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "error",
+        "text": "Request timed out (ERR_TIMEOUT_3).",
+        "context": "",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "medium",
+        "rewrite": "This is taking too long. Check your connection and try again."
+      },
+      "where": "laptop",
+      "ms": 5685,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "The request to load tasks timed out. Please check your internet connection and try again later."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en050",
+        "app": "tasks",
+        "screen": "Search",
+        "kind": "empty",
+        "text": "Nothing here.",
+        "context": "Search for 'budget' returned no tasks.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "low",
+        "rewrite": "No tasks match \"budget\". Try a different word."
+      },
+      "where": "laptop",
+      "ms": 3657,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en051",
+        "app": "courses",
+        "screen": "Checkout",
+        "kind": "error",
+        "text": "Unable to proceed.",
+        "context": "The card was declined.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "high",
+        "rewrite": "Your card was declined. Try another card."
+      },
+      "where": "laptop",
+      "ms": 5194,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "high",
+          "rewrite": "Card declined. Please check your card details and try again."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en052",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "error",
+        "text": "An error has occurred. Code: 0x80004005",
+        "context": "Receipt upload failed.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "medium",
+        "rewrite": "The upload failed. Try again, or use a smaller file."
+      },
+      "where": "laptop",
+      "ms": 5625,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "high",
+          "rewrite": "Receipt upload failed. Code: 0x80004005. Please try again, or check your internet connection."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en053",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "status",
+        "text": "Failed",
+        "context": "Badge on a task that did not sync.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "low",
+        "rewrite": "Not synced. Tap to retry."
+      },
+      "where": "laptop",
+      "ms": 3786,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "Task failed to sync. Please try again."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en054",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "error",
+        "text": "Try again later.",
+        "context": "Booking is closed for maintenance until 14:00.",
+        "expect": "problem",
+        "type": "unclear_message",
+        "severity": "medium",
+        "rewrite": "Booking is paused for maintenance until 14:00."
+      },
+      "where": "laptop",
+      "ms": 4091,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "unclear_message",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "Booking is closed for maintenance. It will reopen at 14:00."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en055",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "heading",
+        "text": "Invoice Creation Module",
+        "context": "",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "New invoice"
+      },
+      "where": "laptop",
+      "ms": 2874,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "jargon",
+          "severity": "medium",
+          "rewrite": "Create invoice"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en056",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "button",
+        "text": "Persist changes",
+        "context": "",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "Save changes"
+      },
+      "where": "laptop",
+      "ms": 2956,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "jargon",
+          "severity": "high",
+          "rewrite": "Save changes"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en057",
+        "app": "tasks",
+        "screen": "Projects",
+        "kind": "button",
+        "text": "Instantiate new project",
+        "context": "",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "New project"
+      },
+      "where": "laptop",
+      "ms": 3059,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "jargon",
+          "severity": "medium",
+          "rewrite": "Create new project"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en058",
+        "app": "courses",
+        "screen": "Any",
+        "kind": "error",
+        "text": "Authentication token expired. Re-authenticate.",
+        "context": "",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "You've been signed out. Sign in again."
+      },
+      "where": "laptop",
+      "ms": 2755,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en059",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "error",
+        "text": "Sync conflict detected (409).",
+        "context": "Someone else edited the task at the same time.",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "Someone else changed this task. Reload to see their changes."
+      },
+      "where": "laptop",
+      "ms": 4118,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "Another person updated this task at the same time. Please try again in a few minutes."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en060",
+        "app": "courses",
+        "screen": "Admin",
+        "kind": "label",
+        "text": "Enrollment entity",
+        "context": "",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "low",
+        "rewrite": "Enrollment"
+      },
+      "where": "laptop",
+      "ms": 3044,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "jargon",
+          "severity": "medium",
+          "rewrite": "Enrollment"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en061",
+        "app": "courses",
+        "screen": "Catalogue",
+        "kind": "button",
+        "text": "Execute query",
+        "context": "Next to the course search field.",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "Search"
+      },
+      "where": "laptop",
+      "ms": 3367,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_button",
+          "severity": "medium",
+          "rewrite": "Search courses"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en062",
+        "app": "invoices",
+        "screen": "Settings",
+        "kind": "heading",
+        "text": "Configure notification preferences matrix",
+        "context": "",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "Choose which emails you get"
+      },
+      "where": "laptop",
+      "ms": 3165,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Choose notification options"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en063",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "error",
+        "text": "Payload too large.",
+        "context": "Receipt over 10 MB.",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "This file is over 10 MB. Choose a smaller file."
+      },
+      "where": "laptop",
+      "ms": 3239,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "The receipt file is over 10 MB. Please upload a smaller file."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en064",
+        "app": "clinic",
+        "screen": "Profile",
+        "kind": "toast",
+        "text": "User record successfully mutated.",
+        "context": "",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "Profile updated."
+      },
+      "where": "laptop",
+      "ms": 2664,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Your profile information has been updated."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en065",
+        "app": "clinic",
+        "screen": "Home",
+        "kind": "button",
+        "text": "Initialize booking workflow",
+        "context": "",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "medium",
+        "rewrite": "Book an appointment"
+      },
+      "where": "laptop",
+      "ms": 2411,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Start booking"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en066",
+        "app": "clinic",
+        "screen": "Settings",
+        "kind": "label",
+        "text": "Toggle boolean: reminders",
+        "context": "Label of a switch.",
+        "expect": "problem",
+        "type": "jargon",
+        "severity": "low",
+        "rewrite": "Send me reminders"
+      },
+      "where": "laptop",
+      "ms": 2601,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "jargon",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "jargon",
+          "severity": "medium",
+          "rewrite": "Reminders: on/off"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en067",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "placeholder",
+        "text": "Lorem ipsum",
+        "context": "Placeholder of the client email field.",
+        "expect": "problem",
+        "type": "leftover_text",
+        "severity": "high",
+        "rewrite": "name@company.com"
+      },
+      "where": "laptop",
+      "ms": 2663,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "leftover_text",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "leftover_text",
+          "severity": "low",
+          "rewrite": "Enter client email"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en068",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "helper",
+        "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+        "context": "Course description.",
+        "expect": "problem",
+        "type": "leftover_text",
+        "severity": "high",
+        "rewrite": "Learn to read a balance sheet in four short lessons."
+      },
+      "where": "laptop",
+      "ms": 3100,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "leftover_text",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "leftover_text",
+          "severity": "high",
+          "rewrite": "This section contains placeholder text. We will replace it with the actual course description."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en069",
+        "app": "expenses",
+        "screen": "Receipts",
+        "kind": "helper",
+        "text": "TODO: write copy",
+        "context": "",
+        "expect": "problem",
+        "type": "leftover_text",
+        "severity": "high",
+        "rewrite": "Receipts are kept for seven years."
+      },
+      "where": "laptop",
+      "ms": 2777,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "leftover_text",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "leftover_text",
+          "severity": "medium",
+          "rewrite": "Please add text to this helper."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en070",
+        "app": "expenses",
+        "screen": "Expenses",
+        "kind": "button",
+        "text": "Button",
+        "context": "Opens the new expense form.",
+        "expect": "problem",
+        "type": "leftover_text",
+        "severity": "high",
+        "rewrite": "Add expense"
+      },
+      "where": "laptop",
+      "ms": 2328,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "leftover_text",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "leftover_text",
+          "severity": "low",
+          "rewrite": "New expense"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en071",
+        "app": "clinic",
+        "screen": "Home",
+        "kind": "heading",
+        "text": "Title goes here",
+        "context": "Above the list of upcoming appointments.",
+        "expect": "problem",
+        "type": "leftover_text",
+        "severity": "high",
+        "rewrite": "Upcoming appointments"
+      },
+      "where": "laptop",
+      "ms": 2787,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "leftover_text",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "leftover_text",
+          "severity": "medium",
+          "rewrite": "Upcoming appointments"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en072",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "heading",
+        "text": "Hi undefined,",
+        "context": "Greeting where the student's name failed to load.",
+        "expect": "problem",
+        "type": "leftover_text",
+        "severity": "high",
+        "rewrite": "Hi there,"
+      },
+      "where": "laptop",
+      "ms": 2600,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "leftover_text",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "leftover_text",
+          "severity": "high",
+          "rewrite": "Hi there,"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en073",
+        "app": "tasks",
+        "screen": "New task",
+        "kind": "placeholder",
+        "text": "[Insert description]",
+        "context": "Placeholder of the description field.",
+        "expect": "problem",
+        "type": "leftover_text",
+        "severity": "medium",
+        "rewrite": "Describe the task in a sentence or two"
+      },
+      "where": "laptop",
+      "ms": 2672,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "leftover_text",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en074",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "placeholder",
+        "text": "Placeholder text",
+        "context": "Placeholder of the search field.",
+        "expect": "problem",
+        "type": "leftover_text",
+        "severity": "medium",
+        "rewrite": "Search tasks"
+      },
+      "where": "laptop",
+      "ms": 2391,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "leftover_text",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "leftover_text",
+          "severity": "medium",
+          "rewrite": "Search tasks"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en075",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "link",
+        "text": "Click here",
+        "context": "Opens a preview of the invoice.",
+        "expect": "problem",
+        "type": "vague_link",
+        "severity": "medium",
+        "rewrite": "Preview the invoice"
+      },
+      "where": "laptop",
+      "ms": 2531,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_link",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_link",
+          "severity": "medium",
+          "rewrite": "Preview invoice"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en076",
+        "app": "invoices",
+        "screen": "Pricing",
+        "kind": "link",
+        "text": "Read more",
+        "context": "Goes to the refund policy.",
+        "expect": "problem",
+        "type": "vague_link",
+        "severity": "low",
+        "rewrite": "Read the refund policy"
+      },
+      "where": "laptop",
+      "ms": 2146,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_link",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "ok"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en077",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "link",
+        "text": "here",
+        "context": "Sentence: 'Download your receipt here.' Downloads a PDF.",
+        "expect": "problem",
+        "type": "vague_link",
+        "severity": "low",
+        "rewrite": "Download receipt (PDF)"
+      },
+      "where": "laptop",
+      "ms": 2966,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_link",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_link",
+          "severity": "low",
+          "rewrite": "Download your receipt"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en078",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "link",
+        "text": "Link",
+        "context": "Opens the course syllabus.",
+        "expect": "problem",
+        "type": "vague_link",
+        "severity": "medium",
+        "rewrite": "Open the course syllabus"
+      },
+      "where": "laptop",
+      "ms": 3278,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_link",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_link",
+          "severity": "medium",
+          "rewrite": "Read the syllabus"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en079",
+        "app": "clinic",
+        "screen": "Home",
+        "kind": "link",
+        "text": "More",
+        "context": "Under three appointments; opens all six.",
+        "expect": "problem",
+        "type": "vague_link",
+        "severity": "low",
+        "rewrite": "See all 6 appointments"
+      },
+      "where": "laptop",
+      "ms": 3243,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_link",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_link",
+          "severity": "low",
+          "rewrite": "View all six appointments"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en080",
+        "app": "tasks",
+        "screen": "Security",
+        "kind": "link",
+        "text": "Learn more",
+        "context": "Beside the two-step sign-in switch.",
+        "expect": "problem",
+        "type": "vague_link",
+        "severity": "low",
+        "rewrite": "How two-step sign-in works"
+      },
+      "where": "laptop",
+      "ms": 3291,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "vague_link",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "vague_link",
+          "severity": "medium",
+          "rewrite": "Read the security policy"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en081",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "text": "Customer email",
+        "context": "The field above is labelled 'Client'. The app says client everywhere.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "medium",
+        "rewrite": "Client email"
+      },
+      "where": "laptop",
+      "ms": 2960,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "inconsistent_term",
+          "severity": "low",
+          "rewrite": "Client"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en082",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "button",
+        "text": "Remove",
+        "context": "Deletes the task. Every other screen calls this action 'Delete'.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "medium",
+        "rewrite": "Delete"
+      },
+      "where": "laptop",
+      "ms": 2583,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "ok"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en083",
+        "app": "courses",
+        "screen": "Header",
+        "kind": "button",
+        "text": "Log in",
+        "context": "The sign-in page and emails say 'Sign in'.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "low",
+        "rewrite": "Sign in"
+      },
+      "where": "laptop",
+      "ms": 3157,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "inconsistent_term",
+          "severity": "low",
+          "rewrite": "Sign in"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en084",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "heading",
+        "text": "Class progress",
+        "context": "The app calls these 'courses' everywhere else.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "low",
+        "rewrite": "Course progress"
+      },
+      "where": "laptop",
+      "ms": 3008,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Your progress in this course"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en085",
+        "app": "clinic",
+        "screen": "Appointment detail",
+        "kind": "button",
+        "text": "Cancel booking",
+        "context": "The app calls these 'appointments' everywhere else.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "medium",
+        "rewrite": "Cancel appointment"
+      },
+      "where": "laptop",
+      "ms": 2462,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en086",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "button",
+        "text": "Submit report",
+        "context": "The app calls this a 'claim' everywhere else.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "medium",
+        "rewrite": "Submit claim"
+      },
+      "where": "laptop",
+      "ms": 2550,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "inconsistent_term",
+          "severity": "medium",
+          "rewrite": "Submit claim"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en087",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "button",
+        "text": "Invite teammates",
+        "context": "The page heading is 'Members'.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "low",
+        "rewrite": "Invite members"
+      },
+      "where": "laptop",
+      "ms": 2893,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Invite new teammates"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en088",
+        "app": "invoices",
+        "screen": "Invoice detail",
+        "kind": "button",
+        "text": "Download bill",
+        "context": "The app calls these 'invoices' everywhere else.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "medium",
+        "rewrite": "Download invoice"
+      },
+      "where": "laptop",
+      "ms": 2358,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "Download bill"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en089",
+        "app": "tasks",
+        "screen": "Project settings",
+        "kind": "button",
+        "text": "Delete workspace",
+        "context": "The thing being deleted is called a 'project' everywhere else.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "high",
+        "rewrite": "Delete project"
+      },
+      "where": "laptop",
+      "ms": 2855,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "inconsistent_term",
+          "severity": "medium",
+          "rewrite": "Delete project"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en090",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "label",
+        "text": "Choose a practitioner",
+        "context": "Every other screen says 'doctor'.",
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "severity": "low",
+        "rewrite": "Choose a doctor"
+      },
+      "where": "laptop",
+      "ms": 2639,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "inconsistent_term",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "inconsistent_term",
+          "severity": "low",
+          "rewrite": "Choose a doctor"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en091",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "text": "Send invoice",
+        "context": "Primary button.",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2268,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en092",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "text": "Save draft",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2384,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en093",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "text": "Add line item",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2349,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "Add line item"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en094",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "button",
+        "text": "Book appointment",
+        "context": "Primary button.",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2173,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "Book appointment"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en095",
+        "app": "clinic",
+        "screen": "Appointment detail",
+        "kind": "button",
+        "text": "Cancel appointment",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2318,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en096",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "button",
+        "text": "Enroll in course",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2350,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en097",
+        "app": "expenses",
+        "screen": "Expenses",
+        "kind": "button",
+        "text": "Add expense",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 3098,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en098",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "button",
+        "text": "Submit claim for approval",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2773,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en099",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "button",
+        "text": "Invite members",
+        "context": "Page heading is 'Members'.",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2825,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "Invite members"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en100",
+        "app": "tasks",
+        "screen": "Project settings",
+        "kind": "button",
+        "text": "Delete project",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2708,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en101",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "button",
+        "text": "Download receipt (PDF)",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2965,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en102",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "button",
+        "text": "Apply filters",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2517,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en103",
+        "app": "invoices",
+        "screen": "Invoice detail",
+        "kind": "button",
+        "text": "Mark as paid",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2514,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en104",
+        "app": "clinic",
+        "screen": "Appointment detail",
+        "kind": "button",
+        "text": "Reschedule",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2354,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en105",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "button",
+        "text": "Start lesson",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2385,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "Start lesson"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en106",
+        "app": "expenses",
+        "screen": "Reports",
+        "kind": "button",
+        "text": "Export to CSV",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2259,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "Export to CSV"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en107",
+        "app": "courses",
+        "screen": "Sign in",
+        "kind": "button",
+        "text": "Sign in",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2332,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en108",
+        "app": "tasks",
+        "screen": "Sign up",
+        "kind": "button",
+        "text": "Create account",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 3189,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en109",
+        "app": "clinic",
+        "screen": "Profile",
+        "kind": "button",
+        "text": "Save changes",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2987,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "Save changes"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en110",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "link",
+        "text": "Back to tasks",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2762,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en111",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "text": "Client",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2849,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en112",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "text": "Due date",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2786,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en113",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "text": "Amount (USD)",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2826,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en114",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "label",
+        "text": "Appointment time",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2533,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en115",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "label",
+        "text": "Reason for visit (optional)",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2710,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en116",
+        "app": "courses",
+        "screen": "New course",
+        "kind": "label",
+        "text": "Course title",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2548,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en117",
+        "app": "expenses",
+        "screen": "Trips",
+        "kind": "label",
+        "text": "Destination",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2877,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en118",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "label",
+        "text": "Receipt",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2428,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en119",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "label",
+        "text": "Assignee",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2948,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en120",
+        "app": "courses",
+        "screen": "Sign up",
+        "kind": "label",
+        "text": "Email address",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2601,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "Email address"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en121",
+        "app": "courses",
+        "screen": "Sign up",
+        "kind": "placeholder",
+        "text": "name@company.com",
+        "context": "Email field.",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2504,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en122",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "placeholder",
+        "text": "Search tasks",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2548,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en123",
+        "app": "tasks",
+        "screen": "New task",
+        "kind": "placeholder",
+        "text": "Describe the task in a sentence or two",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2674,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en124",
+        "app": "clinic",
+        "screen": "Patient details",
+        "kind": "placeholder",
+        "text": "DD/MM/YYYY",
+        "context": "Date of birth field.",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2402,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en125",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "placeholder",
+        "text": "Such as 250.00",
+        "context": "Amount field.",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2667,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en126",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "heading",
+        "text": "New invoice",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2546,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en127",
+        "app": "clinic",
+        "screen": "Home",
+        "kind": "heading",
+        "text": "Upcoming appointments",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2537,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en128",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "heading",
+        "text": "Your courses",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2854,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en129",
+        "app": "expenses",
+        "screen": "Claims",
+        "kind": "heading",
+        "text": "Expense claims",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2771,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en130",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "heading",
+        "text": "Members",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2710,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en131",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "error",
+        "text": "Enter an amount above 0, such as 250.00.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2624,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en132",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "error",
+        "text": "That time is no longer free. Pick another slot.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2318,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en133",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "error",
+        "text": "This file is over 10 MB. Choose a smaller file.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2523,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en134",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "error",
+        "text": "We couldn't save your changes. Check your connection and try again.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 3642,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "unclear_message",
+          "severity": "medium",
+          "rewrite": "There was an issue saving your changes. Please check your internet connection and try again."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en135",
+        "app": "courses",
+        "screen": "Sign up",
+        "kind": "helper",
+        "text": "Use 8 or more characters, with at least one number.",
+        "context": "Under the password field.",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2613,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en136",
+        "app": "invoices",
+        "screen": "Invoices",
+        "kind": "empty",
+        "text": "No invoices yet. Create your first one.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 3094,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en137",
+        "app": "clinic",
+        "screen": "Home",
+        "kind": "empty",
+        "text": "No appointments this week.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2365,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "ok"
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en138",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "empty",
+        "text": "You haven't enrolled in a course yet. Browse the catalogue.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2820,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en139",
+        "app": "expenses",
+        "screen": "Approvals",
+        "kind": "empty",
+        "text": "No expenses to review.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2791,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en140",
+        "app": "invoices",
+        "screen": "Invoice detail",
+        "kind": "toast",
+        "text": "Invoice sent to the client.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2654,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en141",
+        "app": "clinic",
+        "screen": "Appointments",
+        "kind": "toast",
+        "text": "Appointment cancelled. We emailed the clinic.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2656,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en142",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "toast",
+        "text": "Changes saved.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2597,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en143",
+        "app": "tasks",
+        "screen": "Delete task dialog",
+        "kind": "heading",
+        "text": "Delete this task? This can't be undone.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2464,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en144",
+        "app": "tasks",
+        "screen": "Board",
+        "kind": "toast",
+        "text": "3 tasks moved to Done.",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2647,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en145",
+        "app": "invoices",
+        "screen": "Home",
+        "kind": "link",
+        "text": "View all invoices",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2653,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en146",
+        "app": "invoices",
+        "screen": "Pricing",
+        "kind": "link",
+        "text": "How refunds work",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2784,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en147",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "link",
+        "text": "Open the course syllabus",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2937,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en148",
+        "app": "tasks",
+        "screen": "Footer",
+        "kind": "link",
+        "text": "Read the privacy policy",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2658,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en149",
+        "app": "expenses",
+        "screen": "Trips",
+        "kind": "link",
+        "text": "See past trips",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2768,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en150",
+        "app": "clinic",
+        "screen": "Profile",
+        "kind": "link",
+        "text": "Change notification settings",
+        "context": "",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "rewrite": null
+      },
+      "where": "laptop",
+      "ms": 2351,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "severity": "none",
+          "rewrite": "ok"
+        }
+      }
+    }
+  ]
+}

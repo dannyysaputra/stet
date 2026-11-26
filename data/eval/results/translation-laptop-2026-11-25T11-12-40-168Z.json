@@ -1,0 +1,2537 @@
+{
+  "run": {
+    "check": "translation",
+    "mode": "ONLY_ON_DEVICE",
+    "startedAt": "2026-11-25T11:12:40.168Z",
+    "wallMs": 460217,
+    "complete": true,
+    "stopped": false,
+    "quotaRetries": 0,
+    "cloudGapMs": 0,
+    "appCheck": "debug (new token, see console)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  },
+  "summary": {
+    "definitions": {
+      "problemsCaughtPct": "problem items the model flagged as a problem / all problem items (errors count as missed)",
+      "problemKindRightPct": "problem items flagged with the right problem kind / all problem items",
+      "falseAlarmPct": "good items the model flagged as a problem / all good items (errors not counted as alarms)"
+    },
+    "problemsCaughtPct": 65,
+    "problemKindRightPct": 45,
+    "falseAlarmPct": 22.5,
+    "byType": {
+      "wrong_sense": {
+        "n": 10,
+        "flagged": 10,
+        "typeMatch": 10
+      },
+      "word_for_word": {
+        "n": 12,
+        "flagged": 9,
+        "typeMatch": 4
+      },
+      "wrong_verb_form": {
+        "n": 10,
+        "flagged": 1,
+        "typeMatch": 0
+      },
+      "mixed_register": {
+        "n": 8,
+        "flagged": 6,
+        "typeMatch": 4
+      }
+    },
+    "items": 80,
+    "errors": 0,
+    "where": {
+      "laptop": 80
+    },
+    "speed": {
+      "itemsPerMinute": 10.4,
+      "medianMs": 5500
+    }
+  },
+  "results": [
+    {
+      "item": {
+        "id": "id001",
+        "app": "invoices",
+        "screen": "Top menu",
+        "kind": "nav",
+        "en": "Home",
+        "id_text": "Rumah",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Beranda",
+        "note_en": "\"Rumah\" means a house. The English means the start page."
+      },
+      "where": "laptop",
+      "ms": 12365,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Beranda",
+          "note_en": "Rumah translates to 'house,' which is not the correct term for the home screen in this context."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id002",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Close",
+        "id_text": "Dekat",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Tutup",
+        "note_en": "\"Dekat\" means nearby. The English means close this screen."
+      },
+      "where": "laptop",
+      "ms": 6365,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Tutup",
+          "note_en": "Dekat means nearby, not close. The correct translation for 'Close' is 'Tutup'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id003",
+        "app": "clinic",
+        "screen": "Doctor profile",
+        "kind": "button",
+        "en": "Book",
+        "id_text": "Buku",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Pesan",
+        "note_en": "\"Buku\" is a book you read. The English is the verb, to reserve a time."
+      },
+      "where": "laptop",
+      "ms": 5642,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Jadwalkan",
+          "note_en": "Buku means book, not book a slot."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id004",
+        "app": "invoices",
+        "screen": "Payment",
+        "kind": "button",
+        "en": "Charge card",
+        "id_text": "Isi daya kartu",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Tagih ke kartu",
+        "note_en": "Reads as \"charge the card's battery\"."
+      },
+      "where": "laptop",
+      "ms": 8050,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Kartu debit",
+          "note_en": "Isi daya kartu means 'recharge card', which is not the correct term for a charge card."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id005",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "button",
+        "en": "Clear",
+        "id_text": "Jelas",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "medium",
+        "better": "Hapus filter",
+        "note_en": "\"Jelas\" means obvious or clear to understand. The English means remove the filters."
+      },
+      "where": "laptop",
+      "ms": 8481,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Hapus",
+          "note_en": "The word \"Jelas\" means \"clear\", but the English word \"Clear\" means \"remove\"."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id006",
+        "app": "courses",
+        "screen": "Lesson",
+        "kind": "button",
+        "en": "Back",
+        "id_text": "Punggung",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Kembali",
+        "note_en": "\"Punggung\" is the back of the body. The English means go to the previous screen."
+      },
+      "where": "laptop",
+      "ms": 7300,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Kembali",
+          "note_en": "Punggung means 'backside' or 'rear' which is not the correct meaning for a button to go to the previous screen."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id007",
+        "app": "tasks",
+        "screen": "Settings",
+        "kind": "label",
+        "en": "Light",
+        "id_text": "Ringan",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "medium",
+        "better": "Terang",
+        "note_en": "\"Ringan\" means light in weight. The English is the light colour theme."
+      },
+      "where": "laptop",
+      "ms": 6448,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Tipis",
+          "note_en": "Ringan means slender or thin, not light as in energy consumption. The intended meaning should be Tipis."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id008",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "button",
+        "en": "Leave",
+        "id_text": "Daun",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Keluar dari tim",
+        "note_en": "\"Daun\" means a leaf. The English means to leave the team."
+      },
+      "where": "laptop",
+      "ms": 7925,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Keluar",
+          "note_en": "Daun means leaves, not leave. The Indonesian translation uses a word for leaves instead of the correct verb for leaving a team."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id009",
+        "app": "courses",
+        "screen": "Attendance",
+        "kind": "label",
+        "en": "Present",
+        "id_text": "Hadiah",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "high",
+        "better": "Hadir",
+        "note_en": "\"Hadiah\" means a gift. The English means the student attended."
+      },
+      "where": "laptop",
+      "ms": 7016,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Habir",
+          "note_en": "Hadiah means gift, not present. The Indonesian translation is incorrect based on the context of attendance."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id010",
+        "app": "courses",
+        "screen": "Results",
+        "kind": "label",
+        "en": "Mean score",
+        "id_text": "Skor kejam",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_sense",
+        "severity": "medium",
+        "better": "Skor rata-rata",
+        "note_en": "\"Kejam\" means cruel. The English means the average score."
+      },
+      "where": "laptop",
+      "ms": 6935,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_sense",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Nilai rata-rata",
+          "note_en": "Skor kejam means 'brutal score', which is not what the English 'Mean score' means."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id011",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "subtitle",
+        "en": "Unlock seamless invoicing and elevate your workflow!",
+        "id_text": "Buka kunci faktur mulus dan tingkatkan alur kerja Anda!",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Buat dan kirim faktur dengan cepat.",
+        "note_en": "Reads as \"Open the lock of smooth invoices and raise your work flow!\""
+      },
+      "where": "laptop",
+      "ms": 7311,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Buka kunci proses pembuatan faktur yang mudah dan tingkatkan alur kerja Anda!",
+          "note_en": "The Indonesian translation doesn't accurately convey the meaning of 'seamless invoicing' which implies ease and fluidity."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id012",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Line items",
+        "id_text": "Item baris",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Rincian",
+        "note_en": "Reads as \"row items\". The English means the things being billed."
+      },
+      "where": "laptop",
+      "ms": 7463,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Rincian",
+          "note_en": "The phrase 'Item baris' translates each English word separately, sounding unnatural. 'Rincian' is a more natural Indonesian equivalent for 'Line items'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id013",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Submit",
+        "id_text": "Menyerahkan",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Kirim",
+        "note_en": "Means \"to hand over\", as in handing in a document in person."
+      },
+      "where": "laptop",
+      "ms": 7159,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Simpan faktur",
+          "note_en": "The verb form 'Menyerahkan' does not suit the button; it should be the base verb form."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id014",
+        "app": "courses",
+        "screen": "Landing",
+        "kind": "button",
+        "en": "Sign up",
+        "id_text": "Tanda tangan ke atas",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "high",
+        "better": "Daftar",
+        "note_en": "Reads as \"signature upward\"."
+      },
+      "where": "laptop",
+      "ms": 9004,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Daftar",
+          "note_en": "\"Tanda tangan ke atas\" translates literally to \"Sign up to the top\", which is unnatural. It should be \"Daftar\" (Register)."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id015",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "helper",
+        "en": "Drop files here",
+        "id_text": "Jatuhkan file di sini",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "low",
+        "better": "Tarik file ke sini",
+        "note_en": "Reads as \"let the files fall here\"."
+      },
+      "where": "laptop",
+      "ms": 8164,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Unggah file di sini",
+          "note_en": "The phrase 'Jatuhkan file' sounds unusual in Indonesian; 'Unggah file' is a more natural and commonly used expression for uploading files."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id016",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Due date",
+        "id_text": "Tanggal jatuh",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Jatuh tempo",
+        "note_en": "Reads as \"falling date\". The set term for a payment deadline is \"jatuh tempo\"."
+      },
+      "where": "laptop",
+      "ms": 4505,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id017",
+        "app": "courses",
+        "screen": "Cart",
+        "kind": "button",
+        "en": "Check out",
+        "id_text": "Periksa keluar",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "high",
+        "better": "Bayar",
+        "note_en": "Reads as \"inspect outside\"."
+      },
+      "where": "laptop",
+      "ms": 5734,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Bayar",
+          "note_en": "Periksa keluar means to check out, which is not the correct translation for a cart button."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id018",
+        "app": "tasks",
+        "screen": "First run",
+        "kind": "button",
+        "en": "Get started",
+        "id_text": "Dapatkan dimulai",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Mulai",
+        "note_en": "Reads as \"obtain being started\"."
+      },
+      "where": "laptop",
+      "ms": 7260,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "word_for_word",
+          "better": "Mulailah",
+          "note_en": "\"Dapatkan dimulai\" translates directly to \"Get started\", but \"Mulailah\" is a more natural and idiomatic way to express this in Indonesian."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id019",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "helper",
+        "en": "Make sure the amount is correct.",
+        "id_text": "Buat yakin jumlahnya benar.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Pastikan jumlahnya benar.",
+        "note_en": "Reads as \"create sure the amount is correct\"."
+      },
+      "where": "laptop",
+      "ms": 7853,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Pastikan jumlahnya sudah benar.",
+          "note_en": "\"Buat yakin\" is not idiomatic. It's better to say \"Pastikan\" or \"Verifikasi.\""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id020",
+        "app": "courses",
+        "screen": "Lesson",
+        "kind": "helper",
+        "en": "Take a break before the next lesson.",
+        "id_text": "Ambil istirahat sebelum pelajaran berikutnya.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "low",
+        "better": "Istirahatlah sejenak sebelum pelajaran berikutnya.",
+        "note_en": "Reads as \"pick up a rest\"."
+      },
+      "where": "laptop",
+      "ms": 4645,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id021",
+        "app": "clinic",
+        "screen": "Help",
+        "kind": "link",
+        "en": "Reach out to support",
+        "id_text": "Jangkau dukungan",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Hubungi tim bantuan",
+        "note_en": "Reads as \"stretch your arm toward support\"."
+      },
+      "where": "laptop",
+      "ms": 4210,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id022",
+        "app": "tasks",
+        "screen": "Sign in",
+        "kind": "label",
+        "en": "Keep me signed in",
+        "id_text": "Jaga saya masuk",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "word_for_word",
+        "severity": "medium",
+        "better": "Tetap masuk",
+        "note_en": "Reads as \"guard me entering\"."
+      },
+      "where": "laptop",
+      "ms": 5500,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "word_for_word",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Pertahankan saya masuk",
+          "note_en": "The Indonesian uses 'saya' (informal) while the app uses 'Anda' (formal)."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id023",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Save draft",
+        "id_text": "Menyimpan draf",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Simpan draf",
+        "note_en": "Reads as \"saving a draft\". Buttons use the base verb."
+      },
+      "where": "laptop",
+      "ms": 5206,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is correct and follows all the rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id024",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Send invoice",
+        "id_text": "Mengirim faktur",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Kirim faktur",
+        "note_en": "Reads as \"sending an invoice\". Buttons use the base verb."
+      },
+      "where": "laptop",
+      "ms": 3957,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id025",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "button",
+        "en": "Delete",
+        "id_text": "Menghapus",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Hapus",
+        "note_en": "Reads as \"deleting\". Buttons use the base verb."
+      },
+      "where": "laptop",
+      "ms": 5909,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is accurate and follows all the rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id026",
+        "app": "expenses",
+        "screen": "Expenses",
+        "kind": "button",
+        "en": "Add expense",
+        "id_text": "Menambahkan pengeluaran",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Tambah pengeluaran",
+        "note_en": "Reads as \"adding an expense\". Buttons use the base verb."
+      },
+      "where": "laptop",
+      "ms": 6140,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is accurate and follows all guidelines."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id027",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "button",
+        "en": "Upload receipt",
+        "id_text": "Mengunggah struk",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Unggah struk",
+        "note_en": "Reads as \"uploading a receipt\". Buttons use the base verb."
+      },
+      "where": "laptop",
+      "ms": 6542,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The translation is accurate and follows all the rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id028",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "button",
+        "en": "Search",
+        "id_text": "Mencari",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "low",
+        "better": "Cari",
+        "note_en": "Reads as \"searching\". Buttons use the base verb."
+      },
+      "where": "laptop",
+      "ms": 11264,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Cari",
+          "note_en": "Mencari means 'to look for', but 'Cari' is more commonly used for a search button."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id029",
+        "app": "clinic",
+        "screen": "Appointment detail",
+        "kind": "button",
+        "en": "Cancel appointment",
+        "id_text": "Membatalkan janji temu",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Batalkan janji temu",
+        "note_en": "Reads as \"cancelling an appointment\". Buttons use the command form."
+      },
+      "where": "laptop",
+      "ms": 4854,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is correct."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id030",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "button",
+        "en": "Download",
+        "id_text": "Mengunduh",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "low",
+        "better": "Unduh",
+        "note_en": "Reads as \"downloading\". Buttons use the base verb."
+      },
+      "where": "laptop",
+      "ms": 4754,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id031",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "button",
+        "en": "Invite members",
+        "id_text": "Mengundang anggota",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Undang anggota",
+        "note_en": "Reads as \"inviting members\". Buttons use the base verb."
+      },
+      "where": "laptop",
+      "ms": 4789,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id032",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "status",
+        "en": "Saving...",
+        "id_text": "Simpan...",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "severity": "medium",
+        "better": "Menyimpan...",
+        "note_en": "Reads as the command \"Save...\". A progress status uses the me- form."
+      },
+      "where": "laptop",
+      "ms": 4680,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "wrong_verb_form",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is correct."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id033",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "heading",
+        "en": "Your courses",
+        "id_text": "Kursus kamu",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "medium",
+        "better": "Kursus Anda",
+        "note_en": "Uses informal \"kamu\" in an app that addresses users as \"Anda\"."
+      },
+      "where": "laptop",
+      "ms": 6197,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Kursus Anda",
+          "note_en": "The Indonesian uses '-mu' which is informal, while the app uses 'Anda' which is formal."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id034",
+        "app": "tasks",
+        "screen": "Delete dialog",
+        "kind": "heading",
+        "en": "Are you sure you want to delete this?",
+        "id_text": "Yakin mau hapus ini?",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "medium",
+        "better": "Apakah Anda yakin ingin menghapus ini?",
+        "note_en": "Casual chat phrasing in an app that uses formal \"Anda\"."
+      },
+      "where": "laptop",
+      "ms": 8592,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Apakah Anda yakin ingin menghapus ini?",
+          "note_en": "The Indonesian translation uses 'hapus' which means 'to remove', which is correct, but 'yakin' (sure) is stronger and more appropriate than 'mau' (want) in this context."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id035",
+        "app": "clinic",
+        "screen": "Home",
+        "kind": "empty",
+        "en": "You have no appointments.",
+        "id_text": "Kamu belum punya janji temu.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "medium",
+        "better": "Anda belum memiliki janji temu.",
+        "note_en": "Uses informal \"kamu\" in an app that addresses users as \"Anda\"."
+      },
+      "where": "laptop",
+      "ms": 7069,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Anda belum memiliki janji temu.",
+          "note_en": "The verb form 'punya' is informal; it should be 'memiliki' since the app uses 'Anda'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id036",
+        "app": "clinic",
+        "screen": "Profile",
+        "kind": "helper",
+        "en": "You can change your profile at any time.",
+        "id_text": "Anda bisa ubah profilmu kapan saja.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "medium",
+        "better": "Anda dapat mengubah profil Anda kapan saja.",
+        "note_en": "Mixes formal \"Anda\" and informal \"-mu\" in one sentence."
+      },
+      "where": "laptop",
+      "ms": 6056,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Anda bisa mengubah profil Anda kapan saja.",
+          "note_en": "The Indonesian text mixes formal 'Anda' with informal '-mu'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id037",
+        "app": "courses",
+        "screen": "Sign up",
+        "kind": "helper",
+        "en": "Check your email.",
+        "id_text": "Cek email lo.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "high",
+        "better": "Periksa email Anda.",
+        "note_en": "\"Lo\" is Jakarta slang. Too casual for an app that uses \"Anda\"."
+      },
+      "where": "laptop",
+      "ms": 6189,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Cek alamat email Anda.",
+          "note_en": "The Indonesian mixes formal 'Anda' with informal '-lo'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id038",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "empty",
+        "en": "You haven't enrolled in a course yet.",
+        "id_text": "Anda belum mendaftar kursus.",
+        "register": "kamu",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "low",
+        "better": "Kamu belum mendaftar kursus.",
+        "note_en": "Uses formal \"Anda\" in an app that addresses users as \"kamu\"."
+      },
+      "where": "laptop",
+      "ms": 7642,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Kamu belum mendaftar kursus.",
+          "note_en": "The Indonesian uses 'Anda' (formal) while the app addresses the user as 'kamu' (informal)."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id039",
+        "app": "tasks",
+        "screen": "Sign up",
+        "kind": "helper",
+        "en": "Your password must have at least 8 characters.",
+        "id_text": "Kata sandimu minimal 8 karakter.",
+        "register": "Anda",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "low",
+        "better": "Kata sandi Anda minimal 8 karakter.",
+        "note_en": "Uses informal \"-mu\" in an app that addresses users as \"Anda\"."
+      },
+      "where": "laptop",
+      "ms": 4355,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id040",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "toast",
+        "en": "Thanks! We received your claim.",
+        "id_text": "Terima kasih! Klaim Anda sudah kami terima.",
+        "register": "kamu",
+        "expect": "problem",
+        "type": "mixed_register",
+        "severity": "low",
+        "better": "Terima kasih! Klaim kamu sudah kami terima.",
+        "note_en": "Uses formal \"Anda\" in an app that addresses users as \"kamu\"."
+      },
+      "where": "laptop",
+      "ms": 4981,
+      "attempts": 1,
+      "score": {
+        "expect": "problem",
+        "type": "mixed_register",
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id041",
+        "app": "invoices",
+        "screen": "Top menu",
+        "kind": "nav",
+        "en": "Home",
+        "id_text": "Beranda",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4407,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id042",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Close",
+        "id_text": "Tutup",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 6733,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation of \"Close\" is correct and aligns with the app's address of \"Anda.\" The button label is clear and concise."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id043",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Save draft",
+        "id_text": "Simpan draf",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 6224,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "none",
+          "note_en": "The Indonesian translation is accurate and follows all rules. The button uses the correct verb form and the app's chosen address."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id044",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "button",
+        "en": "Send invoice",
+        "id_text": "Kirim faktur",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4119,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id045",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "button",
+        "en": "Delete",
+        "id_text": "Hapus",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 5130,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is accurate and follows all guidelines."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id046",
+        "app": "tasks",
+        "screen": "Delete dialog",
+        "kind": "button",
+        "en": "Cancel",
+        "id_text": "Batal",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4036,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id047",
+        "app": "tasks",
+        "screen": "Task list",
+        "kind": "button",
+        "en": "Search",
+        "id_text": "Cari",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4157,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id048",
+        "app": "invoices",
+        "screen": "Top menu",
+        "kind": "nav",
+        "en": "Settings",
+        "id_text": "Pengaturan",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4672,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "none",
+          "note_en": "The translation is correct and aligns with the app's address."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id049",
+        "app": "courses",
+        "screen": "Sign in",
+        "kind": "button",
+        "en": "Sign in",
+        "id_text": "Masuk",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4901,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "ok",
+          "note_en": "The Indonesian translation is correct and follows all rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id050",
+        "app": "courses",
+        "screen": "Account menu",
+        "kind": "button",
+        "en": "Sign out",
+        "id_text": "Keluar",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 3455,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id051",
+        "app": "tasks",
+        "screen": "Sign up",
+        "kind": "button",
+        "en": "Create account",
+        "id_text": "Buat akun",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4289,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id052",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Due date",
+        "id_text": "Jatuh tempo",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 5136,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation of \"Due date\" is correct."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id053",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Amount",
+        "id_text": "Jumlah",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 6031,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Nilai",
+          "note_en": "Jumlah can refer to value, not only amount."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id054",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Client",
+        "id_text": "Klien",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 5611,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "none",
+          "note_en": "The Indonesian translation is accurate and aligns with the app's address and established terminology."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id055",
+        "app": "invoices",
+        "screen": "Top menu",
+        "kind": "nav",
+        "en": "Invoices",
+        "id_text": "Faktur",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 5510,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "none",
+          "note_en": "The Indonesian translation of \"Invoices\" is correct and aligns with the app's address and established terminology."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id056",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "label",
+        "en": "Line items",
+        "id_text": "Rincian",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4418,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id057",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "empty",
+        "en": "No line items yet. Add the first one.",
+        "id_text": "Belum ada rincian. Tambahkan yang pertama.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4469,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is accurate and follows all the rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id058",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "button",
+        "en": "Book appointment",
+        "id_text": "Buat janji temu",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 5474,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is accurate and follows all the rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id059",
+        "app": "clinic",
+        "screen": "Appointment detail",
+        "kind": "button",
+        "en": "Reschedule",
+        "id_text": "Ubah jadwal",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 6610,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Jadwal ulang",
+          "note_en": "The verb form 'Ubah jadwal' is not suitable for a button; it should be the base verb form."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id060",
+        "app": "clinic",
+        "screen": "Home",
+        "kind": "heading",
+        "en": "Upcoming appointments",
+        "id_text": "Janji temu mendatang",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4207,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id061",
+        "app": "clinic",
+        "screen": "Book",
+        "kind": "label",
+        "en": "Reason for visit (optional)",
+        "id_text": "Alasan kunjungan (opsional)",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 3584,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id062",
+        "app": "courses",
+        "screen": "Home",
+        "kind": "heading",
+        "en": "Your courses",
+        "id_text": "Kursus Anda",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4856,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is already correctly using 'Anda' as the formal address."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id063",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "button",
+        "en": "Enroll",
+        "id_text": "Daftar",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 6256,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Gabung",
+          "note_en": "Daftar means 'register' or 'list', but 'Gabung' means 'Join', which is more appropriate for an enrollment button."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id064",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "button",
+        "en": "Start lesson",
+        "id_text": "Mulai pelajaran",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 6690,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Mulai kursus",
+          "note_en": "The verb form 'pelajaran' doesn't fit the button's function of starting a course; it should be 'kursus'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id065",
+        "app": "courses",
+        "screen": "Course page",
+        "kind": "label",
+        "en": "Progress",
+        "id_text": "Kemajuan",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 5055,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Kemajuan kursus",
+          "note_en": "Kemajuan means progress, which is not the intended meaning of the English word 'Progress'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id066",
+        "app": "expenses",
+        "screen": "Expenses",
+        "kind": "button",
+        "en": "Add expense",
+        "id_text": "Tambah pengeluaran",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4204,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "none",
+          "note_en": "The Indonesian translation is accurate and follows all the rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id067",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "button",
+        "en": "Upload receipt",
+        "id_text": "Unggah struk",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 3018,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id068",
+        "app": "expenses",
+        "screen": "Claim detail",
+        "kind": "button",
+        "en": "Submit claim",
+        "id_text": "Kirim klaim",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 5248,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation accurately conveys the meaning of the English phrase and follows all the rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id069",
+        "app": "expenses",
+        "screen": "Claims",
+        "kind": "status",
+        "en": "Pending approval",
+        "id_text": "Menunggu persetujuan",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4607,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is correct and follows all the rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id070",
+        "app": "expenses",
+        "screen": "Claims",
+        "kind": "status",
+        "en": "Approved",
+        "id_text": "Disetujui",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4542,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation of \"Approved\" is correct and aligns with the app's formal address."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id071",
+        "app": "tasks",
+        "screen": "Team",
+        "kind": "button",
+        "en": "Invite members",
+        "id_text": "Undang anggota",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4693,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "mixed_register",
+          "better": "Undang rekan kerja",
+          "note_en": "Mixes formal 'Anda' with informal '-mu'."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id072",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "label",
+        "en": "Assignee",
+        "id_text": "Penanggung jawab",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 6346,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Penanggung Jawab",
+          "note_en": "Penanggung jawab is a more common Indonesian term for Assignee, especially in a task management context."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id073",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "button",
+        "en": "Mark as done",
+        "id_text": "Tandai selesai",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 6693,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_verb_form",
+          "better": "Selesaikan tugas",
+          "note_en": "The verb form 'Tandai selesai' does not suit the button; 'Selesaikan tugas' is more natural and aligns with the app's consistent use of base verb forms for actions."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id074",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "toast",
+        "en": "Changes saved.",
+        "id_text": "Perubahan disimpan.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 5122,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation accurately reflects the English meaning and adheres to the app's address and established terminology."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id075",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "status",
+        "en": "Saving...",
+        "id_text": "Menyimpan...",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4727,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation accurately conveys the meaning of \"Saving...\" in the context of a task."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id076",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "error",
+        "en": "Enter an amount above 0.",
+        "id_text": "Masukkan jumlah lebih dari 0.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 2948,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id077",
+        "app": "expenses",
+        "screen": "New expense",
+        "kind": "error",
+        "en": "This file is over 10 MB. Choose a smaller file.",
+        "id_text": "File ini lebih dari 10 MB. Pilih file yang lebih kecil.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 2847,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The Indonesian translation is accurate."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id078",
+        "app": "tasks",
+        "screen": "Delete dialog",
+        "kind": "heading",
+        "en": "Delete this task? This can't be undone.",
+        "id_text": "Hapus tugas ini? Tindakan ini tidak dapat dibatalkan.",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 3685,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": ""
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id079",
+        "app": "courses",
+        "screen": "Sign in",
+        "kind": "link",
+        "en": "Forgot password?",
+        "id_text": "Lupa kata sandi?",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 4235,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": false,
+        "typeMatch": false,
+        "got": {
+          "verdict": "ok",
+          "problem": "none",
+          "better": "",
+          "note_en": "The translation is accurate and follows all the rules."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "id080",
+        "app": "tasks",
+        "screen": "Sign in",
+        "kind": "label",
+        "en": "Keep me signed in",
+        "id_text": "Tetap masuk",
+        "register": "Anda",
+        "expect": "ok",
+        "type": null,
+        "severity": null,
+        "better": null,
+        "note_en": null
+      },
+      "where": "laptop",
+      "ms": 6259,
+      "attempts": 1,
+      "score": {
+        "expect": "ok",
+        "type": null,
+        "flagged": true,
+        "typeMatch": false,
+        "got": {
+          "verdict": "problem",
+          "problem": "wrong_sense",
+          "better": "Simpan saya",
+          "note_en": "Close: \"Tetap masuk\" (Stay signed in) should be \"Simpan saya\" (Save me)."
+        }
+      }
+    }
+  ]
+}

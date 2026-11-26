@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stet: review</title>
+<link rel="stylesheet" href="/src/base.css">
+<link rel="stylesheet" href="/src/review/review.css">
+</head>
+<body>
+<header class="seam-bar">
+  <a class="brand" href="/">Stet</a>
+  <span class="bar-right">
+    <span id="net-state" class="net-state" data-online="true">Online</span>
+    <span id="left-count" class="left-count" data-zero="true" aria-live="polite">Left this laptop: 0</span>
+  </span>
+</header>
+<div class="review">
+  <section class="stage" aria-label="App under review">
+    <iframe id="app" src="/sample/" title="Sample app under review"></iframe>
+    <div id="pins" class="pins"></div>
+  </section>
+  <aside class="panel">
+    <section class="area" aria-labelledby="laptop-title">
+      <p id="laptop-title" class="area-title">On this laptop</p>
+      <h1>Review</h1>
+      <p id="summary" class="dim">Loading the app...</p>
+      <div class="row">
+        <button id="review" type="button" disabled>Review this screen</button>
+        <button id="stop" type="button" class="quiet" hidden>Stop</button>
+        <button id="reset-sample" type="button" class="quiet">Reset sample text</button>
+      </div>
+      <fieldset class="project">
+        <legend class="dim">Project</legend>
+        <label><input type="radio" name="project" value="sealed" checked> Sealed: text read only on this laptop</label>
+        <label><input type="radio" name="project" value="open"> Open: laptop first, cloud when needed</label>
+      </fieldset>
+      <p id="progress" class="dim" aria-live="polite"></p>
+      <div id="approve-id" class="approve" hidden></div>
+      <p id="warm" class="dim"></p>
+
+      <details id="guide-box" class="guide-box">
+        <summary>Wording guide: <span id="guide-name">starter guide</span></summary>
+        <label for="brief">Voice brief, two lines. Only these two lines are sent to the cloud.</label>
+        <textarea id="brief" rows="3" maxlength="300" placeholder="Invoicing for small shops; owners bill customers between other jobs. We call them clients.&#10;Calm, plain and a little warm. Never salesy."></textarea>
+        <div class="row"><button id="write-guide" type="button">Write the guide in the cloud</button></div>
+        <p id="brief-status" class="dim" aria-live="polite"></p>
+        <label for="guide-text">The guide the laptop model checks against</label>
+        <textarea id="guide-text" rows="14" spellcheck="false"></textarea>
+        <p id="guide-size" class="dim"></p>
+        <div class="row">
+          <button id="save-guide" type="button" class="quiet">Save edits</button>
+          <button id="reset-guide" type="button" class="quiet">Back to the starter guide</button>
+        </div>
+        <p id="guide-status" class="dim" aria-live="polite"></p>
+      </details>
+
+      <div id="recheck" class="recheck" aria-live="polite" hidden></div>
+
+      <h2>Findings <span id="findings-count" class="dim"></span></h2>
+      <p class="dim">Ticked findings go into the fix prompt.</p>
+      <ol id="findings"></ol>
+      <div class="row"><button id="make-fix" type="button" disabled>Make fix prompt</button></div>
+      <p id="fix-status" class="dim" aria-live="polite"></p>
+      <label for="fix-prompt" id="fix-label" class="fix-label" hidden>Fix prompt for your coding agent (you can edit it)</label>
+      <textarea id="fix-prompt" rows="10" spellcheck="false" hidden></textarea>
+      <div class="row" id="fix-actions" hidden>
+        <button id="copy-fix" type="button" class="quiet">Copy</button>
+        <button id="apply-fix" type="button" class="quiet">Apply to sample</button>
+        <span id="copy-status" class="dim" aria-live="polite"></span>
+      </div>
+
+      <details class="all-text">
+        <summary>All text on this screen (<span id="text-count">0</span>)</summary>
+        <ol id="strings"></ol>
+      </details>
+    </section>
+
+    <section class="area cloud" aria-labelledby="cloud-title">
+      <p id="cloud-title" class="area-title">Sent to the cloud</p>
+      <h2>Pattern and standing rule</h2>
+      <p class="dim">Only the number of each kind of problem goes to the cloud model. It returns the likely cause and one rule for your agent's instruction file.</p>
+      <pre id="pattern-payload" class="payload">Review a screen first.</pre>
+      <details id="pattern-exact">
+        <summary>Exactly what will be sent (<span id="pattern-chars">0</span> characters)</summary>
+        <pre id="pattern-prompt" class="payload"></pre>
+      </details>
+      <div class="row"><button id="send-pattern" type="button" disabled>Send these counts to the cloud</button></div>
+      <p id="pattern-status" class="dim" aria-live="polite"></p>
+      <div id="pattern-result" hidden>
+        <p id="pattern-cause"></p>
+        <label for="pattern-rule" class="fix-label">Standing rule for your agent's instruction file</label>
+        <textarea id="pattern-rule" rows="4" spellcheck="false"></textarea>
+        <div class="row"><button id="copy-rule" type="button" class="quiet">Copy rule</button><span id="rule-copy-status" class="dim" aria-live="polite"></span></div>
+      </div>
+      <h2>Ledger</h2>
+      <ol id="sent"></ol>
+      <p id="sent-none" class="dim">Nothing from this page has been sent to a cloud model.</p>
+      <p id="net" class="dim"></p>
+    </section>
+  </aside>
+</div>
+<script type="module" src="/src/review/review.js"></script>
+</body>
+</html>

@@ -1,0 +1,182 @@
+{
+  "run": {
+    "check": "english",
+    "mode": "ONLY_IN_CLOUD",
+    "startedAt": "2026-11-25T06:39:18.756Z",
+    "wallMs": 10525,
+    "complete": false,
+    "stopped": false,
+    "appCheck": "debug (new token, see console)",
+    "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/157.0.0.0 Safari/537.36"
+  },
+  "summary": {
+    "definitions": {
+      "problemsCaughtPct": "problem items the model flagged as a problem / all problem items (errors count as missed)",
+      "problemKindRightPct": "problem items flagged with the right problem kind / all problem items",
+      "falseAlarmPct": "good items the model flagged as a problem / all good items (errors not counted as alarms)",
+      "fillerCaughtPct": "generated-filler items flagged as a problem / all generated-filler items"
+    },
+    "problemsCaughtPct": 100,
+    "problemKindRightPct": 100,
+    "falseAlarmPct": null,
+    "fillerCaughtPct": 100,
+    "byType": {
+      "sounds_generated": {
+        "n": 5,
+        "flagged": 5,
+        "typeMatch": 5
+      }
+    },
+    "items": 5,
+    "errors": 0,
+    "where": {
+      "cloud": 5
+    },
+    "speed": {
+      "itemsPerMinute": 28.5,
+      "medianMs": 2117
+    }
+  },
+  "results": [
+    {
+      "item": {
+        "id": "en001",
+        "app": "invoices",
+        "screen": "New invoice",
+        "kind": "subtitle",
+        "text": "Unlock seamless invoicing and elevate your workflow!",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "Fill in the details and send it to your client."
+      },
+      "where": "cloud",
+      "ms": 2117,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "high",
+          "rewrite": "Create invoices and track your payments."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en002",
+        "app": "tasks",
+        "screen": "Dashboard",
+        "kind": "subtitle",
+        "text": "Supercharge your productivity with our powerful dashboard.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "Your open tasks, due dates and recent changes."
+      },
+      "where": "cloud",
+      "ms": 1690,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "high",
+          "rewrite": "See all your tasks and deadlines in one place."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en003",
+        "app": "courses",
+        "screen": "My courses",
+        "kind": "empty",
+        "text": "Embark on your learning journey today!",
+        "context": "Shown when the student has no courses.",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "high",
+        "rewrite": "You have no courses yet. Browse the catalogue to enroll."
+      },
+      "where": "cloud",
+      "ms": 2246,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "high",
+          "rewrite": "You have no courses yet. Browse the catalog to enroll in a course."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en004",
+        "app": "clinic",
+        "screen": "Appointments",
+        "kind": "subtitle",
+        "text": "Effortlessly manage all your appointments in one place.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "See, move or cancel your appointments."
+      },
+      "where": "cloud",
+      "ms": 2692,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "high",
+          "rewrite": "View and update all your appointments."
+        }
+      }
+    },
+    {
+      "item": {
+        "id": "en005",
+        "app": "tasks",
+        "screen": "Task detail",
+        "kind": "toast",
+        "text": "Success! Your amazing changes have been saved.",
+        "context": "",
+        "expect": "problem",
+        "type": "sounds_generated",
+        "severity": "medium",
+        "rewrite": "Changes saved."
+      },
+      "where": "cloud",
+      "ms": 1779,
+      "score": {
+        "expect": "problem",
+        "type": "sounds_generated",
+        "flagged": true,
+        "typeMatch": true,
+        "got": {
+          "verdict": "problem",
+          "problem": "sounds_generated",
+          "severity": "medium",
+          "rewrite": "Changes saved"
+        }
+      }
+    }
+  ]
+}
