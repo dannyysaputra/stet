@@ -240,9 +240,11 @@ By tonight Stet reviews the text of your own bilingual prototype, and not only t
 
 By tonight a stranger can open a link and use Stet, with or without the laptop model.
 
-- [ ] **4.1 Hosting and production App Check** (prepared; needs your yes and two console steps)
+- [ ] **4.1 Hosting and production App Check** (deployed; the fresh-profile check is yours)
   - Prepared (2026-11-25): firebase.json (public dir dist, no-cache for HTML and the service worker, long cache for hashed assets). Found and fixed before any deploy: src/firebase.js aliased import.meta.env, which put the whole env object, the debug token's variable included, into the production bundle; check-dist now fails on that (red on the old file, green on the fix). The bundle had only been in the local, git-ignored dist/.
-  - Still to do: create a reCAPTCHA Enterprise key for the hosted domain, register it for the web app in App Check, add VITE_RECAPTCHA_ENTERPRISE_SITE_KEY to .env.local, build, deploy (firebase deploy --only hosting), then open the link in a fresh Chrome profile.
+  - Result (2026-11-26): reCAPTCHA Enterprise API enabled (no billing needed); one score key "Stet web" for stet-hybrid-ai-2026.web.app and .firebaseapp.com only (localhost uses the debug token); registered for the web app in App Check, read back (token lifetime 1 hour). App Check enforcement for Firebase AI Logic was already on and was not changed. The site key went into .env.local without passing through the chat, and is in exactly one bundle file. Deployed with firebase deploy --only hosting; the live review page, home page and ai bundle match dist byte for byte. On https://stet-hybrid-ai-2026.web.app/review/ in the owner's Chrome: the laptop model loaded (2.8 s), "Write the guide in the cloud" ran in the cloud in 2.6 s with enforcement on, the counter showed 1, and the browser held an App Check token valid for about an hour.
+  - Still to do: open the link in a fresh Chrome profile.
+  - Note: /eval/ is deployed too; anyone can start its 150 cloud calls. The daily cap is per browser, billing is off, so the risk is the free quota, not a bill.
   - Build: deploy to Firebase Hosting, with App Check using a production provider for the hosted address and the debug provider only on your machine.
   - Done when: the hosted link works in a fresh Chrome profile.
 
