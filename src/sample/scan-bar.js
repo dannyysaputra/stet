@@ -14,3 +14,8 @@ bar.innerHTML = `
   <p class="stet-small">On your own app, the "Scan with Stet" bookmark does exactly this.</p>`;
 document.body.append(bar);
 bar.querySelector("#stet-scan").addEventListener("click", () => scanWithStet(location.origin));
+// Once Stet draws its marks here, the bar steps aside so it covers none of them;
+// it comes back when the marks are hidden.
+new MutationObserver(() => {
+  bar.hidden = !!document.querySelector("[data-stet-marks]");
+}).observe(document.body, { childList: true });

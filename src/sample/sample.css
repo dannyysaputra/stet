@@ -52,3 +52,4 @@ td.num { font-variant-numeric: tabular-nums; }
 .stet-small { font-size: 0.82rem; color: #a7b1cc; }
 body:has(.stet-bar) main { margin-bottom: 150px; }
 @media (max-width: 600px) { .stet-bar { grid-template-columns: 1fr; } .stet-bar button { grid-row: auto; } }
+.stet-bar[hidden] { display: none; }

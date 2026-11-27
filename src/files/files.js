@@ -4,7 +4,7 @@
 import { KIND_NAMES } from "../review/collect.js";
 import { PROBLEM_NAMES, laptopModelStatus, modelCheck, newTextFor, quickCheck, translationCheck, ID_ACCURACY } from "../review/check.js";
 import { buildFixPrompt } from "../review/fix-prompt.js";
-import { acceptScan, pairFiles, parsePasted } from "./parse.js";
+import { acceptScan, marksFor, pairFiles, parsePasted } from "./parse.js";
 import { bookmarkletHref } from "../scan/bookmarklet.js";
 import { OPEN, SEALED, canCheckText, projectMode, setProjectMode } from "../project.js";
 import { onSeamChange } from "../seam.js";
@@ -18,6 +18,7 @@ let items = []; // [{ key, kind, en, id, context?, count? }]
 let files = { en: "", id: "" };
 let source = "keys"; // "keys": language files or a pasted list; "page": scanned from a running app
 let screenName = "language file";
+let scanOrigin = ""; // the origin the browser vouched for when the scan arrived
 let groups = []; // one per check: { key, kind, lang, text, original?, file, result?, error?, ticked, next? }
 let run = 0;
 
@@ -106,6 +107,7 @@ if (location.hash === "#scan" && window.opener) {
       return;
     }
     items = scan.items;
+    scanOrigin = e.origin;
     files = { en: `page ${from}`, id: "" };
     source = "page";
     screenName = scan.title ? `page "${scan.title}" on ${host}` : `page ${from}`;
@@ -185,7 +187,7 @@ async function review({ approved = false } = {}) {
   const app = $("app-name").value.trim() || "An app";
   const register = $("register").value;
   const all = [
-    ...items.filter((i) => i.en).map((i) => ({ key: i.key, kind: i.kind, lang: "en", text: i.en, context: i.context ?? "", count: i.count ?? 1, file: files.en })),
+    ...items.filter((i) => i.en).map((i) => ({ key: i.key, kind: i.kind, lang: "en", text: i.en, context: i.context ?? "", count: i.count ?? 1, file: files.en, at: i.at })),
     ...items.filter((i) => i.id && i.en).map((i) => ({ key: i.key, kind: i.kind, lang: "id", text: i.id, original: i.en, file: files.id })),
   ];
   if (projectMode() === OPEN && !approved) {
@@ -246,6 +248,25 @@ async function review({ approved = false } = {}) {
   renderFindings();
   $("results").scrollIntoView({ block: "start", behavior: "smooth" });
   window.__filesReview = { ms: Math.round(performance.now() - started), groups: groups.map((g) => ({ ...g })) };
+  if (source === "page") sendMarks();
+}
+
+// After a review of a scanned screen, the findings go back to the app tab that
+// sent the scan, addressed only to its origin, so the bookmark script can mark
+// them on that screen. Only what a mark needs is sent: its number in this list,
+// the element it is about, the problem name, the old text and the suggested text.
+function sendMarks() {
+  const opener = window.opener;
+  if (!opener || opener.closed || !scanOrigin) return;
+  const marks = marksFor(
+    groups.filter(isFinding).map((g) => ({ at: g.at, kind: g.kind, text: g.text, label: PROBLEM_NAMES[g.result.finding.problem] ?? "Problem", rewrite: g.result.finding.rewrite ?? "" })),
+  );
+  window.__filesMarks = marks;
+  try {
+    opener.postMessage({ type: "stet-marks", v: 1, marks }, scanOrigin);
+  } catch {
+    // The app tab has moved to another origin or closed: nothing to mark.
+  }
 }
 
 $("run").addEventListener("click", () => review());
@@ -271,7 +292,7 @@ function renderFindings() {
           const f = g.result.finding;
           const r = g.result;
           const ran = r.source === "rule" ? "On this laptop: plain rule" : r.source === "reused" ? "On this laptop: same text checked earlier" : r.where === "laptop" ? `On this laptop: ${secs(r.ms)}` : `Ran: ${r.where}`;
-          const next = g.next !== undefined ? (g.next ? `New: "${esc(g.next)}"` : "No new text yet: write it in the fix prompt.") : f.rewrite ? `Try: "${esc(f.rewrite)}"` : esc(f.note ?? "");
+          const next = g.next !== undefined ? (g.next ? `New: "${esc(g.next)}"` : "No new text yet: write it in the fix message.") : f.rewrite ? `Try: "${esc(f.rewrite)}"` : esc(f.note ?? "");
           return `<li data-i="${i}" data-severity="${esc(f.severity)}">
             <input type="checkbox" id="f-${i}" ${g.ticked ? "checked" : ""}>
             <label for="f-${i}">

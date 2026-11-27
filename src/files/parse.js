@@ -66,9 +66,11 @@ const str = (v, max) => (typeof v === "string" && v.length <= max ? v.replace(/[
 
 /**
  * Checks a message from the bookmarklet. Returns { page, title, lang, items:
- * [{ key, kind, en, id, context, count }], dropped, truncated } or null when it
+ * [{ key, kind, en, id, context, count, at }], dropped, truncated } or null when it
  * is not a scan at all. Items beyond SCAN_MAX or with a bad field are dropped and
- * counted; a list far longer than that is not read at all.
+ * counted; a list far longer than that is not read at all. "at" is the item's
+ * position in the message (not in the result), so marks sent back to the page
+ * point at the elements the bookmarklet remembered for that position.
  */
 export function acceptScan(data) {
   if (!data || typeof data !== "object" || data.type !== "stet-scan" || data.v !== 1 || !Array.isArray(data.items)) return null;
@@ -77,7 +79,7 @@ export function acceptScan(data) {
   if (!page) return null;
   const items = [];
   let dropped = 0;
-  for (const it of data.items) {
+  for (const [at, it] of data.items.entries()) {
     const text = str(it?.text, 300);
     const ok = text && SCAN_KINDS.includes(it.kind) && str(it.context ?? "", 200) !== null && str(it.where ?? "", 80) !== null && items.length < SCAN_MAX;
     if (!ok) {
@@ -85,9 +87,20 @@ export function acceptScan(data) {
       continue;
     }
     const count = Number.isInteger(it.count) && it.count > 0 ? Math.min(it.count, 999) : 1;
-    items.push({ key: str(it.where ?? "", 80) || it.kind, kind: it.kind, en: text, id: "", context: str(it.context ?? "", 200), count });
+    items.push({ key: str(it.where ?? "", 80) || it.kind, kind: it.kind, en: text, id: "", context: str(it.context ?? "", 200), count, at });
   }
   return { page, title: str(data.title ?? "", 120) ?? "", lang: str(data.lang ?? "", 10) ?? "", items, dropped, truncated: data.truncated === true };
+}
+
+/**
+ * The marks Stet sends back to the app tab after reviewing a scanned screen.
+ * `found` is the findings in Stet's list order: [{ at, kind, text, label, rewrite }].
+ * Only what a mark needs leaves Stet: number, position, kind, problem name, old and new text.
+ */
+export function marksFor(found) {
+  return found
+    .map((g, i) => ({ at: g.at, n: i + 1, kind: String(g.kind ?? ""), label: String(g.label ?? "Problem").slice(0, 80), from: String(g.text ?? "").slice(0, 300), to: String(g.rewrite ?? "").slice(0, 300) }))
+    .filter((m) => Number.isInteger(m.at));
 }
 
 /** A pasted list, one English string per line. Keys are line numbers. */

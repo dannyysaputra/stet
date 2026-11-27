@@ -45,7 +45,7 @@ if (!same(pasted, [{ key: "line 1", kind: "text", en: "Submit", id: "" }, { key:
 const scanItem = (o = {}) => ({ kind: "button", text: "Submit", context: "", where: "button#save", count: 2, ...o });
 const scan = (o = {}) => ({ type: "stet-scan", v: 1, page: "localhost:5173/invoices/new", title: "Invoices", lang: "en", items: [scanItem()], ...o });
 const ok = acceptScan(scan());
-if (!ok || !same(ok.items, [{ key: "button#save", kind: "button", en: "Submit", id: "", context: "", count: 2 }]) || ok.dropped !== 0) fail(`acceptScan good: ${JSON.stringify(ok)}`);
+if (!ok || !same(ok.items, [{ key: "button#save", kind: "button", en: "Submit", id: "", context: "", count: 2, at: 0 }]) || ok.dropped !== 0) fail(`acceptScan good: ${JSON.stringify(ok)}`);
 for (const [name, bad] of [
   ["null", null],
   ["a string", "stet-scan"],
@@ -58,6 +58,9 @@ for (const [name, bad] of [
   if (acceptScan(bad) !== null) fail(`acceptScan should refuse ${name}`);
 const mixed = acceptScan(scan({ items: [scanItem(), scanItem({ kind: "script" }), scanItem({ text: "x".repeat(301) }), scanItem({ text: 42 }), scanItem({ text: "  " }), scanItem({ context: "c".repeat(201) }), null] }));
 if (mixed.items.length !== 1 || mixed.dropped !== 6) fail(`acceptScan bad items: kept ${mixed.items.length}, dropped ${mixed.dropped} (expected 1 and 6)`);
+// "at" is the position in the message, so marks sent back find the right elements after drops.
+const shifted = acceptScan(scan({ items: [scanItem({ kind: "script" }), null, scanItem({ text: "Save" }), scanItem({ text: 42 }), scanItem({ text: "Cancel" })] }));
+if (!same(shifted.items.map((i) => [i.en, i.at]), [["Save", 2], ["Cancel", 4]])) fail(`acceptScan "at" should be the position in the message: ${JSON.stringify(shifted.items.map((i) => [i.en, i.at]))}`);
 const many = acceptScan(scan({ items: Array.from({ length: SCAN_MAX + 5 }, (_, i) => scanItem({ text: `Text ${i}` })) }));
 if (many.items.length !== SCAN_MAX || many.dropped !== 5) fail(`acceptScan cap: kept ${many.items.length}, dropped ${many.dropped}`);
 if (acceptScan(scan({ items: [scanItem({ count: -3, where: undefined })] })).items[0].count !== 1) fail("acceptScan: a bad count should become 1");
@@ -74,4 +77,4 @@ if (failed) {
   console.log(`FAIL check-files: ${failed} failure(s).`);
   process.exit(1);
 }
-console.log(`OK check-files: flatten, ${KINDS.length} kind guesses, pairing, pasted lists and scan messages (1 good, 8 refused, 6 bad items, cap ${SCAN_MAX}, line breaks flattened) all as expected.`);
+console.log(`OK check-files: flatten, ${KINDS.length} kind guesses, pairing, pasted lists and scan messages (1 good, 8 refused, 6 bad items, positions kept, cap ${SCAN_MAX}, line breaks flattened) all as expected.`);

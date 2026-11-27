@@ -17,21 +17,37 @@
   </span>
 </header>
 <main class="files">
-  <h1>Check your app&#39;s text</h1>
-  <p class="dim">Stet reads the text on one screen of your app, checks it on this laptop, and writes one fix message to paste into your coding agent. Made for app screens: buttons, labels, field hints, messages and menus. On a marketing page it still finds real defects, but flags much plain copy too.</p>
+  <div class="intro">
+    <h1>Check one screen of <span class="hl">your app.</span></h1>
+    <p class="lead">Stet reads the text on one screen, marks the pieces that need work, and writes one fix message for your coding agent.</p>
+    <p class="dim">Made for app screens: buttons, labels, field hints, messages and menus. On a marketing page it still finds real defects, but flags much plain copy too.</p>
+  </div>
+
+  <ol class="stepper">
+    <li data-step="1">1 Get the text</li>
+    <li data-step="2">2 Check it</li>
+    <li data-step="3">3 Copy the fix</li>
+  </ol>
 
   <section class="box" id="scan">
     <h2>1. Get your screen&#39;s text</h2>
     <div id="get-text">
       <div class="scan">
-        <a id="bookmarklet" class="bookmarklet" href="#" draggable="true">Scan with Stet</a>
+        <div class="drag">
+          <span class="eyebrow">Drag me up to your bookmarks bar</span>
+          <a id="bookmarklet" class="bookmarklet" href="#" draggable="true"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"></path><path d="M5 12l7-7 7 7"></path></svg>Scan with Stet</a>
+          <span class="dim">No bar? Press Ctrl+Shift+B. You only do this once.</span>
+        </div>
         <ol class="steps">
-          <li>Drag this button to your bookmarks bar. You do this once. (No bar? Press Ctrl+Shift+B.)</li>
+          <li>Drag the blue button to your bookmarks bar.</li>
           <li>Open your app in another Chrome tab, on the screen you want checked.</li>
-          <li>Click "Scan with Stet" in the bookmarks bar. The text of that screen opens here. It goes from your app&#39;s tab straight to this tab, and nowhere else.</li>
+          <li>Click "Scan with Stet" in the bookmarks bar. The text of that screen opens here. It goes from your app&#39;s tab straight to this tab. After the check, the numbered marks go back to that tab and are drawn on your screen, where your app&#39;s own scripts can also see them.</li>
         </ol>
-        <p id="bookmarklet-note" class="dim" aria-live="polite"></p>
-        <p class="dim try">Not sure it worked? <a href="/sample/?scan=1#/new">Open the example app</a> and click your bookmark there. The example app also has its own scan button, so you can try it with no bookmark.</p>
+      </div>
+      <p id="bookmarklet-note" class="dim" aria-live="polite"></p>
+      <div class="try">
+        <span>No bookmark yet? The example app has its own scan button.</span>
+        <a class="ink-btn" href="/sample/?scan=1#/new">Open the example app</a>
       </div>
       <details id="other-ways">
         <summary>Other ways: language files or a pasted list</summary>
@@ -60,6 +76,7 @@
 
   <section class="box" id="check">
     <h2>2. Check it</h2>
+    <p class="waiting dim">Waiting for your screen&#39;s text. Nothing is checked or sent until you press the button.</p>
     <label class="one">What is your app? One line helps the check.
       <input id="app-name" type="text" value="My app" maxlength="120">
     </label>
@@ -78,14 +95,21 @@
     <h2 id="summary" aria-live="polite">3. What to fix</h2>
     <p id="findings-count" class="dim"></p>
     <ol id="findings"></ol>
-    <div class="row">
-      <button id="make-fix" type="button" class="big" disabled>Copy fix for my coding agent</button>
-      <span id="copy-status" class="dim" aria-live="polite"></span>
+    <div class="fixcard">
+      <h3>One fix message for your coding agent</h3>
+      <p>One press writes the new wording for the ticked pieces of text and copies one fix message.</p>
+      <div class="row">
+        <button id="make-fix" type="button" class="big" disabled>Copy fix for my coding agent</button>
+        <span id="copy-status" class="dim" aria-live="polite"></span>
+      </div>
+      <p id="fix-status" class="dim" aria-live="polite"></p>
     </div>
-    <p id="fix-status" class="dim" aria-live="polite"></p>
-    <p id="fix-help" class="dim" hidden>Paste it into the coding agent that builds your app, such as Claude Code, Cursor or Lovable. You can edit it here first.</p>
-    <textarea id="fix-prompt" rows="12" spellcheck="false" hidden></textarea>
-    <div class="row" id="fix-actions" hidden><button id="copy-fix" type="button" class="quiet">Copy again</button></div>
+    <div class="fixbox">
+      <label for="fix-prompt" class="fix-label">The fix message your agent gets</label>
+      <p id="fix-help" class="dim" hidden>Paste it into the coding agent that builds your app, such as Claude Code, Cursor or Lovable. You can edit it here first.</p>
+      <textarea id="fix-prompt" rows="12" spellcheck="false" hidden></textarea>
+      <div class="row" id="fix-actions" hidden><button id="copy-fix" type="button" class="quiet">Copy again</button></div>
+    </div>
   </section>
 
   <section class="box area cloud">
