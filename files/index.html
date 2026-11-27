@@ -18,7 +18,7 @@
 </header>
 <main class="files">
   <h1>Check your app&#39;s text</h1>
-  <p class="dim">Stet reads the words on one screen of your app, checks them on this laptop, and gives you one message to paste into your AI coding agent. Made for app screens: buttons, labels, field hints, messages and menus. On a marketing page it still finds real defects, but flags much plain copy too.</p>
+  <p class="dim">Stet reads the text on one screen of your app, checks it on this laptop, and writes one fix message to paste into your coding agent. Made for app screens: buttons, labels, field hints, messages and menus. On a marketing page it still finds real defects, but flags much plain copy too.</p>
 
   <section class="box" id="scan">
     <h2>1. Get your screen&#39;s text</h2>
@@ -31,7 +31,7 @@
           <li>Click "Scan with Stet" in the bookmarks bar. The text of that screen opens here. It goes from your app&#39;s tab straight to this tab, and nowhere else.</li>
         </ol>
         <p id="bookmarklet-note" class="dim" aria-live="polite"></p>
-        <p class="dim try">Not sure it worked? <a href="/sample/?scan=1#/new">Test your bookmark on our example app</a>, or <a href="/sample/?scan=1#/new">try the example without a bookmark</a>.</p>
+        <p class="dim try">Not sure it worked? <a href="/sample/?scan=1#/new">Open the example app</a> and click your bookmark there. The example app also has its own scan button, so you can try it with no bookmark.</p>
       </div>
       <details id="other-ways">
         <summary>Other ways: language files or a pasted list</summary>
@@ -79,11 +79,11 @@
     <p id="findings-count" class="dim"></p>
     <ol id="findings"></ol>
     <div class="row">
-      <button id="make-fix" type="button" class="big" disabled>Copy fix for my AI agent</button>
+      <button id="make-fix" type="button" class="big" disabled>Copy fix for my coding agent</button>
       <span id="copy-status" class="dim" aria-live="polite"></span>
     </div>
     <p id="fix-status" class="dim" aria-live="polite"></p>
-    <p id="fix-help" class="dim" hidden>Paste it into the agent that builds your app (Claude Code, Cursor, Lovable, ...). You can edit it here first.</p>
+    <p id="fix-help" class="dim" hidden>Paste it into the coding agent that builds your app, such as Claude Code, Cursor or Lovable. You can edit it here first.</p>
     <textarea id="fix-prompt" rows="12" spellcheck="false" hidden></textarea>
     <div class="row" id="fix-actions" hidden><button id="copy-fix" type="button" class="quiet">Copy again</button></div>
   </section>

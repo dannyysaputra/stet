@@ -58,7 +58,7 @@ function loaded(text, isError = false) {
   $("loaded").textContent = text;
   $("loaded").classList.toggle("err", isError);
   $("run").disabled = !items.length;
-  $("run").textContent = items.length ? `Check these ${items.length} texts` : "Check the text";
+  $("run").textContent = items.length ? `Check ${items.length} piece${items.length === 1 ? "" : "s"} of text` : "Check the text";
   // Once a scan has arrived, the ways of getting text step aside for the next step.
   const scanned = source === "page" && items.length > 0;
   $("get-text").hidden = scanned;
@@ -75,7 +75,7 @@ $("use-pasted").addEventListener("click", () => {
   files = { en: "the pasted list", id: "" };
   source = "keys";
   screenName = "language file";
-  loaded(`${items.length} strings from the pasted list.`);
+  loaded(`${items.length} piece${items.length === 1 ? "" : "s"} of text from the pasted list.`);
 });
 
 // ---------- scanning a running app (slice 3.6) ----------
@@ -318,7 +318,7 @@ async function copyFix() {
     }
   }
 }
-const COPIED = "Copied. Paste it into your AI agent.";
+const COPIED = "Copied. Paste it into your coding agent.";
 const NOT_COPIED = 'Ready below, but not copied yet: press "Copy again".';
 
 function refreshFix() {

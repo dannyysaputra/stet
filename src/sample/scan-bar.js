@@ -9,7 +9,7 @@ bar.className = "stet-bar";
 bar.setAttribute("data-stet-ignore", "");
 bar.setAttribute("aria-label", "Stet");
 bar.innerHTML = `
-  <p><b>This is an example app.</b> An AI agent built this screen and left wording mistakes in it. Let Stet find them.</p>
+  <p><b>This is the example app.</b> 8 wording mistakes are planted on this screen.</p>
   <button type="button" id="stet-scan">Scan this screen with Stet</button>
   <p class="stet-small">On your own app, the "Scan with Stet" bookmark does exactly this.</p>`;
 document.body.append(bar);

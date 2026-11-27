@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stet: fix the words in your AI-built app</title>
-<meta name="description" content="Stet reads the words on a screen of your AI-built app, checks them on your laptop, and gives your coding agent one message that fixes them.">
+<title>Stet: a proofreader for apps built by coding agents</title>
+<meta name="description" content="Stet reads the text on one screen of your app, checks it on your laptop, and writes one fix message for your coding agent.">
 <link rel="stylesheet" href="/src/base.css">
 <link rel="stylesheet" href="/src/home.css">
 </head>
@@ -23,11 +23,11 @@
 <main class="home">
   <section class="hero">
     <div>
-      <h1>Your AI agent built the app. Stet fixes the words.</h1>
-      <p class="lead">Stet reads every button, label and message on a screen, checks them on your own laptop, and gives you one message to paste back into your coding agent.</p>
+      <h1>Your coding agent wrote “Submit”. You meant “Create invoice”.</h1>
+      <p class="lead">Stet reads every button, label and message on one screen of your app, marks the ones that need work, and writes one fix message for your coding agent.</p>
       <div class="row">
         <a class="cta" href="/files/">Check my app</a>
-        <a class="cta ghost" href="/sample/?scan=1#/new">Try it on an example first</a>
+        <a class="cta ghost" href="/sample/?scan=1#/new">Try it on the example app</a>
       </div>
       <p class="dim">Free. Desktop Chrome. Your app's text stays on your laptop.</p>
     </div>
@@ -38,13 +38,13 @@
         <li><b>Blames the user</b><span><s>Error: you entered an invalid amount.</s> <i>Enter an amount above 0, for example 100.00</i></span></li>
         <li><b>Leftover text</b><span><s>Lorem ipsum</s> <i>name@company.com</i></span></li>
       </ul>
-      <p class="fake-btn">Copy fix for my AI agent</p>
+      <p class="fake-btn">Copy fix for my coding agent</p>
     </figure>
   </section>
 
   <section id="problem">
     <h2>The problem: words nobody chose</h2>
-    <p class="sub">A coding agent can build a working screen in minutes. It fills that screen with text nobody read, and your users read every word of it.</p>
+    <p class="sub">A coding agent builds a working screen in minutes and fills it with text nobody read. Your users read every word of it.</p>
     <div class="pairs">
       <div class="pair"><b>Sounds generated</b><s>Unlock seamless invoicing and elevate your workflow!</s><i>Send an invoice in a minute.</i></div>
       <div class="pair"><b>Says nothing</b><s>Submit</s><i>Create invoice</i></div>
@@ -56,16 +56,16 @@
   </section>
 
   <section id="solution">
-    <h2>What Stet does about it</h2>
+    <h2>What runs on your laptop, and what runs in the cloud</h2>
     <div class="three">
-      <div class="box"><h3>Checks on your laptop</h3><p>The model built into Chrome reads your text on your own computer. A counter at the top shows what has left it. For a normal check, that number stays 0.</p></div>
-      <div class="box"><h3>One message for your agent</h3><p>You do not fix anything by hand. Stet writes the new text and one message that tells your agent exactly what to change. You paste it.</p></div>
-      <div class="box"><h3>The cloud only where it helps</h3><p>A cloud model writes your wording guide from two lines you type, and one standing rule for your agent. It never needs your app's text for that.</p></div>
+      <div class="box"><h3>The model in Chrome checks your text</h3><p>It runs on your own computer. A counter at the top shows what has left your laptop. When you keep your text on the laptop, it stays at 0.</p></div>
+      <div class="box"><h3>One fix message for your agent</h3><p>Stet writes the new text and one fix message that names each piece of text and what to change it to. You paste it into your coding agent.</p></div>
+      <div class="box"><h3>The cloud model writes your wording guide</h3><p>It works from two lines you type about your app, and from the count of each kind of problem. Your app's text is not sent for either.</p></div>
     </div>
   </section>
 
   <section id="how">
-    <h2>How to use it</h2>
+    <h2>How to use it: three steps</h2>
     <ol class="steps3">
       <li>
         <div class="pic bar" aria-hidden="true"><span class="chip">Scan with Stet</span><span class="ghost-chip">Mail</span><span class="ghost-chip">Docs</span></div>
@@ -80,21 +80,21 @@
       <li>
         <div class="pic out" aria-hidden="true"><span class="line w80"></span><span class="line w60"></span><span class="chip">Copy fix</span></div>
         <h3>3. Paste the fix into your agent</h3>
-        <p>Stet lists what to fix. Press "Copy fix for my AI agent" and paste it into Claude Code, Cursor, Lovable or whatever built your app.</p>
+        <p>Stet lists what to fix. Press "Copy fix for my coding agent" and paste it into Claude Code, Cursor, Lovable or the agent that built your app.</p>
       </li>
     </ol>
     <div class="row center">
       <a class="cta" href="/files/">Check my app</a>
-      <a class="cta ghost" href="/sample/?scan=1#/new">Try it on an example first</a>
+      <a class="cta ghost" href="/sample/?scan=1#/new">Try it on the example app</a>
     </div>
-    <p class="dim center">The example is a small invoicing app with mistakes planted in it. One click scans it, with no bookmark needed.</p>
+    <p class="dim center">The example app is a small invoicing screen with 8 mistakes planted in it. It needs no bookmark.</p>
   </section>
 
   <section id="limits">
     <h2>What to expect</h2>
     <ul class="limits">
       <li><b>Made for app screens.</b> Buttons, labels, field hints, error and empty messages, menus. On a marketing page it still finds real defects, but it flags much plain copy too.</li>
-      <li><b>About 3 seconds a piece of text.</b> A screen with 20 pieces takes about a minute the first time, and is instant when you check it again.</li>
+      <li><b>About 3 seconds a piece of text.</b> The example screen has 22 pieces and took 56 seconds the first time. Checking the same text again takes under a second.</li>
       <li><b>Desktop Chrome.</b> The model built into Chrome does the checking. Without it, Stet can use a cloud model, and only after showing you exactly what it would send.</li>
       <li><b>You decide.</b> Every finding has a tick box. Untick what you disagree with before you copy the fix.</li>
     </ul>
@@ -116,7 +116,7 @@
   </section>
 
   <footer class="foot dim">
-    <p>See more: <a href="/review/">the full review of the example</a> (pins on the screen, an Indonesian check, the wording guide), <a href="/check/">both models answering in all four modes</a>, <a href="https://github.com/dannyysaputra/stet#accuracy-and-speed">how accurate it is</a>, <a href="https://github.com/dannyysaputra/stet">the code</a>.</p>
+    <p>See more: <a href="/review/">the full review of the example app</a> (pins on the screen, an Indonesian check, the wording guide), <a href="/check/">both models answering in all four modes</a>, <a href="https://github.com/dannyysaputra/stet#accuracy-and-speed">how accurate it is</a>, <a href="https://github.com/dannyysaputra/stet">the code</a>.</p>
     <p>Built with Firebase AI Logic, Gemini Nano in Chrome, the Gemini API, Firebase App Check, Remote Config and Hosting.</p>
   </footer>
 </main>
