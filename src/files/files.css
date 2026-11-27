@@ -16,3 +16,15 @@
 .project label { font-weight: 400; }
 #findings .lang { font-size: 0.72rem; font-weight: 700; margin-right: 6px; color: var(--dim); }
 @media (max-width: 700px) { .grid2, .scan { grid-template-columns: 1fr; } }
+
+/* Slice 4.5: fewer choices, bigger next step. */
+.files .loaded { margin: 14px 0 0; font-weight: 600; }
+.files .loaded.err { color: var(--red); }
+.files .one { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; font-weight: 600; font-size: 0.92rem; }
+.files .keep { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; margin-top: 14px; cursor: pointer; }
+.files .keep input { width: 18px; height: 18px; margin-top: 3px; }
+.files .keep b { font-weight: 700; }
+button.big { font-size: 1.05rem; padding: 12px 22px; border-radius: 12px; }
+.files .try { grid-column: 1 / -1; margin: 6px 0 0; }
+.files #summary { font: 600 1.35rem/1.2 Georgia, serif; }
+.files #laptop-state.err { color: var(--red); }

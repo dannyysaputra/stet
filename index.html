@@ -3,46 +3,122 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stet</title>
-<meta name="description" content="A design reviewer for the interface text of apps built by AI coding agents.">
+<title>Stet: fix the words in your AI-built app</title>
+<meta name="description" content="Stet reads the words on a screen of your AI-built app, checks them on your laptop, and gives your coding agent one message that fixes them.">
 <link rel="stylesheet" href="/src/base.css">
 <link rel="stylesheet" href="/src/home.css">
 </head>
-<body>
-<main class="home">
-  <h1>Stet</h1>
-  <p class="lead">A design reviewer for apps built by AI coding agents. It reads every label, button and message on a screen, checks it on your laptop, pins what is wrong, and gives your agent one prompt to fix it. Your app's text stays on your laptop.</p>
+<body class="landing">
+<header class="top">
+  <a class="brand" href="/">Stet</a>
+  <nav aria-label="Main">
+    <a href="#problem">The problem</a>
+    <a href="#how">How it works</a>
+    <a href="#limits">Limits</a>
+    <a href="https://github.com/dannyysaputra/stet">Code</a>
+  </nav>
+  <a class="cta small" href="/files/">Check my app</a>
+</header>
 
-  <section class="box" aria-labelledby="model-title">
-    <h2 id="model-title">1. The laptop model</h2>
-    <p>Stet checks text with the model built into Chrome (Gemini Nano), on this computer, through Firebase AI Logic. Nothing you review is sent anywhere for that.</p>
+<main class="home">
+  <section class="hero">
+    <div>
+      <h1>Your AI agent built the app. Stet fixes the words.</h1>
+      <p class="lead">Stet reads every button, label and message on a screen, checks them on your own laptop, and gives you one message to paste back into your coding agent.</p>
+      <div class="row">
+        <a class="cta" href="/files/">Check my app</a>
+        <a class="cta ghost" href="/sample/?scan=1#/new">Try it on an example first</a>
+      </div>
+      <p class="dim">Free. Desktop Chrome. Your app's text stays on your laptop.</p>
+    </div>
+    <figure class="shot" aria-label="What a result looks like">
+      <figcaption>3 things to fix on this screen</figcaption>
+      <ul>
+        <li><b>Vague button</b><span><s>Submit</s> <i>Create invoice</i></span></li>
+        <li><b>Blames the user</b><span><s>Error: you entered an invalid amount.</s> <i>Enter an amount above 0, for example 100.00</i></span></li>
+        <li><b>Leftover text</b><span><s>Lorem ipsum</s> <i>name@company.com</i></span></li>
+      </ul>
+      <p class="fake-btn">Copy fix for my AI agent</p>
+    </figure>
+  </section>
+
+  <section id="problem">
+    <h2>The problem: words nobody chose</h2>
+    <p class="sub">A coding agent can build a working screen in minutes. It fills that screen with text nobody read, and your users read every word of it.</p>
+    <div class="pairs">
+      <div class="pair"><b>Sounds generated</b><s>Unlock seamless invoicing and elevate your workflow!</s><i>Send an invoice in a minute.</i></div>
+      <div class="pair"><b>Says nothing</b><s>Submit</s><i>Create invoice</i></div>
+      <div class="pair"><b>Blames the user</b><s>Error: you entered an invalid amount.</s><i>Enter an amount above 0.</i></div>
+      <div class="pair"><b>Never replaced</b><s>Lorem ipsum</s><i>name@company.com</i></div>
+      <div class="pair"><b>Goes nowhere</b><s>Click here</s><i>Preview the invoice</i></div>
+      <div class="pair"><b>Translated word by word</b><s>Dekat (means "nearby")</s><i>Tutup (a Close button)</i></div>
+    </div>
+  </section>
+
+  <section id="solution">
+    <h2>What Stet does about it</h2>
+    <div class="three">
+      <div class="box"><h3>Checks on your laptop</h3><p>The model built into Chrome reads your text on your own computer. A counter at the top shows what has left it. For a normal check, that number stays 0.</p></div>
+      <div class="box"><h3>One message for your agent</h3><p>You do not fix anything by hand. Stet writes the new text and one message that tells your agent exactly what to change. You paste it.</p></div>
+      <div class="box"><h3>The cloud only where it helps</h3><p>A cloud model writes your wording guide from two lines you type, and one standing rule for your agent. It never needs your app's text for that.</p></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <h2>How to use it</h2>
+    <ol class="steps3">
+      <li>
+        <div class="pic bar" aria-hidden="true"><span class="chip">Scan with Stet</span><span class="ghost-chip">Mail</span><span class="ghost-chip">Docs</span></div>
+        <h3>1. Add the bookmark</h3>
+        <p>Drag the "Scan with Stet" button to your bookmarks bar. You do this once.</p>
+      </li>
+      <li>
+        <div class="pic app" aria-hidden="true"><span class="line w60"></span><span class="line w40"></span><span class="btnmock">Submit</span></div>
+        <h3>2. Click it on your app</h3>
+        <p>Open your app on the screen you want checked, on localhost or online, and click the bookmark.</p>
+      </li>
+      <li>
+        <div class="pic out" aria-hidden="true"><span class="line w80"></span><span class="line w60"></span><span class="chip">Copy fix</span></div>
+        <h3>3. Paste the fix into your agent</h3>
+        <p>Stet lists what to fix. Press "Copy fix for my AI agent" and paste it into Claude Code, Cursor, Lovable or whatever built your app.</p>
+      </li>
+    </ol>
+    <div class="row center">
+      <a class="cta" href="/files/">Check my app</a>
+      <a class="cta ghost" href="/sample/?scan=1#/new">Try it on an example first</a>
+    </div>
+    <p class="dim center">The example is a small invoicing app with mistakes planted in it. One click scans it, with no bookmark needed.</p>
+  </section>
+
+  <section id="limits">
+    <h2>What to expect</h2>
+    <ul class="limits">
+      <li><b>Made for app screens.</b> Buttons, labels, field hints, error and empty messages, menus. On a marketing page it still finds real defects, but it flags much plain copy too.</li>
+      <li><b>About 3 seconds a piece of text.</b> A screen with 20 pieces takes about a minute the first time, and is instant when you check it again.</li>
+      <li><b>Desktop Chrome.</b> The model built into Chrome does the checking. Without it, Stet can use a cloud model, and only after showing you exactly what it would send.</li>
+      <li><b>You decide.</b> Every finding has a tick box. Untick what you disagree with before you copy the fix.</li>
+    </ul>
+  </section>
+
+  <section class="box" aria-labelledby="model-title" id="model">
+    <h2 id="model-title">Is this computer ready?</h2>
+    <p>Stet checks text with the model built into Chrome (Gemini Nano), on this computer, through Firebase AI Logic.</p>
     <p id="model-state" class="state" aria-live="polite">Checking this browser...</p>
     <div class="row">
       <button id="prepare" type="button" hidden>Download the laptop model</button>
       <progress id="prepare-progress" max="1" value="0" hidden></progress>
     </div>
     <details>
-      <summary>Without the laptop model</summary>
-      <p>Chrome desktop 139 or newer can run it; it needs about 22 GB of free disk space. Without it, an <b>Open</b> project still works: Stet shows you the exact strings first, and sends them to the cloud model only after you approve. A <b>Sealed</b> project never sends its text, so it waits for the laptop model.</p>
-      <p>In Chrome, turn on <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>, restart Chrome, then download the model here.</p>
+      <summary>If it says the model is not available</summary>
+      <p>Chrome desktop 139 or newer can run it; it needs about 22 GB of free disk space. In Chrome, turn on <code>chrome://flags/#prompt-api-for-gemini-nano-multimodal-input</code>, restart Chrome, then download the model here.</p>
+      <p>Without it you can still check text: untick "Keep my text on this laptop", and Stet shows you the exact text first and sends it to the cloud model only after you agree.</p>
     </details>
   </section>
 
-  <section class="box" aria-labelledby="try-title">
-    <h2 id="try-title">2. Try it</h2>
-    <div class="cards">
-      <a class="card" href="/review/">
-        <b>Review the sample app</b>
-        <span>Three sloppy invoicing screens, in English and Indonesian. Press "Review this screen": the first findings appear in seconds.</span>
-      </a>
-      <a class="card" href="/files/">
-        <b>Review your own text</b>
-        <span>Scan a screen of the app you are building with one bookmark, or drop in its language files.</span>
-      </a>
-    </div>
-  </section>
-
-  <p class="dim foot">More: <a href="/check/">hybrid check</a> (both models answer, in all four modes), <a href="https://github.com/dannyysaputra/stet#accuracy-and-speed">accuracy results</a>, <a href="/sample/">the sample app on its own</a>.</p>
+  <footer class="foot dim">
+    <p>See more: <a href="/review/">the full review of the example</a> (pins on the screen, an Indonesian check, the wording guide), <a href="/check/">both models answering in all four modes</a>, <a href="https://github.com/dannyysaputra/stet#accuracy-and-speed">how accurate it is</a>, <a href="https://github.com/dannyysaputra/stet">the code</a>.</p>
+    <p>Built with Firebase AI Logic, Gemini Nano in Chrome, the Gemini API, Firebase App Check, Remote Config and Hosting.</p>
+  </footer>
 </main>
 <script type="module" src="/src/home.js"></script>
 </body>

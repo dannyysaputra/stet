@@ -23,7 +23,7 @@ export function scanWithStet(stet) {
   const hidden = (el) => {
     if (!el.getClientRects().length) return true;
     const cs = getComputedStyle(el);
-    return cs.visibility === "hidden" || cs.display === "none" || !!el.closest('[aria-hidden="true"],[hidden]');
+    return cs.visibility === "hidden" || cs.display === "none" || !!el.closest('[aria-hidden="true"],[hidden],[data-stet-ignore]');
   };
   const cls = (el) => String(el.getAttribute("class") || "");
   const fieldName = (el) => clean((el.labels && el.labels[0] && el.labels[0].innerText) || el.getAttribute("aria-label") || el.getAttribute("name"));

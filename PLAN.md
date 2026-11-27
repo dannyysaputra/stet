@@ -282,6 +282,12 @@ By tonight a stranger can open a link and use Stet, with or without the laptop m
   - Done when: a first-time visitor gets from the landing screen to findings on the sample in under a minute.
 
 - [ ] **4.5 Design pass (you)**
+  - Onboarding (2026-11-27, plan in docs/onboarding-plan.md): the owner tried Stet and was lost, so the way in was rebuilt; checks, prompts and gates are unchanged.
+    - Landing page (index.html): problem (six before and after pairs), what Stet does, how to use it in three steps, what to expect (made for app screens, about 3 s a text, desktop Chrome), and the laptop model state.
+    - "Try it on an example first": /sample/?scan=1 shows a bar with "Scan this screen with Stet", which calls the same function as the bookmark, so the whole loop runs without adding a bookmark. The bar is marked data-stet-ignore and the scanner leaves it out (gate case; a mutation removing the guard turned check-bookmarklet red; restored, green).
+    - /files/: after a scan the ways of getting text step aside; "Sealed / Open" became one tick box "Keep my text on this laptop (recommended)" (same setting underneath); progress reads "Checking 3 of 6 on your laptop, about 10 s left"; results open with "8 things to fix on this screen"; one button "Copy fix for my AI agent" writes the new texts and copies the prompt. A page-wide [hidden] rule fixes a Copy button that showed before there was anything to copy.
+    - Checked in Chrome on the development server: landing page to example to scan (22 strings, none from Stet's bar) to check (the 8 planted problems, counter 0) to one press that copied 8 changes; a pasted list showed the time-left text on a real laptop run; with the laptop model made to report unavailable, the ticked box refused and sent nothing, and the unticked box showed the approval list first and sent nothing before agreement.
+    - Not done: a drag animation for the bookmark, the same plain wording on /review/ (it still says Sealed and Open), a Chrome extension (after the hackathon: store review takes days).
   - Do: type, spacing, pins, panel, and the empty, loading and error states, in light and dark.
   - Done when: no screen looks like a default template.
 

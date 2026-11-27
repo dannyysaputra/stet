@@ -151,3 +151,6 @@ document.getElementById("lang").addEventListener("click", () => {
 
 addEventListener("hashchange", render);
 render();
+
+// Opened from Stet as an example to scan (slice 4.5): adds Stet's own bar.
+if (new URLSearchParams(location.search).has("scan")) import("./scan-bar.js");

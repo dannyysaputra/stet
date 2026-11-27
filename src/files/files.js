@@ -58,7 +58,13 @@ function loaded(text, isError = false) {
   $("loaded").textContent = text;
   $("loaded").classList.toggle("err", isError);
   $("run").disabled = !items.length;
+  $("run").textContent = items.length ? `Check these ${items.length} texts` : "Check the text";
+  // Once a scan has arrived, the ways of getting text step aside for the next step.
+  const scanned = source === "page" && items.length > 0;
+  $("get-text").hidden = scanned;
+  $("other-text").hidden = !scanned;
   groups = [];
+  $("results").hidden = true;
   renderFindings();
 }
 
@@ -107,9 +113,10 @@ if (location.hash === "#scan" && window.opener) {
     window.__scan = { page: scan.page, dropped: scan.dropped, truncated: scan.truncated, items: items.map((i) => `${i.kind}|${i.en}|${i.context}|${i.key}|${i.count}`) };
     const left = [scan.dropped && `${scan.dropped} left out: too long, too many or not text`, scan.truncated && `the screen has more text than the ${items.length} read`].filter(Boolean);
     loaded(
-      `${items.length} pieces of text read from ${from}${left.length ? ` (${left.join("; ")})` : ""}. Names or other details shown as text on that screen are included. Nothing has been checked or sent yet: press Review.`,
+      `Got ${items.length} pieces of text from ${from}${left.length ? ` (${left.join("; ")})` : ""}. Names or other details shown as text on that screen are included. Nothing has been checked or sent yet.`,
     );
     $("scan").scrollIntoView({ block: "start" });
+    $("run").focus({ preventScroll: true });
   };
   addEventListener("message", onScan);
   window.opener.postMessage({ type: "stet-ready" }, "*");
@@ -117,23 +124,30 @@ if (location.hash === "#scan" && window.opener) {
 
 // ---------- project and laptop model ----------
 
-for (const r of document.querySelectorAll('input[name="project"]')) {
-  r.checked = r.value === projectMode();
-  r.addEventListener("change", () => {
-    setProjectMode(r.value);
-    showLaptopState();
-  });
-}
+// One tick box for the project setting (slice 3.4): ticked is a Sealed project
+// (text read only by the laptop model), unticked an Open one (the cloud when the
+// laptop model is missing, after approval).
+const keep = $("keep-local");
+keep.checked = projectMode() === SEALED;
+keep.addEventListener("change", () => {
+  setProjectMode(keep.checked ? SEALED : OPEN);
+  showLaptopState();
+});
+
+// Why a check cannot run here, in plain words.
+const noLaptopModel = (status) =>
+  `The model built into Chrome is not ready on this computer (status: ${status}), and you asked to keep your text on this laptop. Download the model on the home page, or untick "Keep my text on this laptop" to use the cloud model after seeing exactly what is sent.`;
 
 async function showLaptopState() {
   const status = await laptopModelStatus();
   const can = canCheckText(status);
-  $("laptop-state").textContent =
+  $("keep-note").hidden = keep.checked;
+  $("laptop-state").innerHTML =
     status === "available"
-      ? "Laptop model: ready."
+      ? "The model built into Chrome is ready on this laptop."
       : can.ok
-        ? `Laptop model: ${status}. This project is Open, so its text goes to the cloud model instead, one string per call, and the counter shows each one.`
-        : can.why;
+        ? `The model built into Chrome is not ready here (status: ${esc(status)}), so your text would go to the cloud model, one piece per call, after you agree to the list.`
+        : `${esc(noLaptopModel(status))} <a href="/">Home page</a>`;
   $("laptop-state").classList.toggle("err", !can.ok);
 }
 showLaptopState();
@@ -148,7 +162,7 @@ const isFinding = (g) => g.result?.finding.verdict === "problem" && severityShow
 function askApproval(toCloud) {
   const box = $("approve");
   box.hidden = false;
-  box.innerHTML = `<p><b>This Open project sends these ${toCloud.length} strings to the cloud model, one per call.</b> Each call also carries the app name ("${esc($("app-name").value.trim() || "An app")}"), the screen name (${esc(screenName)}), the element kind and the note in brackets. Nothing else from your app is sent.</p>
+  box.innerHTML = `<p><b>These ${toCloud.length} pieces of text would go to the cloud model, one per call.</b> Each call also carries the app name ("${esc($("app-name").value.trim() || "An app")}"), the screen name (${esc(screenName)}), the element kind and the note in brackets. Nothing else from your app is sent.</p>
     <ul class="payload">${toCloud.map((g) => `<li>${g.lang.toUpperCase()} ${esc(g.key)}: "${esc(g.text)}"${g.original ? ` <span class="dim">for "${esc(g.original)}"</span>` : ""}${g.context ? ` <span class="dim">(${esc(g.context)})</span>` : ""}</li>`).join("")}</ul>
     <div class="row"><button id="approve-send" type="button">Send these ${toCloud.length}</button><button id="approve-cancel" type="button" class="quiet">Cancel</button></div>`;
   $("approve-send").onclick = () => {
@@ -157,7 +171,7 @@ function askApproval(toCloud) {
   };
   $("approve-cancel").onclick = () => {
     box.hidden = true;
-    $("progress").textContent = "Not sent. Switch the project to Sealed to keep this text on the laptop.";
+    $("progress").textContent = 'Not sent. Tick "Keep my text on this laptop" to check it here instead.';
   };
 }
 
@@ -165,7 +179,7 @@ async function review({ approved = false } = {}) {
   const status = await laptopModelStatus();
   const can = canCheckText(status);
   if (!can.ok) {
-    $("progress").textContent = can.why;
+    $("progress").textContent = noLaptopModel(status);
     return;
   }
   const app = $("app-name").value.trim() || "An app";
@@ -190,12 +204,25 @@ async function review({ approved = false } = {}) {
   $("make-fix").disabled = true;
   hideFix();
   let done = 0;
+  $("results").hidden = false;
+  const onLaptop = projectMode() === SEALED;
   const report = (end) => {
     const found = groups.filter(isFinding).length;
-    $("progress").textContent = `${end ? "Done" : "Checking"}: ${done} of ${groups.length} in ${secs(performance.now() - started)}. ${found} findings.${
-      groups.some((g) => g.lang === "id") && projectMode() === SEALED ? ` Indonesian checked on the laptop: ${ID_ACCURACY}` : ""
-    }`;
+    const spent = performance.now() - started;
+    // Time left, from the pace so far (plain rules and reused verdicts are instant).
+    const left = done ? Math.round(((spent / done) * (groups.length - done)) / 1000) : null;
+    const eta = left === null ? "" : left >= 90 ? `, about ${Math.round(left / 60)} min left` : left >= 5 ? `, about ${Math.ceil(left / 5) * 5} s left` : ", almost done";
+    $("progress").textContent = `${
+      end ? `Checked ${groups.length} of ${groups.length} in ${secs(spent)}${onLaptop ? ", all on your laptop" : ""}.` : `Checking ${done} of ${groups.length}${onLaptop ? " on your laptop" : ""}${eta}.`
+    }${groups.some((g) => g.lang === "id") && onLaptop ? ` Indonesian checked on the laptop: ${ID_ACCURACY}` : ""}`;
+    $("summary").textContent = end
+      ? found
+        ? `3. ${found} thing${found === 1 ? "" : "s"} to fix ${source === "page" ? "on this screen" : "in this text"}`
+        : `3. Nothing to fix ${source === "page" ? "on this screen" : "in this text"}`
+      : `3. What to fix (${found} so far)`;
+    window.__filesProgress = { done, total: groups.length, found, end };
   };
+  report(false);
   for (const g of groups) {
     if (me !== run) return;
     try {
@@ -213,9 +240,11 @@ async function review({ approved = false } = {}) {
     renderFindings();
     report(false);
   }
-  report(true);
   $("run").disabled = false;
   $("stop").hidden = true;
+  report(true);
+  renderFindings();
+  $("results").scrollIntoView({ block: "start", behavior: "smooth" });
   window.__filesReview = { ms: Math.round(performance.now() - started), groups: groups.map((g) => ({ ...g })) };
 }
 
@@ -225,6 +254,7 @@ $("stop").addEventListener("click", () => {
   $("run").disabled = false;
   $("stop").hidden = true;
   $("progress").textContent += " Stopped.";
+  renderFindings();
 });
 
 // ---------- findings ----------
@@ -232,8 +262,8 @@ $("stop").addEventListener("click", () => {
 function renderFindings() {
   const found = groups.filter(isFinding);
   const ticked = found.filter((g) => g.ticked).length;
-  $("findings-count").textContent = found.length ? `${found.length}, ${ticked} ticked` : "";
-  $("make-fix").disabled = ticked === 0;
+  $("findings-count").textContent = found.length ? `${ticked} of ${found.length} ticked. Untick anything you do not want changed.` : "";
+  $("make-fix").disabled = ticked === 0 || !$("stop").hidden;
   $("findings").innerHTML = found.length
     ? found
         .map((g) => {
@@ -255,7 +285,7 @@ function renderFindings() {
           </li>`;
         })
         .join("")
-    : `<li class="none dim">${groups.length ? "No findings." : "Load text and press Review."}</li>`;
+    : `<li class="none dim">${groups.length ? ($("stop").hidden ? "Nothing to fix." : "Nothing found yet.") : ""}</li>`;
   if (!$("fix-prompt").hidden) refreshFix();
 }
 
@@ -269,9 +299,27 @@ $("findings").addEventListener("change", (e) => {
 // ---------- fix prompt ----------
 
 function hideFix() {
-  $("fix-prompt").hidden = $("fix-actions").hidden = true;
-  $("fix-status").textContent = "";
+  $("fix-prompt").hidden = $("fix-actions").hidden = $("fix-help").hidden = true;
+  $("fix-status").textContent = $("copy-status").textContent = "";
 }
+
+// Copies the fix prompt. Returns true when it is on the clipboard.
+async function copyFix() {
+  try {
+    await navigator.clipboard.writeText($("fix-prompt").value);
+    return true;
+  } catch {
+    // No clipboard permission, or the tab lost focus while the new texts were written.
+    $("fix-prompt").select();
+    try {
+      return document.execCommand("copy");
+    } catch {
+      return false;
+    }
+  }
+}
+const COPIED = "Copied. Paste it into your AI agent.";
+const NOT_COPIED = 'Ready below, but not copied yet: press "Copy again".';
 
 function refreshFix() {
   const list = groups.filter((g) => isFinding(g) && g.ticked);
@@ -291,9 +339,10 @@ $("make-fix").addEventListener("click", async () => {
   const started = performance.now();
   const list = groups.filter((g) => isFinding(g) && g.ticked);
   $("make-fix").disabled = true;
+  $("copy-status").textContent = "";
   let written = 0;
   for (const [n, g] of list.entries()) {
-    $("fix-status").textContent = `New text ${n + 1} of ${list.length}...`;
+    $("fix-status").textContent = `Writing the new text, ${n + 1} of ${list.length}...`;
     if (g.lang === "id") {
       g.next = g.result.finding.rewrite ?? ""; // the translation check's better version
       continue;
@@ -308,21 +357,20 @@ $("make-fix").addEventListener("click", async () => {
       g.next = "";
     }
   }
-  $("fix-prompt").hidden = $("fix-actions").hidden = false;
+  $("fix-prompt").hidden = $("fix-actions").hidden = $("fix-help").hidden = false;
   renderFindings();
   const { lines, missing } = refreshFix();
-  $("fix-status").textContent = `${lines} lines in ${secs(performance.now() - started)}. ${written} new texts written on the laptop.${missing ? ` ${missing} still need your text.` : ""}`;
+  $("fix-status").textContent = `${lines} change${lines === 1 ? "" : "s"}, ready in ${secs(performance.now() - started)}. ${written} new text${written === 1 ? "" : "s"} written on the laptop.${
+    missing ? ` ${missing} still need${missing === 1 ? "s" : ""} your own words: look for "(write the new text here)" below.` : ""
+  }`;
+  const copied = await copyFix();
+  $("copy-status").textContent = copied ? COPIED : NOT_COPIED;
+  window.__filesFix.copied = copied;
   $("make-fix").disabled = false;
 });
 
 $("copy-fix").addEventListener("click", async () => {
-  try {
-    await navigator.clipboard.writeText($("fix-prompt").value);
-    $("copy-status").textContent = "Copied.";
-  } catch {
-    $("fix-prompt").select();
-    $("copy-status").textContent = document.execCommand("copy") ? "Copied." : "Select the text and copy it by hand.";
-  }
+  $("copy-status").textContent = (await copyFix()) ? COPIED : "Select the text below and copy it by hand.";
 });
 
 // ---------- the seam ----------
