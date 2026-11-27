@@ -114,6 +114,8 @@ const docBody = new El("body", {}, [
   new El("table", {}, [new El("tr", {}, [new El("td", {}, ["Acme Ltd"])])]),
   new El("div", {}, ["No data"]),
   new El("span", {}, ["1,250.00"]),
+  new El("p", {}, [String.fromCharCode(0x200b)]), // an "empty" paragraph from a page builder
+  new El("p", {}, ["Learn" + String.fromCharCode(0x200b) + " more"]),
   input,
 ]);
 const walker = (rootEl) => {
@@ -169,6 +171,8 @@ const want = [
   ["placeholder", "name@company.com"],
 ];
 for (const [kind, text] of want) if (!has(kind, text)) fail(`missing ${kind} "${text}"`);
+if (items.some((i) => /\p{Cf}/u.test(i.text) || !i.text.trim())) fail(`an invisible character or empty text was read: ${JSON.stringify(items.map((i) => i.text))}`);
+if (!has("text", "Learn more")) fail('"Learn" + zero-width space + " more" should read as "Learn more"');
 for (const leak of ["jo@example.com", "Acme Ltd", "1,250.00", "close"]) if (items.some((i) => i.text.includes(leak))) fail(`read data that is not interface text: "${leak}"`);
 const all = JSON.stringify(msg?.data ?? {});
 for (const secret of ["9f3a8c7d6e5f4a3b2c1d0e9f", "12345", "48213", "token", "secret"]) if (all.includes(secret)) fail(`an id or token reached the message: "${secret}"`);

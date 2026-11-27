@@ -12,6 +12,19 @@ it writes your wording guide from a two-line brief, and from the count of each
 kind of problem it writes one standing rule for the agent's instruction file.
 Your app's text stays on the laptop, and a counter shows what has left it.
 
+Try it in desktop Chrome: https://stet-hybrid-ai-2026.web.app. To review your
+own app, drag "Scan with Stet" from `/files/` to the bookmarks bar, open your
+app (localhost or deployed) and click the bookmark.
+
+Stet is made for **app interface text**: buttons, labels, field hints, error
+and empty-state messages, navigation. That is what it was measured on (below).
+On a marketing page it still finds real defects, but among many false alarms:
+on one organisation's home page it found unfilled "[##]" figures, empty
+category separators and a "Learn More" link, 6 real defects among 46
+findings; most of the rest flagged plain marketing copy as generated. A guide
+written from that site's own brief moved the false alarms around without
+reducing them.
+
 Every AI call goes through Firebase AI Logic (`firebase/ai`), with its hybrid
 inference modes.
 
