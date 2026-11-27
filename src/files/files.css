@@ -1,18 +1,139 @@
-/* The "your files" page: one column of steps under the same top bar as the review. */
-.files { max-width: 900px; }
-.files h3 { margin: 18px 0 6px; font-size: 1rem; }
+/* "Check your app" page, slice 4.6: the proofreader's desk.
+   Loaded after review.css, so rules here win over the shared review styles. */
+
+/* ---------- top bar ---------- */
+.seam-bar { height: auto; min-height: 56px; padding: 10px 16px; border-bottom: 2px solid var(--line); flex-wrap: wrap; }
+.seam-bar .brand { font: 700 1.5rem/1.2 var(--head); color: var(--hi-ink); background: var(--hi); padding: 1px 10px; border: 2px solid var(--hi-ink); border-radius: 8px; }
+.seam-bar .left-count { border: 2px solid var(--line); }
+
+/* ---------- page ---------- */
+.files { max-width: 960px; display: flex; flex-direction: column; gap: 22px; }
+.files .box { margin: 0; border-radius: 18px; padding: 28px; }
+.files .box > h2 { font-size: 1.75rem; margin-bottom: 18px; }
+.files h3 { margin: 0; font: 700 1.5rem/1.2 var(--head); }
+.files .intro h1 { font-size: 3rem; margin: 0 0 10px; }
+.files .hl { background: var(--hi); color: var(--hi-ink); padding: 0 8px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.files .lead { font-size: 1.2rem; line-height: 1.5; color: var(--dim); max-width: 34em; margin: 0 0 6px; }
+
+/* Step chips: the active one follows the page state, no script needed. */
+.stepper { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; font-weight: 700; font-size: 0.95rem; }
+.stepper li { background: var(--card); color: var(--dim); border: 2px solid var(--line); border-radius: 999px; padding: 6px 14px; }
+.stepper li[data-step="1"],
+.files:has(#run:not([disabled])) .stepper li[data-step="2"],
+.files:has(#results:not([hidden])) .stepper li[data-step="3"] { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.files:has(#run:not([disabled])) .stepper li[data-step="1"],
+.files:has(#results:not([hidden])) .stepper li[data-step="1"],
+.files:has(#results:not([hidden])) .stepper li[data-step="2"] { background: var(--card); color: var(--dim); border-color: var(--line); }
+
+/* ---------- 1. get the text ---------- */
+#scan { box-shadow: 6px 6px 0 var(--shadow); }
+.scan { display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch; }
+.drag { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 20px; background: var(--wash); border: 2px dashed var(--line); border-radius: 14px; }
+.eyebrow { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--dim); }
+.bookmarklet { display: inline-flex; align-items: center; gap: 10px; padding: 14px 22px; border-radius: 999px; background: var(--pencil); color: var(--on-pencil); font-weight: 700; font-size: 1.2rem; text-decoration: none; cursor: grab; white-space: nowrap;
+  border: 2px solid var(--line); box-shadow: 4px 4px 0 var(--shadow); transform: rotate(-2deg); }
+.bookmarklet:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+.drag .dim { margin: 0; font-size: 0.95rem; }
+.scan .steps { flex: 1 1 300px; min-width: 0; margin: 0; padding: 0; list-style: none; counter-reset: step; display: flex; flex-direction: column; gap: 14px; font-size: 1.05rem; line-height: 1.5; }
+.scan .steps li { counter-increment: step; display: flex; gap: 12px; }
+.scan .steps li::before { content: counter(step); flex: none; width: 30px; height: 30px; display: flex; align-items: center; justify-content: center; background: var(--hi); color: var(--hi-ink); border: 2px solid var(--hi-ink); border-radius: 8px; font-weight: 700; }
+#bookmarklet-note { margin: 12px 0 0; }
+#bookmarklet-note:empty { display: none; }
+.files .try { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-top: 22px; padding: 14px 18px; background: var(--hi); color: var(--hi-ink); border: 2px solid var(--hi-ink); border-radius: 14px; }
+.files .try > span { flex: 1 1 260px; font-size: 1.05rem; font-weight: 600; }
+.ink-btn { display: inline-flex; align-items: center; min-height: 44px; padding: 10px 18px; background: var(--hi-ink); color: #ffffff; font-weight: 700; text-decoration: none; border-radius: 12px; }
+.ink-btn:hover { color: var(--hi); }
+.files details { margin-top: 18px; }
+.files details summary { cursor: pointer; font-weight: 700; padding: 10px 0; }
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 10px; }
-.grid2 label, .drop { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 0.92rem; }
-.drop { padding: 12px; border: 1.5px dashed var(--line); border-radius: 10px; }
-.files input[type="text"], .files select, .files textarea { font: inherit; padding: 8px; border: 1.5px solid var(--line); border-radius: 8px; background: var(--paper); color: var(--ink); width: 100%; }
+.grid2 label, .drop { display: flex; flex-direction: column; gap: 6px; font-weight: 600; font-size: 0.92rem; min-width: 0; }
+.drop { padding: 12px; border: 2px dashed var(--line); border-radius: 12px; }
+.drop input { max-width: 100%; }
+.files input[type="text"], .files select, .files textarea { font: inherit; padding: 10px; border: 2px solid var(--line); border-radius: 12px; background: var(--card); color: var(--ink); width: 100%; }
 .files textarea { font: 0.85rem/1.45 ui-monospace, Consolas, monospace; }
-.files details { margin-top: 12px; }
-.scan { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; align-items: start; margin-top: 10px; }
-.bookmarklet { display: inline-block; padding: 10px 16px; border-radius: 999px; background: var(--pencil); color: var(--on-pencil); font-weight: 700; text-decoration: none; cursor: grab; white-space: nowrap; }
-.scan .steps { margin: 0; padding-left: 1.2em; display: grid; gap: 4px; font-size: 0.92rem; }
-.scan #bookmarklet-note { grid-column: 1 / -1; margin: 0; }
-.files .or { margin: 16px 0 0; }
-.project { border: 0; padding: 0; margin: 8px 0 0; display: grid; gap: 8px; }
-.project label { font-weight: 400; }
-#findings .lang { font-size: 0.72rem; font-weight: 700; margin-right: 6px; color: var(--dim); }
-@media (max-width: 700px) { .grid2, .scan { grid-template-columns: 1fr; } }
+.files .loaded { margin: 18px 0 0; font-weight: 600; }
+.files .loaded.err { color: var(--red); }
+#other-text { margin-top: 6px; }
+
+/* ---------- 2. check it ---------- */
+.files .one { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; font-weight: 600; font-size: 0.95rem; }
+.files .keep { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; margin-top: 16px; cursor: pointer; font-size: 1.05rem; line-height: 1.45; }
+.files .keep input { width: 22px; height: 22px; margin: 2px 0 0; accent-color: var(--pencil); }
+.files .keep b { font-weight: 700; }
+button.big { font-size: 1.1rem; font-weight: 700; padding: 14px 24px; border-radius: 14px; }
+.files #laptop-state.err { color: var(--red); }
+.files .waiting { display: none; margin: 0 0 4px; font-size: 1.05rem; }
+/* Before any text is loaded: the step reads as "not yet". */
+#check:has(#run[disabled]):has(#stop[hidden]) .waiting { display: block; }
+#check:has(#run[disabled]):has(#stop[hidden]) :is(.one, .keep, .row) { opacity: 0.62; }
+
+/* ---------- 3. results ---------- */
+.files #summary { font: 700 2.2rem/1.1 var(--head); letter-spacing: -0.02em; margin-bottom: 6px; }
+#findings-count { font-size: 1rem; }
+.files #findings { list-style: none; margin: 18px 0 0; padding: 0; display: flex; flex-direction: column; gap: 12px; }
+.files #findings li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 14px; align-items: start; padding: 16px 18px; background: var(--card); border: 2px solid var(--line); border-radius: 14px; }
+.files #findings li:hover, .files #findings li:focus-within { background: var(--card); box-shadow: 4px 4px 0 var(--shadow); }
+.files #findings li.none { display: block; border: 0; padding: 4px 0; box-shadow: none; }
+.files #findings input { width: 24px; height: 24px; margin: 2px 0 0; accent-color: var(--pencil); cursor: pointer; }
+.files #findings label { display: block; min-width: 0; color: var(--dim); font-size: 0.85rem; }
+.files #findings label > :is(.quote, .fix, .ran) { display: block; margin-top: 6px; }
+#findings .lang { font-size: 0.72rem; font-weight: 700; color: var(--dim); margin-right: 6px; }
+/* The problem name, as a label chip; red for high severity. */
+.files #findings label > b { display: inline-block; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; background: var(--ink); color: var(--card); padding: 3px 9px; border-radius: 6px; }
+.files #findings li[data-severity="high"] label > b { background: var(--red); color: var(--card); }
+/* The old text, struck through in coral. */
+.files #findings .quote { font-size: 1.2rem; color: var(--ink); text-decoration: line-through; text-decoration-color: var(--coral); text-decoration-thickness: 3px; }
+.files #findings .quote .dim { display: inline-block; width: 100%; font-size: 0.85rem; text-decoration: none; }
+/* The new text, under the highlighter. */
+.files #findings .fix { color: var(--ink); }
+.files #findings .fix.dim { color: var(--dim); font-size: 0.9rem; }
+.files #findings label > .fix:nth-last-child(2) { width: fit-content; max-width: 100%; font-size: 1.2rem; font-weight: 700; color: var(--hi-ink); background: var(--hi); padding: 0 6px; box-decoration-break: clone; -webkit-box-decoration-break: clone; }
+.files #findings .ran { width: fit-content; font-size: 0.75rem; font-weight: 700; color: var(--ink); background: var(--wash); border: 2px solid var(--line); border-radius: 999px; padding: 2px 10px; margin-top: 2px; }
+.files #findings .ran[data-where="cloud"], .files #findings .ran[data-where="unknown"] { color: var(--red); border-color: var(--red); }
+
+/* Unticked: the text stays as it is. Stamped STET, nothing struck or highlighted. */
+.files #findings li:has(> input:not(:checked)) { grid-template-columns: auto minmax(0, 1fr) auto; background: var(--wash); border-style: dashed; }
+.files #findings li:has(> input:not(:checked)) .quote { text-decoration: none; }
+.files #findings li:has(> input:not(:checked)) label > .fix:nth-last-child(2) { background: none; color: var(--dim); font-weight: 400; font-size: 0.95rem; text-decoration: line-through; padding: 0; }
+.files #findings li:has(> input:not(:checked))::after {
+  content: "STET"; content: "STET" / "";
+  align-self: center; font: 700 1.35rem/1 var(--head); letter-spacing: 0.12em; color: var(--red);
+  border: 3px solid var(--red); border-radius: 6px; padding: 4px 10px; transform: rotate(-8deg);
+}
+
+/* The fix card: one press, one message. */
+.fixcard { margin-top: 22px; padding: 24px 28px; background: var(--pencil); color: var(--on-pencil); border: 2px solid var(--line); border-radius: 18px; box-shadow: 6px 6px 0 var(--shadow); }
+.fixcard h3 { margin-bottom: 6px; }
+.fixcard p { margin: 0; line-height: 1.5; }
+.fixcard .dim { color: inherit; opacity: 0.9; }
+.fixcard #fix-status { margin-top: 10px; }
+.fixcard #fix-status:empty { display: none; }
+.fixcard #make-fix { background: var(--hi); color: var(--hi-ink); border-color: var(--hi-ink); box-shadow: 4px 4px 0 var(--hi-ink); }
+.fixbox { margin-top: 18px; padding: 18px 20px; background: var(--hi-ink); color: #eef1ff; border: 2px solid var(--line); border-radius: 14px; }
+.fixbox:has(> #fix-prompt[hidden]) { display: none; }
+.fixbox .fix-label { margin: 0; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--hi); }
+.fixbox #fix-help { color: #eef1ff; opacity: 0.9; margin: 6px 0 10px; }
+.files .fixbox #fix-prompt { background: transparent; color: #eef1ff; border: 2px solid #4a4a68; border-radius: 10px; font: 0.88rem/1.6 ui-monospace, Consolas, monospace; }
+.fixbox button.quiet { background: var(--hi); color: var(--hi-ink); border-color: var(--hi); box-shadow: none; }
+
+/* ---------- sent to the cloud ---------- */
+.files .area.cloud { margin: 0; padding: 14px 18px; border: 2px solid var(--line); border-radius: 14px; display: flex; flex-wrap: wrap; gap: 6px 24px; align-items: baseline; }
+.files .area.cloud .area-title { margin: 0; color: var(--ink); font-size: 0.8rem; }
+.files .area.cloud #sent { flex: 1 1 100%; margin: 0; }
+.files .area.cloud #sent:empty { display: none; }
+.files .area.cloud .dim { margin: 0; }
+
+/* ---------- narrow screens ---------- */
+@media (max-width: 700px) {
+  .grid2 { grid-template-columns: 1fr; }
+  .files .box { padding: 20px 18px; }
+  .files .intro h1 { font-size: 2.1rem; }
+  .files .lead { font-size: 1.05rem; }
+  .files .box > h2 { font-size: 1.4rem; }
+  .files #summary { font-size: 1.7rem; }
+  .fixcard { padding: 20px 18px; }
+  .files #findings li { padding: 14px; gap: 12px; }
+  .bookmarklet { white-space: normal; }
+  .files #findings li:has(> input:not(:checked))::after { font-size: 1rem; padding: 3px 6px; letter-spacing: 0.08em; }
+  .fixcard #make-fix { white-space: normal; text-align: left; }
+}

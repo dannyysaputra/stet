@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stet: your files</title>
+<title>Stet: check your app</title>
 <link rel="stylesheet" href="/src/base.css">
 <link rel="stylesheet" href="/src/review/review.css">
 <link rel="stylesheet" href="/src/files/files.css">
@@ -17,72 +17,99 @@
   </span>
 </header>
 <main class="files">
-  <h1>Review your own text</h1>
-  <p class="dim">Scan a screen of the app you are building, or drop in its language files. The same review and fix prompt run on the text, and the fix prompt says where each string is.</p>
-  <p class="dim">Made for app interface text: buttons, labels, field hints, messages and navigation. On a marketing page Stet still finds real defects, but flags much plain copy too.</p>
+  <div class="intro">
+    <h1>Check one screen of <span class="hl">your app.</span></h1>
+    <p class="lead">Stet reads the text on one screen, marks the pieces that need work, and writes one fix message for your coding agent.</p>
+    <p class="dim">Made for app screens: buttons, labels, field hints, messages and menus. On a marketing page it still finds real defects, but flags much plain copy too.</p>
+  </div>
+
+  <ol class="stepper">
+    <li data-step="1">1 Get the text</li>
+    <li data-step="2">2 Check it</li>
+    <li data-step="3">3 Copy the fix</li>
+  </ol>
 
   <section class="box" id="scan">
-    <h2>1. Your text</h2>
-    <div class="scan">
-      <a id="bookmarklet" class="bookmarklet" href="#" draggable="true">Scan with Stet</a>
-      <ol class="steps">
-        <li>Drag the button to your bookmarks bar (once). Press Ctrl+Shift+B if the bar is hidden.</li>
-        <li>Open your app in Chrome, on its own tab, at the screen you want checked.</li>
-        <li>Click "Scan with Stet" in the bookmarks bar. The screen's text opens here. It goes from your app's tab straight to this tab, and nowhere else.</li>
-      </ol>
+    <h2>1. Get your screen&#39;s text</h2>
+    <div id="get-text">
+      <div class="scan">
+        <div class="drag">
+          <span class="eyebrow">Drag me up to your bookmarks bar</span>
+          <a id="bookmarklet" class="bookmarklet" href="#" draggable="true"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"></path><path d="M5 12l7-7 7 7"></path></svg>Scan with Stet</a>
+          <span class="dim">No bar? Press Ctrl+Shift+B. You only do this once.</span>
+        </div>
+        <ol class="steps">
+          <li>Drag the blue button to your bookmarks bar.</li>
+          <li>Open your app in another Chrome tab, on the screen you want checked.</li>
+          <li>Click "Scan with Stet" in the bookmarks bar. The text of that screen opens here. It goes from your app&#39;s tab straight to this tab. After the check, the numbered marks go back to that tab and are drawn on your screen, where your app&#39;s own scripts can also see them.</li>
+        </ol>
+      </div>
       <p id="bookmarklet-note" class="dim" aria-live="polite"></p>
+      <div class="try">
+        <span>No bookmark yet? The example app has its own scan button.</span>
+        <a class="ink-btn" href="/sample/?scan=1#/new">Open the example app</a>
+      </div>
+      <details id="other-ways">
+        <summary>Other ways: language files or a pasted list</summary>
+        <div class="grid2">
+          <label class="drop">English file (JSON)
+            <input id="file-en" type="file" accept=".json,application/json">
+            <span id="file-en-name" class="dim">None chosen</span>
+          </label>
+          <label class="drop">Indonesian file (JSON, optional)
+            <input id="file-id" type="file" accept=".json,application/json">
+            <span id="file-id-name" class="dim">None chosen</span>
+          </label>
+        </div>
+        <label class="one">In Indonesian, the app speaks to its users as
+          <select id="register"><option value="Anda">Anda (formal)</option><option value="kamu">kamu (informal)</option></select>
+        </label>
+        <label class="one">Or paste English text, one piece per line
+          <textarea id="pasted" rows="5" placeholder="Unlock seamless invoicing&#10;Submit&#10;Click here"></textarea>
+        </label>
+        <div class="row"><button id="use-pasted" type="button" class="quiet">Use this list</button></div>
+      </details>
     </div>
-    <p class="dim or">Or use your language files:</p>
-    <div class="grid2">
-      <label class="drop">English file (JSON)
-        <input id="file-en" type="file" accept=".json,application/json">
-        <span id="file-en-name" class="dim">None chosen</span>
-      </label>
-      <label class="drop">Indonesian file (JSON, optional)
-        <input id="file-id" type="file" accept=".json,application/json">
-        <span id="file-id-name" class="dim">None chosen</span>
-      </label>
-    </div>
-    <details>
-      <summary>Or paste a list of English strings, one per line</summary>
-      <textarea id="pasted" rows="6" placeholder="Unlock seamless invoicing&#10;Submit&#10;Click here"></textarea>
-      <div class="row"><button id="use-pasted" type="button" class="quiet">Use this list</button></div>
-    </details>
-    <div class="grid2">
-      <label>App name and what it does
-        <input id="app-name" type="text" value="My app" maxlength="120">
-      </label>
-      <label>The app speaks to its users as
-        <select id="register"><option value="Anda">Anda (formal)</option><option value="kamu">kamu (informal)</option></select>
-      </label>
-    </div>
-    <p id="loaded" class="dim" aria-live="polite">No text loaded yet.</p>
+    <p id="loaded" class="loaded" aria-live="polite">No text yet.</p>
+    <p id="other-text" class="dim" hidden><a href="/files/">Check different text</a></p>
   </section>
 
-  <section class="box">
-    <h2>2. Project</h2>
-    <fieldset class="project">
-      <legend class="dim">Where may this project's text be read?</legend>
-      <label><input type="radio" name="project" value="sealed" checked> Sealed: only by the laptop model, never sent to the cloud</label>
-      <label><input type="radio" name="project" value="open"> Open: the laptop model first, the cloud when it is missing</label>
-    </fieldset>
+  <section class="box" id="check">
+    <h2>2. Check it</h2>
+    <p class="waiting dim">Waiting for your screen&#39;s text. Nothing is checked or sent until you press the button.</p>
+    <label class="one">What is your app? One line helps the check.
+      <input id="app-name" type="text" value="My app" maxlength="120">
+    </label>
+    <label class="keep"><input id="keep-local" type="checkbox" checked> <span><b>Keep my text on this laptop</b> (recommended). It is read only by the model built into Chrome.</span></label>
+    <p id="keep-note" class="dim" hidden>Unticked: the laptop model is still tried first. If it is missing, Stet shows you the exact text and sends it to the cloud model only after you agree.</p>
     <p id="laptop-state" class="dim"></p>
-  </section>
-
-  <section class="box">
-    <h2>3. Review</h2>
     <div class="row">
-      <button id="run" type="button" disabled>Review all text</button>
+      <button id="run" type="button" class="big" disabled>Check the text</button>
       <button id="stop" type="button" class="quiet" hidden>Stop</button>
     </div>
     <p id="progress" class="dim" aria-live="polite"></p>
     <div id="approve" class="approve" hidden></div>
-    <h3>Findings <span id="findings-count" class="dim"></span></h3>
+  </section>
+
+  <section class="box" id="results" hidden>
+    <h2 id="summary" aria-live="polite">3. What to fix</h2>
+    <p id="findings-count" class="dim"></p>
     <ol id="findings"></ol>
-    <div class="row"><button id="make-fix" type="button" disabled>Make fix prompt</button></div>
-    <p id="fix-status" class="dim" aria-live="polite"></p>
-    <textarea id="fix-prompt" rows="12" spellcheck="false" hidden></textarea>
-    <div class="row" id="fix-actions" hidden><button id="copy-fix" type="button" class="quiet">Copy</button><span id="copy-status" class="dim" aria-live="polite"></span></div>
+    <div class="fixcard">
+      <h3>One fix message for your coding agent</h3>
+      <p>One press writes the new wording for the ticked pieces of text and copies one fix message.</p>
+      <div class="row">
+        <button id="make-fix" type="button" class="big" disabled>Copy fix for my coding agent</button>
+        <span id="copy-status" class="dim" aria-live="polite"></span>
+      </div>
+      <p id="fix-status" class="dim" aria-live="polite"></p>
+    </div>
+    <div class="fixbox">
+      <label for="fix-prompt" class="fix-label">The fix message your agent gets</label>
+      <p id="fix-help" class="dim" hidden>Paste it into the coding agent that builds your app, such as Claude Code, Cursor or Lovable. You can edit it here first.</p>
+      <textarea id="fix-prompt" rows="12" spellcheck="false" hidden></textarea>
+      <div class="row" id="fix-actions" hidden><button id="copy-fix" type="button" class="quiet">Copy again</button></div>
+    </div>
   </section>
 
   <section class="box area cloud">
