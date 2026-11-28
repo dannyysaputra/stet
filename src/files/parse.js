@@ -103,6 +103,20 @@ export function marksFor(found) {
     .filter((m) => Number.isInteger(m.at));
 }
 
+/**
+ * The words shown when a review ends. A piece of text whose check failed was not
+ * checked, so a review with failures never reads as clean.
+ * Returns { progress, heading, none } (none: the line shown when the list is empty).
+ */
+export function reviewSummary({ total, found, failed, firstError = "", where = "in this text" }) {
+  const pieces = (n) => `${n} piece${n === 1 ? "" : "s"} of text`;
+  const progress = failed ? `Checked ${total - failed} of ${total}. ${pieces(failed)} could not be checked${firstError ? `: ${firstError}` : ""}.` : `Checked ${total} of ${total}`;
+  const things = `${found} thing${found === 1 ? "" : "s"} to fix ${where}`;
+  const heading = failed ? `3. ${found ? `${things}, ` : ""}${pieces(failed)} not checked` : found ? `3. ${things}` : `3. Nothing to fix ${where}`;
+  const none = failed ? `${pieces(failed)} could not be checked.` : "Nothing to fix.";
+  return { progress, heading, none };
+}
+
 /** A pasted list, one English string per line. Keys are line numbers. */
 export function parsePasted(text) {
   return String(text)

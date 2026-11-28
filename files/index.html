@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stet: check your app</title>
 <link rel="stylesheet" href="/src/base.css">
+<script>try{var t=localStorage.getItem("stet-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="stylesheet" href="/src/review/review.css">
 <link rel="stylesheet" href="/src/files/files.css">
 </head>
@@ -12,6 +13,7 @@
 <header class="seam-bar">
   <a class="brand" href="/">Stet</a>
   <span class="bar-right">
+    <button class="theme-switch" type="button" data-theme-switch aria-pressed="false" hidden>Dark mode</button>
     <span id="net-state" class="net-state" data-online="true">Online</span>
     <span id="left-count" class="left-count" data-zero="true" aria-live="polite">Left this laptop: 0</span>
   </span>
@@ -86,6 +88,8 @@
     <div class="row">
       <button id="run" type="button" class="big" disabled>Check the text</button>
       <button id="stop" type="button" class="quiet" hidden>Stop</button>
+      <button id="use-cloud" type="button" class="quiet" hidden>Check with the cloud model</button>
+      <button id="retry" type="button" class="quiet" hidden>Check the failed pieces of text again</button>
     </div>
     <p id="progress" class="dim" aria-live="polite"></p>
     <div id="approve" class="approve" hidden></div>
@@ -102,6 +106,7 @@
         <button id="make-fix" type="button" class="big" disabled>Copy fix for my coding agent</button>
         <span id="copy-status" class="dim" aria-live="polite"></span>
       </div>
+      <div id="approve-fix" class="approve" hidden></div>
       <p id="fix-status" class="dim" aria-live="polite"></p>
     </div>
     <div class="fixbox">
@@ -120,5 +125,6 @@
   </section>
 </main>
 <script type="module" src="/src/files/files.js"></script>
+<script type="module" src="/src/theme.js"></script>
 </body>
 </html>

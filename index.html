@@ -6,6 +6,7 @@
 <title>Stet: a proofreader for apps built by coding agents</title>
 <meta name="description" content="Stet reads the text on one screen of your app, checks it on your laptop, and writes one fix message for your coding agent.">
 <link rel="stylesheet" href="/src/base.css">
+<script>try{var t=localStorage.getItem("stet-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="stylesheet" href="/src/home.css">
 </head>
 <body class="landing">
@@ -17,6 +18,7 @@
       <a href="#how">How it works</a>
       <a href="#limits">What to expect</a>
     </nav>
+    <button class="theme-switch" type="button" data-theme-switch aria-pressed="false" hidden>Dark mode</button>
     <a class="cta small" href="/files/">Check my app</a>
   </div>
 </header>
@@ -143,5 +145,6 @@
   </div>
 </footer>
 <script type="module" src="/src/home.js"></script>
+<script type="module" src="/src/theme.js"></script>
 </body>
 </html>

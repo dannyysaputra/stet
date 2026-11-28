@@ -138,14 +138,16 @@ export async function warmUp() {
 
 /**
  * Asks the model about one English string: the laptop model in a Sealed project,
- * the laptop model first in an Open one. Returns { finding, source: "laptop", where, ms }.
+ * the laptop model first in an Open one. Callers pass mode "ONLY_ON_DEVICE" unless
+ * the user has agreed to a list that shows this text (so nothing falls back to the
+ * cloud unseen). Returns { finding, source: "laptop", where, ms }.
  */
-export async function modelCheck(g, screen, { app = APP } = {}) {
+export async function modelCheck(g, screen, { app = APP, mode = textMode() } = {}) {
   const guide = currentGuide();
   const r = await askJson(
     enPrompt({ app, screen, kind: g.kind, context: g.context, text: g.text }, guide.markdown),
     EN_SCHEMA,
-    { mode: textMode(), purpose: "one piece of the app's text" },
+    { mode, purpose: "one piece of the app's text" },
   );
   const d = r.data ?? {};
   const finding = {
@@ -250,6 +252,15 @@ export function newTextProblem(g, text, screenWords = "") {
 }
 
 const rewrites = new Map();
+const wordsOf = (g, screen, others) => [...others, g.key.replace(/[._-]/g, " "), g.context ?? "", screen].join(" ").toLowerCase();
+
+/** Whether newTextFor() would have to ask a model for this finding (no usable rewrite yet). */
+export function needsNewText(g, screen, others) {
+  if (!newTextProblem(g, g.result.finding.rewrite, wordsOf(g, screen, others))) return false;
+  return !rewrites.has(`${currentGuide().id}
+${g.kind}
+${g.text}`);
+}
 
 /**
  * New text for one ticked finding. Uses the review's rewrite when it passes the
@@ -257,8 +268,8 @@ const rewrites = new Map();
  * fails them too. Returns { text, source: "review" | "laptop" | "reused", problem? }.
  * problem is set when no candidate passed; text is then the last candidate (maybe "").
  */
-export async function newTextFor(g, screen, others, { app = APP } = {}) {
-  const screenWords = [...others, g.key.replace(/[._-]/g, " "), g.context ?? "", screen].join(" ").toLowerCase();
+export async function newTextFor(g, screen, others, { app = APP, mode = textMode() } = {}) {
+  const screenWords = wordsOf(g, screen, others);
   const problemOf = (t) => newTextProblem(g, t, screenWords);
   const own = unquote(g.result.finding.rewrite);
   if (!problemOf(own)) return { text: own, source: "review" };
@@ -276,7 +287,7 @@ export async function newTextFor(g, screen, others, { app = APP } = {}) {
         guide.markdown,
       ),
       REWRITE_SCHEMA,
-      { mode: textMode(), purpose: "new text for one piece of the app's text" },
+      { mode, purpose: "new text for one piece of the app's text" },
     );
     const text = unquote(r.data?.text);
     const problem = problemOf(text);

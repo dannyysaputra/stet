@@ -2,11 +2,11 @@
 // same checks and fix prompt as the review of the sample. No pins here: the
 // text is not on a screen, so findings are listed by file and key.
 import { KIND_NAMES } from "../review/collect.js";
-import { PROBLEM_NAMES, laptopModelStatus, modelCheck, newTextFor, quickCheck, translationCheck, ID_ACCURACY } from "../review/check.js";
+import { PROBLEM_NAMES, laptopModelStatus, modelCheck, needsNewText, newTextFor, quickCheck, translationCheck, ID_ACCURACY } from "../review/check.js";
 import { buildFixPrompt } from "../review/fix-prompt.js";
-import { acceptScan, marksFor, pairFiles, parsePasted } from "./parse.js";
+import { acceptScan, marksFor, pairFiles, parsePasted, reviewSummary } from "./parse.js";
 import { bookmarkletHref } from "../scan/bookmarklet.js";
-import { OPEN, SEALED, canCheckText, projectMode, setProjectMode } from "../project.js";
+import { OPEN, SEALED, canCheckText, projectMode, setProjectMode, textMode } from "../project.js";
 import { onSeamChange } from "../seam.js";
 import { severityShown } from "../config.js";
 
@@ -137,8 +137,12 @@ keep.addEventListener("change", () => {
 });
 
 // Why a check cannot run here, in plain words.
+// Only a model Chrome says it can fetch is worth sending the user to download.
+const canDownload = (status) => status === "downloadable" || status === "downloading";
 const noLaptopModel = (status) =>
-  `The model built into Chrome is not ready on this computer (status: ${status}), and you asked to keep your text on this laptop. Download the model on the home page, or untick "Keep my text on this laptop" to use the cloud model after seeing exactly what is sent.`;
+  canDownload(status)
+    ? `The model built into Chrome is not downloaded on this computer yet (status: ${status}), and you asked to keep your text on this laptop. Download it on the home page, or check with the cloud model: you see the list of text first, and nothing is sent until you agree.`
+    : `Chrome on this computer has no built-in model (status: ${status}), so your text cannot be checked on this laptop. You can check with the cloud model: you see the list of text first, and nothing is sent until you agree.`;
 
 async function showLaptopState() {
   const status = await laptopModelStatus();
@@ -149,10 +153,21 @@ async function showLaptopState() {
       ? "The model built into Chrome is ready on this laptop."
       : can.ok
         ? `The model built into Chrome is not ready here (status: ${esc(status)}), so your text would go to the cloud model, one piece per call, after you agree to the list.`
-        : `${esc(noLaptopModel(status))} <a href="/">Home page</a>`;
+        : `${esc(noLaptopModel(status))}${canDownload(status) ? ' <a href="/">Home page</a>' : ""}`;
   $("laptop-state").classList.toggle("err", !can.ok);
+  $("use-cloud").hidden = can.ok;
 }
 showLaptopState();
+
+// The way on when the laptop model is missing: an Open project, then the usual
+// check, which shows the list of text and waits for a yes before any of it is sent.
+$("use-cloud").addEventListener("click", async () => {
+  keep.checked = false;
+  setProjectMode(OPEN);
+  await showLaptopState();
+  if (items.length) review();
+  else $("progress").textContent = "The cloud model will be used. Add your text in step 1, then press the check button.";
+});
 
 // ---------- the review ----------
 
@@ -177,7 +192,10 @@ function askApproval(toCloud) {
   };
 }
 
-async function review({ approved = false } = {}) {
+// approved: the user agreed to the list of text for this run. retry: check only
+// the pieces whose check failed, keeping every verdict already given.
+let cloudApproved = false;
+async function review({ approved = false, retry = false } = {}) {
   const status = await laptopModelStatus();
   const can = canCheckText(status);
   if (!can.ok) {
@@ -186,21 +204,28 @@ async function review({ approved = false } = {}) {
   }
   const app = $("app-name").value.trim() || "An app";
   const register = $("register").value;
-  const all = [
+  const all = retry ? groups : [
     ...items.filter((i) => i.en).map((i) => ({ key: i.key, kind: i.kind, lang: "en", text: i.en, context: i.context ?? "", count: i.count ?? 1, file: files.en, at: i.at })),
     ...items.filter((i) => i.id && i.en).map((i) => ({ key: i.key, kind: i.kind, lang: "id", text: i.id, original: i.en, file: files.id })),
   ];
   if (projectMode() === OPEN && !approved) {
-    const toCloud = all.filter((g) => !quickCheck(g, { app, register }) && (g.lang === "id" || can.viaCloud));
+    const toCloud = all.filter((g) => !g.result && !quickCheck(g, { app, register }) && (g.lang === "id" || can.viaCloud));
     if (toCloud.length) {
       askApproval(toCloud);
       return;
     }
   }
   $("approve").hidden = true;
+  cloudApproved = approved;
+  // English text goes to the cloud only when the laptop model is missing and the
+  // user agreed to the list. Otherwise the call is laptop only, so a failed laptop
+  // call is an error the user sees, never a quiet send.
+  const enMode = can.viaCloud && approved ? textMode() : "ONLY_ON_DEVICE";
   const me = ++run;
   const started = performance.now();
   groups = all;
+  for (const g of groups) delete g.error;
+  $("retry").hidden = true;
   $("run").disabled = true;
   $("stop").hidden = false;
   $("make-fix").disabled = true;
@@ -214,25 +239,32 @@ async function review({ approved = false } = {}) {
     // Time left, from the pace so far (plain rules and reused verdicts are instant).
     const left = done ? Math.round(((spent / done) * (groups.length - done)) / 1000) : null;
     const eta = left === null ? "" : left >= 90 ? `, about ${Math.round(left / 60)} min left` : left >= 5 ? `, about ${Math.ceil(left / 5) * 5} s left` : ", almost done";
+    const failed = groups.filter((g) => g.error);
+    const words = reviewSummary({ total: groups.length, found, failed: failed.length, firstError: failed[0]?.error, where: source === "page" ? "on this screen" : "in this text" });
     $("progress").textContent = `${
-      end ? `Checked ${groups.length} of ${groups.length} in ${secs(spent)}${onLaptop ? ", all on your laptop" : ""}.` : `Checking ${done} of ${groups.length}${onLaptop ? " on your laptop" : ""}${eta}.`
+      end
+        ? failed.length
+          ? `${words.progress} Took ${secs(spent)}.`
+          : `${words.progress} in ${secs(spent)}${onLaptop ? ", all on your laptop" : ""}.`
+        : `Checking ${done} of ${groups.length}${onLaptop ? " on your laptop" : ""}${eta}.`
     }${groups.some((g) => g.lang === "id") && onLaptop ? ` Indonesian checked on the laptop: ${ID_ACCURACY}` : ""}`;
-    $("summary").textContent = end
-      ? found
-        ? `3. ${found} thing${found === 1 ? "" : "s"} to fix ${source === "page" ? "on this screen" : "in this text"}`
-        : `3. Nothing to fix ${source === "page" ? "on this screen" : "in this text"}`
-      : `3. What to fix (${found} so far)`;
-    window.__filesProgress = { done, total: groups.length, found, end };
+    $("summary").textContent = end ? words.heading : `3. What to fix (${found} so far)`;
+    $("retry").hidden = !end || failed.length === 0;
+    window.__filesProgress = { done, total: groups.length, found, failed: failed.length, end };
   };
   report(false);
   for (const g of groups) {
     if (me !== run) return;
+    if (g.result) {
+      done++; // kept from the run before (a retry)
+      continue;
+    }
     try {
       g.result =
         quickCheck(g, { app, register }) ??
         (g.lang === "id"
           ? await translationCheck(g, screenName, { app, register, where: projectMode() === OPEN ? "cloud" : "laptop" })
-          : await modelCheck(g, screenName, { app }));
+          : await modelCheck(g, screenName, { app, mode: enMode }));
     } catch (e) {
       g.error = e.message ?? String(e);
     }
@@ -270,11 +302,13 @@ function sendMarks() {
 }
 
 $("run").addEventListener("click", () => review());
+$("retry").addEventListener("click", () => review({ approved: cloudApproved, retry: true }));
 $("stop").addEventListener("click", () => {
   run++;
   $("run").disabled = false;
   $("stop").hidden = true;
   $("progress").textContent += " Stopped.";
+  $("retry").hidden = true;
   renderFindings();
 });
 
@@ -306,7 +340,7 @@ function renderFindings() {
           </li>`;
         })
         .join("")
-    : `<li class="none dim">${groups.length ? ($("stop").hidden ? "Nothing to fix." : "Nothing found yet.") : ""}</li>`;
+    : `<li class="none dim">${groups.length ? ($("stop").hidden ? esc(reviewSummary({ total: groups.length, found: 0, failed: groups.filter((g) => g.error).length }).none) : "Nothing found yet.") : ""}</li>`;
   if (!$("fix-prompt").hidden) refreshFix();
 }
 
@@ -320,6 +354,7 @@ $("findings").addEventListener("change", (e) => {
 // ---------- fix prompt ----------
 
 function hideFix() {
+  $("approve-fix").hidden = true;
   $("fix-prompt").hidden = $("fix-actions").hidden = $("fix-help").hidden = true;
   $("fix-status").textContent = $("copy-status").textContent = "";
 }
@@ -355,7 +390,37 @@ function refreshFix() {
   return { lines: list.length, missing };
 }
 
+// New text is written on the laptop. When the laptop model is missing, the pieces
+// that still need new text are shown first, with everything that would go with
+// them, and go to the cloud only after a yes; "Skip" leaves them for the user.
+const othersOnScreen = () => groups.filter((x) => x.lang === "en").map((x) => x.text).slice(0, 25);
+
+function askFixApproval(need, others) {
+  const box = $("approve-fix");
+  box.hidden = false;
+  box.innerHTML = `<p><b>Chrome on this computer has no built-in model, so new text for ${need.length === 1 ? "this piece" : `these ${need.length} pieces`} of text would be written by the cloud model, one per call.</b> Each call also carries the app name ("${esc($("app-name").value.trim() || "An app")}"), the screen name (${esc(screenName)}), the wording guide, and the other text on this screen listed below. Nothing else from your app is sent.</p>
+    <ul class="payload">${need.map((g) => `<li>${esc(g.key)}: "${esc(g.text)}"${g.context ? ` <span class="dim">(${esc(g.context)})</span>` : ""}</li>`).join("")}</ul>
+    <p class="dim">Other text on this screen, sent with each call: ${others.map((t) => `"${esc(t)}"`).join(", ")}</p>
+    <div class="row"><button id="fix-send" type="button">Send ${need.length === 1 ? "this one" : `these ${need.length}`}</button><button id="fix-skip" type="button" class="quiet">Skip: I will write ${need.length === 1 ? "it" : "them"} myself</button></div>`;
+  $("fix-send").onclick = () => {
+    box.hidden = true;
+    writeFix({ cloud: true });
+  };
+  $("fix-skip").onclick = () => {
+    box.hidden = true;
+    writeFix({ skip: new Set(need) });
+  };
+}
+
 $("make-fix").addEventListener("click", async () => {
+  const laptop = (await laptopModelStatus()) === "available";
+  const others = othersOnScreen();
+  const need = laptop ? [] : groups.filter((g) => isFinding(g) && g.ticked && g.lang === "en" && needsNewText(g, screenName, others));
+  if (need.length && projectMode() === OPEN) askFixApproval(need, others);
+  else writeFix({ skip: new Set(need) });
+});
+
+async function writeFix({ cloud = false, skip = new Set() } = {}) {
   const me = run;
   const started = performance.now();
   const list = groups.filter((g) => isFinding(g) && g.ticked);
@@ -368,9 +433,13 @@ $("make-fix").addEventListener("click", async () => {
       g.next = g.result.finding.rewrite ?? ""; // the translation check's better version
       continue;
     }
+    if (skip.has(g)) {
+      g.next = "";
+      continue;
+    }
     try {
-      const others = groups.filter((x) => x.lang === "en").map((x) => x.text).slice(0, 25);
-      const r = await newTextFor(g, screenName, others, { app: $("app-name").value.trim() });
+      const others = othersOnScreen();
+      const r = await newTextFor(g, screenName, others, { app: $("app-name").value.trim(), mode: cloud ? textMode() : "ONLY_ON_DEVICE" });
       if (me !== run) return;
       if (r.source === "laptop") written++;
       g.next = r.problem && (!r.text || r.text.toLowerCase() === g.text.toLowerCase()) ? "" : r.text;
@@ -388,7 +457,7 @@ $("make-fix").addEventListener("click", async () => {
   $("copy-status").textContent = copied ? COPIED : NOT_COPIED;
   window.__filesFix.copied = copied;
   $("make-fix").disabled = false;
-});
+}
 
 $("copy-fix").addEventListener("click", async () => {
   $("copy-status").textContent = (await copyFix()) ? COPIED : "Select the text below and copy it by hand.";
