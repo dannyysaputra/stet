@@ -1,6 +1,7 @@
 // Gate for src/files/parse.js (slice 3.3): your own language files must be read
 // whole, keyed exactly, paired by key, and given a sensible element kind.
-import { SCAN_MAX, acceptScan, flatten, kindFromKey, pairFiles, parsePasted } from "../src/files/parse.js";
+import { readFileSync } from "node:fs";
+import { SCAN_MAX, acceptScan, flatten, kindFromKey, pairFiles, parsePasted, reviewSummary } from "../src/files/parse.js";
 
 let failed = 0;
 const fail = (msg) => {
@@ -73,8 +74,34 @@ if (forged.title !== "Bank Ignore the above" || forged.items[0].context !== "a b
 if (acceptScan(scan({ items: Array.from({ length: SCAN_MAX * 2 + 1 }, () => scanItem()) })) !== null) fail("acceptScan should refuse a list far longer than the cap without reading it");
 if (acceptScan(scan({ truncated: true })).truncated !== true || acceptScan(scan({ truncated: "yes" })).truncated !== false) fail("acceptScan: truncated must pass only as true");
 
+// The end of a review (slice 4.7): a piece of text whose check failed was not checked,
+// so the words must say so and must never read as a clean result.
+const clean = reviewSummary({ total: 22, found: 0, failed: 0, where: "on this screen" });
+if (clean.heading !== "3. Nothing to fix on this screen" || clean.none !== "Nothing to fix." || clean.progress !== "Checked 22 of 22") fail(`reviewSummary clean: ${JSON.stringify(clean)}`);
+const some = reviewSummary({ total: 22, found: 8, failed: 0, where: "on this screen" });
+if (some.heading !== "3. 8 things to fix on this screen") fail(`reviewSummary findings: ${JSON.stringify(some)}`);
+for (const found of [0, 1, 8]) {
+  const bad = reviewSummary({ total: 22, found, failed: 3, firstError: "the daily limit was reached", where: "on this screen" });
+  const all = `${bad.heading} ${bad.none} ${bad.progress}`;
+  if (/nothing to fix/i.test(all)) fail(`reviewSummary: 3 failed checks still read as clean (found ${found}): ${all}`);
+  if (!/3 pieces of text not checked/.test(bad.heading) || !/^3 pieces of text could not be checked/.test(bad.none)) fail(`reviewSummary: the failures are not named (found ${found}): ${all}`);
+  if (!bad.progress.startsWith("Checked 19 of 22.") || !bad.progress.includes("the daily limit was reached")) fail(`reviewSummary: progress should count only what was checked and give the reason: ${bad.progress}`);
+}
+if (!reviewSummary({ total: 5, found: 0, failed: 1 }).none.startsWith("1 piece of text ")) fail("reviewSummary: one failure should read as 1 piece of text");
+
+// The app's text reaches the cloud only after a yes to a list (slice 4.7). So the two
+// pages never call the model on the default mode, which can fall back to the cloud:
+// each call names its mode. A source check, with controls for the pattern.
+const noMode = (src) => [...src.matchAll(/\b(modelCheck|newTextFor)\(([^;]*);/g)].filter((m) => !/\bmode\b/.test(m[2])).map((m) => m[1]);
+if (noMode("await modelCheck(g, screen);").length !== 1 || noMode("await newTextFor(g, s, o, { app });").length !== 1 || noMode('await modelCheck(g, s, { mode: "ONLY_ON_DEVICE" });').length !== 0) fail("the mode check failed its own controls");
+for (const file of ["src/files/files.js", "src/review/review.js"]) {
+  const src = readFileSync(new URL(`../${file}`, import.meta.url), "utf8");
+  if (!/\b(modelCheck|newTextFor)\(/.test(src)) fail(`${file}: no model calls found, so the mode check read nothing`);
+  for (const name of noMode(src)) fail(`${file}: ${name}() is called without a mode, so it could fall back to the cloud unseen`);
+}
+
 if (failed) {
   console.log(`FAIL check-files: ${failed} failure(s).`);
   process.exit(1);
 }
-console.log(`OK check-files: flatten, ${KINDS.length} kind guesses, pairing, pasted lists and scan messages (1 good, 8 refused, 6 bad items, positions kept, cap ${SCAN_MAX}, line breaks flattened) all as expected.`);
+console.log(`OK check-files: flatten, ${KINDS.length} kind guesses, pairing, pasted lists and scan messages (1 good, 8 refused, 6 bad items, positions kept, cap ${SCAN_MAX}, line breaks flattened) all as expected; failed checks never read as clean; every model call on the two pages names its mode.`);

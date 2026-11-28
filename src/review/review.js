@@ -256,19 +256,21 @@ function stop() {
 // The Indonesian check runs where Phase 0 decided (decision 2): in the cloud for
 // an Open project, on text the user approves first; on the laptop for a Sealed one.
 const approveBox = document.getElementById("approve-id");
-function askApproval() {
-  const pairs = groups.filter((g) => g.lang === "id" && !quickCheck(g));
+// The same list covers English text when the laptop model is missing: nothing
+// from the screen reaches the cloud before the user has seen it here.
+function askApproval(pairs) {
+  const id = pairs[0]?.lang === "id";
   approveBox.hidden = false;
-  approveBox.innerHTML = `<p><b>The Indonesian check runs in the cloud for this Open project.</b> These ${pairs.length} Indonesian strings and their English originals will be sent, one pair per call. Nothing else on the screen is sent.</p>
-    <ul class="payload">${pairs.map((g) => `<li>"${esc(g.text)}" <span class="dim">for "${esc(g.original)}"</span></li>`).join("")}</ul>
-    <div class="row"><button id="approve-send" type="button">Send these ${pairs.length} pairs</button><button id="approve-cancel" type="button" class="quiet">Cancel</button></div>`;
+  approveBox.innerHTML = `<p><b>${id ? "The Indonesian check runs in the cloud for this Open project." : "The laptop model is missing, so this Open project would use the cloud model."}</b> These ${pairs.length} ${id ? "Indonesian strings and their English originals" : "pieces of text"} will be sent, one per call. Nothing else on the screen is sent.</p>
+    <ul class="payload">${pairs.map((g) => `<li>"${esc(g.text)}"${g.original ? ` <span class="dim">for "${esc(g.original)}"</span>` : ""}</li>`).join("")}</ul>
+    <div class="row"><button id="approve-send" type="button">Send these ${pairs.length}</button><button id="approve-cancel" type="button" class="quiet">Cancel</button></div>`;
   document.getElementById("approve-send").onclick = () => {
     approveBox.hidden = true;
     review({ approved: true });
   };
   document.getElementById("approve-cancel").onclick = () => {
     approveBox.hidden = true;
-    progress.textContent = "Not sent. Switch the project to Sealed to check Indonesian on the laptop instead.";
+    progress.textContent = "Not sent. Switch the project to Sealed to check on the laptop instead.";
   };
 }
 
@@ -281,10 +283,14 @@ async function review({ approved = false } = {}) {
   }
   const lang = groups[0]?.lang ?? "en";
   const idWhere = projectMode() === OPEN ? "cloud" : "laptop";
-  if (lang === "id" && idWhere === "cloud" && !approved && groups.some((g) => !quickCheck(g))) {
-    askApproval();
+  // To the cloud only after a yes to the exact list: Indonesian in an Open project,
+  // and English too when the laptop model is missing. Every other call is laptop only.
+  const toCloud = (lang === "id" ? idWhere === "cloud" : can.viaCloud) ? groups.filter((g) => !quickCheck(g)) : [];
+  if (toCloud.length && !approved) {
+    askApproval(toCloud);
     return;
   }
+  const enMode = can.viaCloud && approved ? "PREFER_ON_DEVICE" : "ONLY_ON_DEVICE";
   approveBox.hidden = true;
   const me = ++run;
   reviewing = true;
@@ -343,7 +349,7 @@ async function review({ approved = false } = {}) {
     const g = groups[i];
     const again = quickCheck(g); // the same text may have appeared earlier on this screen
     try {
-      g.result = again ?? (g.lang === "id" ? await translationCheck(g, screen, { where: idWhere }) : await modelCheck(g, screen));
+      g.result = again ?? (g.lang === "id" ? await translationCheck(g, screen, { where: idWhere }) : await modelCheck(g, screen, { mode: enMode }));
     } catch (e) {
       g.error = e.message ?? String(e);
     }
@@ -408,7 +414,9 @@ makeFixBtn.addEventListener("click", async () => {
       continue;
     }
     try {
-      const r = await newTextFor(g, screen, others);
+      // Laptop only: the cloud writes new text for one piece at a time, from the
+      // button that shows the request first.
+      const r = await newTextFor(g, screen, others, { mode: "ONLY_ON_DEVICE" });
       if (me !== run) return; // the screen changed
       if (r.source === "laptop") written++;
       g.next = r.problem && (!r.text || r.text.toLowerCase() === g.text.toLowerCase()) ? "" : r.text;

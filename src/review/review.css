@@ -89,3 +89,5 @@ button.quiet { background: var(--paper); color: var(--ink); border: 1.5px solid 
   .stage iframe { height: 70vh; }
   .panel { border-left: 0; border-top: 1.5px solid var(--line); }
 }
+/* Narrow screens: the bar keeps the switch and the counter on one line; "Online" is the normal state and steps aside. */
+@media (max-width: 480px) { .seam-bar .net-state[data-online="true"] { display: none; } }

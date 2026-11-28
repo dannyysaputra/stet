@@ -5,12 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stet: review</title>
 <link rel="stylesheet" href="/src/base.css">
+<script>try{var t=localStorage.getItem("stet-theme");if(t==="dark"||t==="light")document.documentElement.dataset.theme=t}catch(e){}</script>
 <link rel="stylesheet" href="/src/review/review.css">
 </head>
 <body>
 <header class="seam-bar">
   <a class="brand" href="/">Stet</a>
   <span class="bar-right">
+    <button class="theme-switch" type="button" data-theme-switch aria-pressed="false" hidden>Dark mode</button>
     <span id="net-state" class="net-state" data-online="true">Online</span>
     <span id="left-count" class="left-count" data-zero="true" aria-live="polite">Left this laptop: 0</span>
   </span>
@@ -101,5 +103,6 @@
   </aside>
 </div>
 <script type="module" src="/src/review/review.js"></script>
+<script type="module" src="/src/theme.js"></script>
 </body>
 </html>
